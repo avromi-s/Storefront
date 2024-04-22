@@ -217,7 +217,6 @@ namespace SemesterProject
             return new CartItem(storeItem, quantitySelected);
         }
 
-
         private void btnAddToCart0_Click(object sender, EventArgs e)
         {
             // todo do gui acknowledgment of add to cart with a timer so it goes back to normal:
@@ -262,6 +261,7 @@ namespace SemesterProject
             UpdateQuantityControlForListing(3);
         }
 
+        // On purchase button click - purchase all items in cart and then empty the cart
         private void btnPurchaseCartItems_Click(object sender, EventArgs e)
         {
             // todo connect to db and add purchases for the loggedInCustomer. use CartItems list
@@ -277,6 +277,7 @@ namespace SemesterProject
                 });
             }
             db.SubmitChanges();
+
             CartItems.Clear();
         }
 
