@@ -272,36 +272,48 @@ namespace SemesterProject
         // On purchase button click - purchase all items in cart and then empty the cart
         private void btnPurchaseCartItems_Click(object sender, EventArgs e)
         {
-            PURCHASE purchase = new PURCHASE()
+            if (CartItems.Count > 0)
             {
-                CUSTOMER = LoggedInCustomer,
-                TotalQuantity = CartItems.Sum(item => item.QuantitySelected),
-                TotalPrice = CartItems.Sum(item => item.UnitPrice * item.QuantitySelected),
-                PurchaseDateTime = DateTime.Now  // todo use db datetime?
-            };
-            db.PURCHASEs.InsertOnSubmit(purchase);
+                PURCHASE purchase = new PURCHASE()
+                {
+                    CUSTOMER = LoggedInCustomer,
+                    TotalQuantity = CartItems.Sum(item => item.QuantitySelected),
+                    TotalPrice = CartItems.Sum(item => item.UnitPrice * item.QuantitySelected),
+                    PurchaseDateTime = DateTime.Now  // todo use db datetime?
+                };
+                db.PURCHASEs.InsertOnSubmit(purchase);
 
-            CartItems.Select(item => new PURCHASE_STORE_ITEM()
+                CartItems.Select(item => new PURCHASE_STORE_ITEM()
+                {
+                    PURCHASE = purchase,
+                    STORE_ITEM = item.StoreItem,
+                    Quantity = item.QuantitySelected,
+                    UnitPrice = item.UnitPrice
+                })
+                .ToList()
+                .ForEach(item => db.PURCHASE_STORE_ITEMs.InsertOnSubmit(item));
+                db.SubmitChanges();
+
+                CartItems.Clear();
+            }
+            else
             {
-                PURCHASE = purchase,
-                STORE_ITEM = item.StoreItem,
-                Quantity = item.QuantitySelected,
-                UnitPrice = item.UnitPrice
-            })
-            .ToList()
-            .ForEach(item => db.PURCHASE_STORE_ITEMs.InsertOnSubmit(item));
-            db.SubmitChanges();
-
-            CartItems.Clear();
+                // todo, shouldn't be an else - purchase button should be disabled unless there are items in cart
+                // and also the remove item button unless an item is selected
+            }
         }
 
         private void btnRemoveItemFromCart_Click(object sender, EventArgs e)
         {
             // todo remove item from CartItems. Allow update quantity?
         }
+
+        private void tpCart_Click(object sender, EventArgs e)
+        {
+            lblCartSummary.Text = "hi";
+        }
         #endregion
 
         #endregion
-
     }
 }

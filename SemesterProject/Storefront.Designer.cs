@@ -71,14 +71,14 @@ namespace SemesterProject
             this.btnNextPage = new System.Windows.Forms.Button();
             this.btnPreviousPage = new System.Windows.Forms.Button();
             this.tpCart = new System.Windows.Forms.TabPage();
+            this.lblCartSummary = new System.Windows.Forms.Label();
+            this.btnRemoveItemFromCart = new System.Windows.Forms.Button();
+            this.btnPurchaseCartItems = new System.Windows.Forms.Button();
             this.dgvCartItems = new System.Windows.Forms.DataGridView();
             this.tpAccount = new System.Windows.Forms.TabPage();
             this.tabControl2 = new System.Windows.Forms.TabControl();
             this.tpBalance = new System.Windows.Forms.TabPage();
             this.tpPurchases = new System.Windows.Forms.TabPage();
-            this.btnPurchaseCartItems = new System.Windows.Forms.Button();
-            this.btnRemoveItemFromCart = new System.Windows.Forms.Button();
-            this.lblCartSummary = new System.Windows.Forms.Label();
             this.storeItemListingBindingSource = new System.Windows.Forms.BindingSource(this.components);
             this.tabControl1.SuspendLayout();
             this.tpStore.SuspendLayout();
@@ -524,6 +524,35 @@ namespace SemesterProject
             this.tpCart.TabIndex = 1;
             this.tpCart.Text = "Cart";
             this.tpCart.UseVisualStyleBackColor = true;
+            this.tpCart.Click += new System.EventHandler(this.tpCart_Click);
+            // 
+            // lblCartSummary
+            // 
+            this.lblCartSummary.AutoSize = true;
+            this.lblCartSummary.Location = new System.Drawing.Point(501, 470);
+            this.lblCartSummary.Name = "lblCartSummary";
+            this.lblCartSummary.Size = new System.Drawing.Size(0, 17);
+            this.lblCartSummary.TabIndex = 3;
+            // 
+            // btnRemoveItemFromCart
+            // 
+            this.btnRemoveItemFromCart.Location = new System.Drawing.Point(145, 456);
+            this.btnRemoveItemFromCart.Name = "btnRemoveItemFromCart";
+            this.btnRemoveItemFromCart.Size = new System.Drawing.Size(110, 45);
+            this.btnRemoveItemFromCart.TabIndex = 2;
+            this.btnRemoveItemFromCart.Text = "Remove Item";
+            this.btnRemoveItemFromCart.UseVisualStyleBackColor = true;
+            this.btnRemoveItemFromCart.Click += new System.EventHandler(this.btnRemoveItemFromCart_Click);
+            // 
+            // btnPurchaseCartItems
+            // 
+            this.btnPurchaseCartItems.Location = new System.Drawing.Point(745, 456);
+            this.btnPurchaseCartItems.Name = "btnPurchaseCartItems";
+            this.btnPurchaseCartItems.Size = new System.Drawing.Size(110, 45);
+            this.btnPurchaseCartItems.TabIndex = 1;
+            this.btnPurchaseCartItems.Text = "Purchase";
+            this.btnPurchaseCartItems.UseVisualStyleBackColor = true;
+            this.btnPurchaseCartItems.Click += new System.EventHandler(this.btnPurchaseCartItems_Click);
             // 
             // dgvCartItems
             // 
@@ -579,34 +608,6 @@ namespace SemesterProject
             this.tpPurchases.TabIndex = 1;
             this.tpPurchases.Text = "Purchases";
             this.tpPurchases.UseVisualStyleBackColor = true;
-            // 
-            // btnPurchaseCartItems
-            // 
-            this.btnPurchaseCartItems.Location = new System.Drawing.Point(745, 456);
-            this.btnPurchaseCartItems.Name = "btnPurchaseCartItems";
-            this.btnPurchaseCartItems.Size = new System.Drawing.Size(110, 45);
-            this.btnPurchaseCartItems.TabIndex = 1;
-            this.btnPurchaseCartItems.Text = "Purchase";
-            this.btnPurchaseCartItems.UseVisualStyleBackColor = true;
-            this.btnPurchaseCartItems.Click += new System.EventHandler(this.btnPurchaseCartItems_Click);
-            // 
-            // btnRemoveItemFromCart
-            // 
-            this.btnRemoveItemFromCart.Location = new System.Drawing.Point(145, 456);
-            this.btnRemoveItemFromCart.Name = "btnRemoveItemFromCart";
-            this.btnRemoveItemFromCart.Size = new System.Drawing.Size(110, 45);
-            this.btnRemoveItemFromCart.TabIndex = 2;
-            this.btnRemoveItemFromCart.Text = "Remove Item";
-            this.btnRemoveItemFromCart.UseVisualStyleBackColor = true;
-            this.btnRemoveItemFromCart.Click += new System.EventHandler(this.btnRemoveItemFromCart_Click);
-            // 
-            // lblCartSummary
-            // 
-            this.lblCartSummary.AutoSize = true;
-            this.lblCartSummary.Location = new System.Drawing.Point(501, 470);
-            this.lblCartSummary.Name = "lblCartSummary";
-            this.lblCartSummary.Size = new System.Drawing.Size(0, 17);
-            this.lblCartSummary.TabIndex = 3;
             // 
             // storeItemListingBindingSource
             // 
