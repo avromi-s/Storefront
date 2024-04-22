@@ -150,8 +150,8 @@ namespace SemesterProject
         {
             // TODO: This line of code loads data into the 'storeDB_Purchases2.PURCHASE' table. You can move, or remove it, as needed.
             //this.pURCHASETableAdapter1.Fill(db.PURCHASEs.Where(row => row.CustomerId == LoggedInCustomerId);
-            dgCartItems.DataSource = CartItems;
-            dgCartItems.Columns["StoreItemId"].HeaderText = "Item ID";
+            dgvCartItems.DataSource = CartItems;
+            dgvCartItems.Columns["StoreItemId"].HeaderText = "Item ID";
         }
 
         private void btnAddToCart0_Click(object sender, EventArgs e)
@@ -192,6 +192,7 @@ namespace SemesterProject
             CartItem cartItem = GetCartItemForListing(3);
             RichTextBox listingrtb = GetRichTextBoxForListing(3);
             AddItemToCart(cartItem, listingrtb);
+            UpdateQuantityControlMaxForListing(3);
         }
 
         private void AddItemToCart(CartItem cartItem, Control controlToUpdate)
@@ -204,8 +205,8 @@ namespace SemesterProject
             {
                 CartItems.Add(cartItem);
             }
-            dgCartItems.Update();
-            dgCartItems.Refresh();
+            dgvCartItems.Update();
+            dgvCartItems.Refresh();
             controlToUpdate.Text += "\nItem added to cart";  // todo this can be updated to be a checkbox or something non-text that updates on add to cart
         }
 
@@ -224,5 +225,32 @@ namespace SemesterProject
             return pnlAllListings.Controls["pnlListing" + listingIndex].Controls["rtbMainItemInfo" + listingIndex] as RichTextBox;
         }
 
+        private void UpdateQuantityControlMaxForListing(int listingIndex)
+        {
+            //CachedStoreItems[(CurrentPageNum * NumItemsPerPage) + 3].QuantityAvailable - cartItem
+        }
+
+        private void btnPurchaseCartItems_Click(object sender, EventArgs e)
+        {
+            // todo connect to db and add purchases for the loggedInCustomer. use CartItems list
+            foreach (CartItem cartItem in CartItems)
+            {
+                db.PURCHASEs.InsertOnSubmit(new PURCHASE()
+                {
+                    CustomerId = LoggedInCustomerId,
+                    StoreItemId = cartItem.StoreItemId,
+                    Quantity = cartItem.QuantitySelected,
+                    UnitPrice = cartItem.Price,
+                    PurchaseDateTime = DateTime.Now  // todo use db datetime?
+                });
+            }
+            db.SubmitChanges();
+            CartItems.Clear();
+        }
+
+        private void btnRemoveItemFromCart_Click(object sender, EventArgs e)
+        {
+            // todo remove item from CartItems. Allow update quantity?
+        }
     }
 }

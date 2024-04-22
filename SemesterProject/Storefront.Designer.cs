@@ -71,11 +71,14 @@ namespace SemesterProject
             this.btnNextPage = new System.Windows.Forms.Button();
             this.btnPreviousPage = new System.Windows.Forms.Button();
             this.tpCart = new System.Windows.Forms.TabPage();
-            this.dgCartItems = new System.Windows.Forms.DataGridView();
+            this.dgvCartItems = new System.Windows.Forms.DataGridView();
             this.tpAccount = new System.Windows.Forms.TabPage();
             this.tabControl2 = new System.Windows.Forms.TabControl();
             this.tpBalance = new System.Windows.Forms.TabPage();
             this.tpPurchases = new System.Windows.Forms.TabPage();
+            this.btnPurchaseCartItems = new System.Windows.Forms.Button();
+            this.btnRemoveItemFromCart = new System.Windows.Forms.Button();
+            this.lblCartSummary = new System.Windows.Forms.Label();
             this.storeItemListingBindingSource = new System.Windows.Forms.BindingSource(this.components);
             this.tabControl1.SuspendLayout();
             this.tpStore.SuspendLayout();
@@ -96,7 +99,7 @@ namespace SemesterProject
             ((System.ComponentModel.ISupportInitialize)(this.pbxItemImage0)).BeginInit();
             this.groupBox1.SuspendLayout();
             this.tpCart.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.dgCartItems)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dgvCartItems)).BeginInit();
             this.tpAccount.SuspendLayout();
             this.tabControl2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.storeItemListingBindingSource)).BeginInit();
@@ -136,7 +139,7 @@ namespace SemesterProject
             this.tabControl3.Location = new System.Drawing.Point(7, 7);
             this.tabControl3.Name = "tabControl3";
             this.tabControl3.SelectedIndex = 0;
-            this.tabControl3.Size = new System.Drawing.Size(1000, 730);
+            this.tabControl3.Size = new System.Drawing.Size(1001, 734);
             this.tabControl3.TabIndex = 0;
             // 
             // tbListings
@@ -146,7 +149,7 @@ namespace SemesterProject
             this.tbListings.Location = new System.Drawing.Point(4, 25);
             this.tbListings.Name = "tbListings";
             this.tbListings.Padding = new System.Windows.Forms.Padding(3);
-            this.tbListings.Size = new System.Drawing.Size(992, 701);
+            this.tbListings.Size = new System.Drawing.Size(993, 705);
             this.tbListings.TabIndex = 0;
             this.tbListings.Text = "Listings";
             this.tbListings.UseVisualStyleBackColor = true;
@@ -510,28 +513,31 @@ namespace SemesterProject
             // 
             // tpCart
             // 
-            this.tpCart.Controls.Add(this.dgCartItems);
+            this.tpCart.Controls.Add(this.lblCartSummary);
+            this.tpCart.Controls.Add(this.btnRemoveItemFromCart);
+            this.tpCart.Controls.Add(this.btnPurchaseCartItems);
+            this.tpCart.Controls.Add(this.dgvCartItems);
             this.tpCart.Location = new System.Drawing.Point(4, 25);
             this.tpCart.Name = "tpCart";
             this.tpCart.Padding = new System.Windows.Forms.Padding(3);
-            this.tpCart.Size = new System.Drawing.Size(992, 701);
+            this.tpCart.Size = new System.Drawing.Size(993, 705);
             this.tpCart.TabIndex = 1;
             this.tpCart.Text = "Cart";
             this.tpCart.UseVisualStyleBackColor = true;
             // 
-            // dgCartItems
+            // dgvCartItems
             // 
-            this.dgCartItems.AllowUserToAddRows = false;
-            this.dgCartItems.AllowUserToDeleteRows = false;
-            this.dgCartItems.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dgCartItems.Location = new System.Drawing.Point(7, 7);
-            this.dgCartItems.Name = "dgCartItems";
-            this.dgCartItems.ReadOnly = true;
-            this.dgCartItems.RowHeadersWidth = 51;
-            this.dgCartItems.RowTemplate.Height = 24;
-            this.dgCartItems.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dgCartItems.Size = new System.Drawing.Size(979, 419);
-            this.dgCartItems.TabIndex = 0;
+            this.dgvCartItems.AllowUserToAddRows = false;
+            this.dgvCartItems.AllowUserToDeleteRows = false;
+            this.dgvCartItems.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dgvCartItems.Location = new System.Drawing.Point(145, 25);
+            this.dgvCartItems.Name = "dgvCartItems";
+            this.dgvCartItems.ReadOnly = true;
+            this.dgvCartItems.RowHeadersWidthSizeMode = System.Windows.Forms.DataGridViewRowHeadersWidthSizeMode.AutoSizeToDisplayedHeaders;
+            this.dgvCartItems.RowTemplate.Height = 24;
+            this.dgvCartItems.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
+            this.dgvCartItems.Size = new System.Drawing.Size(710, 400);
+            this.dgvCartItems.TabIndex = 0;
             // 
             // tpAccount
             // 
@@ -574,6 +580,34 @@ namespace SemesterProject
             this.tpPurchases.Text = "Purchases";
             this.tpPurchases.UseVisualStyleBackColor = true;
             // 
+            // btnPurchaseCartItems
+            // 
+            this.btnPurchaseCartItems.Location = new System.Drawing.Point(745, 456);
+            this.btnPurchaseCartItems.Name = "btnPurchaseCartItems";
+            this.btnPurchaseCartItems.Size = new System.Drawing.Size(110, 45);
+            this.btnPurchaseCartItems.TabIndex = 1;
+            this.btnPurchaseCartItems.Text = "Purchase";
+            this.btnPurchaseCartItems.UseVisualStyleBackColor = true;
+            this.btnPurchaseCartItems.Click += new System.EventHandler(this.btnPurchaseCartItems_Click);
+            // 
+            // btnRemoveItemFromCart
+            // 
+            this.btnRemoveItemFromCart.Location = new System.Drawing.Point(145, 456);
+            this.btnRemoveItemFromCart.Name = "btnRemoveItemFromCart";
+            this.btnRemoveItemFromCart.Size = new System.Drawing.Size(110, 45);
+            this.btnRemoveItemFromCart.TabIndex = 2;
+            this.btnRemoveItemFromCart.Text = "Remove Item";
+            this.btnRemoveItemFromCart.UseVisualStyleBackColor = true;
+            this.btnRemoveItemFromCart.Click += new System.EventHandler(this.btnRemoveItemFromCart_Click);
+            // 
+            // lblCartSummary
+            // 
+            this.lblCartSummary.AutoSize = true;
+            this.lblCartSummary.Location = new System.Drawing.Point(501, 470);
+            this.lblCartSummary.Name = "lblCartSummary";
+            this.lblCartSummary.Size = new System.Drawing.Size(0, 17);
+            this.lblCartSummary.TabIndex = 3;
+            // 
             // storeItemListingBindingSource
             // 
             this.storeItemListingBindingSource.DataSource = typeof(SemesterProject.StoreItemListing);
@@ -611,7 +645,8 @@ namespace SemesterProject
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
             this.tpCart.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.dgCartItems)).EndInit();
+            this.tpCart.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dgvCartItems)).EndInit();
             this.tpAccount.ResumeLayout(false);
             this.tabControl2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.storeItemListingBindingSource)).EndInit();
@@ -665,6 +700,9 @@ namespace SemesterProject
         private System.Windows.Forms.Button btnPreviousPage;
         private System.Windows.Forms.TabPage tpCart;
         private System.Windows.Forms.BindingSource storeItemListingBindingSource;
-        private System.Windows.Forms.DataGridView dgCartItems;
+        private System.Windows.Forms.DataGridView dgvCartItems;
+        private System.Windows.Forms.Button btnPurchaseCartItems;
+        private System.Windows.Forms.Label lblCartSummary;
+        private System.Windows.Forms.Button btnRemoveItemFromCart;
     }
 }
