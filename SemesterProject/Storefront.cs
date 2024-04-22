@@ -17,7 +17,7 @@ namespace SemesterProject
         private IEnumerator<STORE_ITEM> AllStoreItems;
         private List<STORE_ITEM> CachedStoreItems = new List<STORE_ITEM>();
         private readonly int LoggedInCustomerId;
-        private BindingList<CartItem> ItemsInCart = new BindingList<CartItem>();
+        private BindingList<CartItem> CartItems = new BindingList<CartItem>();
         private bool IsAnotherItem { get; set; }  // todo naming
 
         private readonly int NumItemsPerPage = 4;  // todo maybe derive from gui
@@ -150,7 +150,7 @@ namespace SemesterProject
         {
             // TODO: This line of code loads data into the 'storeDB_Purchases2.PURCHASE' table. You can move, or remove it, as needed.
             //this.pURCHASETableAdapter1.Fill(db.PURCHASEs.Where(row => row.CustomerId == LoggedInCustomerId);
-            dgCartItems.DataSource = ItemsInCart;
+            dgCartItems.DataSource = CartItems;
             dgCartItems.Columns["StoreItemId"].HeaderText = "Item ID";
         }
 
@@ -159,7 +159,9 @@ namespace SemesterProject
             // todo do gui acknowledgment of add to cart with a timer so it goes back to normal:
             (sender as Button).BackColor = Color.Green;
             (sender as Button).ForeColor = Color.White;
-            AddItemToCart(0);
+            CartItem cartItem = GetCartItemForListing(0);
+            RichTextBox listingrtb = GetRichTextBoxForListing(0);
+            AddItemToCart(cartItem, listingrtb);
         }
 
         private void btnAddToCart1_Click(object sender, EventArgs e)
@@ -167,7 +169,9 @@ namespace SemesterProject
             // todo do gui acknowledgment of add to cart with a timer so it goes back to normal:
             (sender as Button).BackColor = Color.Green;
             (sender as Button).ForeColor = Color.White;
-            AddItemToCart(1);
+            CartItem cartItem = GetCartItemForListing(1);
+            RichTextBox listingrtb = GetRichTextBoxForListing(1);
+            AddItemToCart(cartItem, listingrtb);
         }
 
         private void btnAddToCart2_Click(object sender, EventArgs e)
@@ -175,7 +179,9 @@ namespace SemesterProject
             // todo do gui acknowledgment of add to cart with a timer so it goes back to normal:
             (sender as Button).BackColor = Color.Green;
             (sender as Button).ForeColor = Color.White;
-            AddItemToCart(2);
+            CartItem cartItem = GetCartItemForListing(2);
+            RichTextBox listingrtb = GetRichTextBoxForListing(2);
+            AddItemToCart(cartItem, listingrtb);
         }
 
         private void btnAddToCart3_Click(object sender, EventArgs e)
@@ -183,24 +189,33 @@ namespace SemesterProject
             // todo do gui acknowledgment of add to cart with a timer so it goes back to normal:
             (sender as Button).BackColor = Color.Green;
             (sender as Button).ForeColor = Color.White;
-            AddItemToCart(3);
+            CartItem cartItem = GetCartItemForListing(3);
+            RichTextBox listingrtb = GetRichTextBoxForListing(3);
+            AddItemToCart(cartItem, listingrtb);
         }
 
-        private void AddItemToCart(int listingIndex)
+        private void AddItemToCart(CartItem item, Control controlToUpdate)
         {
-            int quantitySelected = Convert.ToInt32((pnlAllListings.Controls["pnlListing" + listingIndex].Controls["nudQuantity" + listingIndex] as NumericUpDown).Value);
-            // todo add item to user's cart so it can be purchased on cart tab
-            pnlAllListings.Controls["pnlListing" + listingIndex].Controls["rtbMainItemInfo" + listingIndex].Text += "\n\nItem added to cart";
-
-            STORE_ITEM storeItem = CachedStoreItems[(CurrentPageNum * NumItemsPerPage) + listingIndex];
-            ItemsInCart.Add(new CartItem(storeItem, quantitySelected));
+            CartItems.Add(item);
             dgCartItems.Update();
             dgCartItems.Refresh();
-            // todo this doesn't refresh, look into how to do this data bindign etc.
-
-
-            // todo look into dat bindings for the GUI controls
-            // STORE_ITEM item = ((sender as Button).Parent as Panel).DataBindings[0].DataSource as STORE_ITEM;
+            controlToUpdate.Text += "\nItem added to cart";  // todo this can be updated to be a checkbox or something non-text that updates on add to cart
         }
+
+        private CartItem GetCartItemForListing(int listingIndex)
+        {
+            // todo this extracted to a separate method so that we can replace when we use a custom user control for each listing
+            // instead of accessing everything based on their names and index like here
+            int quantitySelected = Convert.ToInt32((pnlAllListings.Controls["pnlListing" + listingIndex].Controls["nudQuantity" + listingIndex] as NumericUpDown).Value);
+            STORE_ITEM storeItem = CachedStoreItems[(CurrentPageNum * NumItemsPerPage) + listingIndex];
+            return new CartItem(storeItem, quantitySelected);
+        }
+
+        private RichTextBox GetRichTextBoxForListing(int listingIndex)
+        {
+            // todo this can be updated to be a checkbox or something non-text that updates on add to cart
+            return pnlAllListings.Controls["pnlListing" + listingIndex].Controls["rtbMainItemInfo" + listingIndex] as RichTextBox;
+        }
+
     }
 }
