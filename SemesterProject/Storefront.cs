@@ -17,7 +17,7 @@ namespace SemesterProject
         private IEnumerator<STORE_ITEM> AllStoreItems;
         private List<STORE_ITEM> CachedStoreItems = new List<STORE_ITEM>();
         private readonly int LoggedInCustomerId;
-        private BindingList<STORE_ITEM> ItemsInCart = new BindingList<STORE_ITEM>();
+        private BindingList<CartItem> ItemsInCart = new BindingList<CartItem>();
         private bool IsAnotherItem { get; set; }  // todo naming
 
         private readonly int NumItemsPerPage = 4;  // todo maybe derive from gui
@@ -151,6 +151,7 @@ namespace SemesterProject
             // TODO: This line of code loads data into the 'storeDB_Purchases2.PURCHASE' table. You can move, or remove it, as needed.
             //this.pURCHASETableAdapter1.Fill(db.PURCHASEs.Where(row => row.CustomerId == LoggedInCustomerId);
             dgCartItems.DataSource = ItemsInCart;
+            dgCartItems.Columns["StoreItemId"].HeaderText = "Item ID";
         }
 
         private void btnAddToCart0_Click(object sender, EventArgs e)
@@ -187,10 +188,12 @@ namespace SemesterProject
 
         private void AddItemToCart(int listingIndex)
         {
-
+            int quantitySelected = Convert.ToInt32((pnlAllListings.Controls["pnlListing" + listingIndex].Controls["nudQuantity" + listingIndex] as NumericUpDown).Value);
             // todo add item to user's cart so it can be purchased on cart tab
             pnlAllListings.Controls["pnlListing" + listingIndex].Controls["rtbMainItemInfo" + listingIndex].Text += "\n\nItem added to cart";
-            ItemsInCart.Add(CachedStoreItems[(CurrentPageNum * NumItemsPerPage) + listingIndex]);
+
+            STORE_ITEM storeItem = CachedStoreItems[(CurrentPageNum * NumItemsPerPage) + listingIndex];
+            ItemsInCart.Add(new CartItem(storeItem, quantitySelected));
             dgCartItems.Update();
             dgCartItems.Refresh();
             // todo this doesn't refresh, look into how to do this data bindign etc.

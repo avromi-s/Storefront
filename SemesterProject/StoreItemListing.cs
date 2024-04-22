@@ -7,7 +7,7 @@ using System.Windows.Forms;
 
 namespace SemesterProject
 {
-    class StoreItemListing
+    public class StoreItemListing
     {
         public STORE_ITEM StoreItem { get; private set; }
         public string Title { get; private set; }
