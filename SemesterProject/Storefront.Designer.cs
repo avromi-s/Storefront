@@ -71,7 +71,7 @@ namespace SemesterProject
             this.btnNextPage = new System.Windows.Forms.Button();
             this.btnPreviousPage = new System.Windows.Forms.Button();
             this.tpCart = new System.Windows.Forms.TabPage();
-            this.dataGridView1 = new System.Windows.Forms.DataGridView();
+            this.dgCartItems = new System.Windows.Forms.DataGridView();
             this.tpAccount = new System.Windows.Forms.TabPage();
             this.tabControl2 = new System.Windows.Forms.TabControl();
             this.tpBalance = new System.Windows.Forms.TabPage();
@@ -96,7 +96,7 @@ namespace SemesterProject
             ((System.ComponentModel.ISupportInitialize)(this.pbxItemImage0)).BeginInit();
             this.groupBox1.SuspendLayout();
             this.tpCart.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dgCartItems)).BeginInit();
             this.tpAccount.SuspendLayout();
             this.tabControl2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.storeItemListingBindingSource)).BeginInit();
@@ -234,7 +234,7 @@ namespace SemesterProject
             this.btnAddToCart3.TabIndex = 0;
             this.btnAddToCart3.Text = "Add to Cart";
             this.btnAddToCart3.UseVisualStyleBackColor = true;
-            this.btnAddToCart3.Click += new System.EventHandler(this.AddItemToCart);
+            this.btnAddToCart3.Click += new System.EventHandler(this.btnAddToCart3_Click);
             // 
             // pnlListing2
             // 
@@ -308,7 +308,7 @@ namespace SemesterProject
             this.btnAddToCart2.TabIndex = 0;
             this.btnAddToCart2.Text = "Add to Cart";
             this.btnAddToCart2.UseVisualStyleBackColor = true;
-            this.btnAddToCart2.Click += new System.EventHandler(this.AddItemToCart);
+            this.btnAddToCart2.Click += new System.EventHandler(this.btnAddToCart2_Click);
             // 
             // pnlListing1
             // 
@@ -382,7 +382,7 @@ namespace SemesterProject
             this.btnAddToCart1.TabIndex = 0;
             this.btnAddToCart1.Text = "Add to Cart";
             this.btnAddToCart1.UseVisualStyleBackColor = true;
-            this.btnAddToCart1.Click += new System.EventHandler(this.AddItemToCart);
+            this.btnAddToCart1.Click += new System.EventHandler(this.btnAddToCart1_Click);
             // 
             // pnlListing0
             // 
@@ -456,7 +456,7 @@ namespace SemesterProject
             this.btnAddToCart0.TabIndex = 0;
             this.btnAddToCart0.Text = "Add to Cart";
             this.btnAddToCart0.UseVisualStyleBackColor = true;
-            this.btnAddToCart0.Click += new System.EventHandler(this.AddItemToCart);
+            this.btnAddToCart0.Click += new System.EventHandler(this.btnAddToCart0_Click);
             // 
             // groupBox1
             // 
@@ -510,7 +510,7 @@ namespace SemesterProject
             // 
             // tpCart
             // 
-            this.tpCart.Controls.Add(this.dataGridView1);
+            this.tpCart.Controls.Add(this.dgCartItems);
             this.tpCart.Location = new System.Drawing.Point(4, 25);
             this.tpCart.Name = "tpCart";
             this.tpCart.Padding = new System.Windows.Forms.Padding(3);
@@ -521,16 +521,16 @@ namespace SemesterProject
             // 
             // dataGridView1
             // 
-            this.dataGridView1.AllowUserToAddRows = false;
-            this.dataGridView1.AllowUserToDeleteRows = false;
-            this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridView1.Location = new System.Drawing.Point(7, 7);
-            this.dataGridView1.Name = "dataGridView1";
-            this.dataGridView1.ReadOnly = true;
-            this.dataGridView1.RowHeadersWidth = 51;
-            this.dataGridView1.RowTemplate.Height = 24;
-            this.dataGridView1.Size = new System.Drawing.Size(979, 419);
-            this.dataGridView1.TabIndex = 0;
+            this.dgCartItems.AllowUserToAddRows = false;
+            this.dgCartItems.AllowUserToDeleteRows = false;
+            this.dgCartItems.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dgCartItems.Location = new System.Drawing.Point(7, 7);
+            this.dgCartItems.Name = "dataGridView1";
+            this.dgCartItems.ReadOnly = true;
+            this.dgCartItems.RowHeadersWidth = 51;
+            this.dgCartItems.RowTemplate.Height = 24;
+            this.dgCartItems.Size = new System.Drawing.Size(979, 419);
+            this.dgCartItems.TabIndex = 0;
             // 
             // tpAccount
             // 
@@ -610,7 +610,7 @@ namespace SemesterProject
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
             this.tpCart.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dgCartItems)).EndInit();
             this.tpAccount.ResumeLayout(false);
             this.tabControl2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.storeItemListingBindingSource)).EndInit();
@@ -664,6 +664,6 @@ namespace SemesterProject
         private System.Windows.Forms.Button btnPreviousPage;
         private System.Windows.Forms.TabPage tpCart;
         private System.Windows.Forms.BindingSource storeItemListingBindingSource;
-        private System.Windows.Forms.DataGridView dataGridView1;
+        private System.Windows.Forms.DataGridView dgCartItems;
     }
 }

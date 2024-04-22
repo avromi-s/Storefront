@@ -17,7 +17,7 @@ namespace SemesterProject
         private IEnumerator<STORE_ITEM> AllStoreItems;
         private List<STORE_ITEM> CachedStoreItems = new List<STORE_ITEM>();
         private readonly int LoggedInCustomerId;
-        private List<STORE_ITEM> ItemsInCart = new List<STORE_ITEM>();
+        private BindingList<STORE_ITEM> ItemsInCart = new BindingList<STORE_ITEM>();
         private bool IsAnotherItem { get; set; }  // todo naming
 
         private readonly int NumItemsPerPage = 4;  // todo maybe derive from gui
@@ -36,7 +36,6 @@ namespace SemesterProject
 
             this.db = db;
             this.LoggedInCustomerId = loggedInCustomerId;
-            //ViewableStoreItems = new STORE_ITEM[NumItemsPerPage];
             LoadCustomerInfo();
             LoadStoreItemsIntoGUI(GetStoreItems(CurrentPageNum));
             // todo should next page button be disabled if less than 4 items in store? else will throw error
@@ -66,37 +65,6 @@ namespace SemesterProject
 
                 i = (i + 1) % NumItemsPerPage;  // move to next listing to update, reset to the first listing (index 0) if we move past the last listing
             }
-        }
-
-        private void AddItemToCart(object sender, EventArgs e)
-        {
-            string pattern = "\\w+(\\d+)";
-            string buttonName = (sender as Button).Name;
-            int itemIndex;
-            Match match = Regex.Match(buttonName, pattern);
-            if (match.Success)
-            {
-                itemIndex = Convert.ToInt32(match.Groups[1].Value);
-
-                // TODO UPTO 4/21/24;
-
-                // todo do gui acknowledgment of add to cart with a timer so it goes back to normal:
-                (sender as Button).BackColor = Color.Green;
-                (sender as Button).ForeColor = Color.White;
-
-
-                // todo add item to user's cart so it can be purchased on cart tab
-                pnlAllListings.Controls["pnlListing" + itemIndex].Controls["rtbMainItemInfo" + itemIndex].Text += "\n\nItem added to cart";
-                ItemsInCart.Add(CachedStoreItems[(CurrentPageNum * NumItemsPerPage) + itemIndex]);
-                dataGridView1.DataSource = ItemsInCart;  // todo this doesn't refresh, look into how to do this data bindign etc.
-
-                // todo look into bug of multiple add to cart lines added when add to cart after using next page button multiple times
-            }
-
-            
-            
-            // todo look into dat bindings for the GUI controls
-            // STORE_ITEM item = ((sender as Button).Parent as Panel).DataBindings[0].DataSource as STORE_ITEM;
         }
 
         /// <summary>
@@ -182,6 +150,54 @@ namespace SemesterProject
         {
             // TODO: This line of code loads data into the 'storeDB_Purchases2.PURCHASE' table. You can move, or remove it, as needed.
             //this.pURCHASETableAdapter1.Fill(db.PURCHASEs.Where(row => row.CustomerId == LoggedInCustomerId);
+            dgCartItems.DataSource = ItemsInCart;
+        }
+
+        private void btnAddToCart0_Click(object sender, EventArgs e)
+        {
+            // todo do gui acknowledgment of add to cart with a timer so it goes back to normal:
+            (sender as Button).BackColor = Color.Green;
+            (sender as Button).ForeColor = Color.White;
+            AddItemToCart(0);
+        }
+
+        private void btnAddToCart1_Click(object sender, EventArgs e)
+        {
+            // todo do gui acknowledgment of add to cart with a timer so it goes back to normal:
+            (sender as Button).BackColor = Color.Green;
+            (sender as Button).ForeColor = Color.White;
+            AddItemToCart(1);
+        }
+
+        private void btnAddToCart2_Click(object sender, EventArgs e)
+        {
+            // todo do gui acknowledgment of add to cart with a timer so it goes back to normal:
+            (sender as Button).BackColor = Color.Green;
+            (sender as Button).ForeColor = Color.White;
+            AddItemToCart(2);
+        }
+
+        private void btnAddToCart3_Click(object sender, EventArgs e)
+        {
+            // todo do gui acknowledgment of add to cart with a timer so it goes back to normal:
+            (sender as Button).BackColor = Color.Green;
+            (sender as Button).ForeColor = Color.White;
+            AddItemToCart(3);
+        }
+
+        private void AddItemToCart(int listingIndex)
+        {
+
+            // todo add item to user's cart so it can be purchased on cart tab
+            pnlAllListings.Controls["pnlListing" + listingIndex].Controls["rtbMainItemInfo" + listingIndex].Text += "\n\nItem added to cart";
+            ItemsInCart.Add(CachedStoreItems[(CurrentPageNum * NumItemsPerPage) + listingIndex]);
+            dgCartItems.Update();
+            dgCartItems.Refresh();
+            // todo this doesn't refresh, look into how to do this data bindign etc.
+
+
+            // todo look into dat bindings for the GUI controls
+            // STORE_ITEM item = ((sender as Button).Parent as Panel).DataBindings[0].DataSource as STORE_ITEM;
         }
     }
 }
