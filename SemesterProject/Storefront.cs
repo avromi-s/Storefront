@@ -194,9 +194,16 @@ namespace SemesterProject
             AddItemToCart(cartItem, listingrtb);
         }
 
-        private void AddItemToCart(CartItem item, Control controlToUpdate)
+        private void AddItemToCart(CartItem cartItem, Control controlToUpdate)
         {
-            CartItems.Add(item);
+            if (CartItems.Any(item => item.StoreItemId == cartItem.StoreItemId))  // todo use hashmap from StoreItemId -> CartItem for CartItems for faster lookup? now it is n for each search
+            {
+                CartItems.Where(item => item.StoreItemId == cartItem.StoreItemId).First().QuantitySelected += cartItem.QuantitySelected;
+            }
+            else
+            {
+                CartItems.Add(cartItem);
+            }
             dgCartItems.Update();
             dgCartItems.Refresh();
             controlToUpdate.Text += "\nItem added to cart";  // todo this can be updated to be a checkbox or something non-text that updates on add to cart

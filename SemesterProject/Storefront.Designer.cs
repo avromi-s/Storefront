@@ -519,16 +519,17 @@ namespace SemesterProject
             this.tpCart.Text = "Cart";
             this.tpCart.UseVisualStyleBackColor = true;
             // 
-            // dataGridView1
+            // dgCartItems
             // 
             this.dgCartItems.AllowUserToAddRows = false;
             this.dgCartItems.AllowUserToDeleteRows = false;
             this.dgCartItems.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dgCartItems.Location = new System.Drawing.Point(7, 7);
-            this.dgCartItems.Name = "dataGridView1";
+            this.dgCartItems.Name = "dgCartItems";
             this.dgCartItems.ReadOnly = true;
             this.dgCartItems.RowHeadersWidth = 51;
             this.dgCartItems.RowTemplate.Height = 24;
+            this.dgCartItems.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.dgCartItems.Size = new System.Drawing.Size(979, 419);
             this.dgCartItems.TabIndex = 0;
             // 
