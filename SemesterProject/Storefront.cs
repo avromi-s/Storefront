@@ -16,7 +16,7 @@ namespace SemesterProject
         private DataClasses1DataContext db;
         private IEnumerator<STORE_ITEM> AllStoreItems;
         private List<STORE_ITEM> CachedStoreItems = new List<STORE_ITEM>();
-        private readonly int LoggedInCustomerId;
+        private readonly CUSTOMER LoggedInCustomer;
         private BindingList<CartItem> CartItems = new BindingList<CartItem>();
         private bool IsAnotherItem { get; set; }  // todo naming
 
@@ -30,12 +30,12 @@ namespace SemesterProject
             }
         }
 
-        public Storefront(DataClasses1DataContext db, int loggedInCustomerId)
+        public Storefront(DataClasses1DataContext db, CUSTOMER loggedInCustomer)
         {
             InitializeComponent();
 
             this.db = db;
-            this.LoggedInCustomerId = loggedInCustomerId;
+            this.LoggedInCustomer = loggedInCustomer;
             LoadCustomerInfo();
             LoadStoreItemsIntoGUI(GetStoreItems(CurrentPageNum));
             // todo should next page button be disabled if less than 4 items in store? else will throw error
@@ -52,7 +52,13 @@ namespace SemesterProject
             // TODO: This line of code loads data into the 'storeDB_Purchases2.PURCHASE' table. You can move, or remove it, as needed.
             //this.pURCHASETableAdapter1.Fill(db.PURCHASEs.Where(row => row.CustomerId == LoggedInCustomerId);
             dgvCartItems.DataSource = CartItems;
-            dgvCartItems.Columns["StoreItemId"].HeaderText = "Item ID";
+            dgvCartItems.Columns["StoreItem"].Visible = false;
+
+            // todo see if we can implement adding an 'item id' column linked to each cartitems' storeitem.storeitemid
+            //DataGridViewColumn dgvCol = new DataGridViewColumn();
+            //dgvCol.HeaderText = "Item ID";
+            //dgvCol.DataPropertyName = "StoreItem.StoreItemId";
+            //dgvCartItems.Columns.Add(dgvCol);
         }
 
         private void LoadCustomerInfo()
@@ -174,9 +180,9 @@ namespace SemesterProject
             STORE_ITEM storeItem = CachedStoreItems[(CurrentPageNum * NumItemsPerPage) + listingIndex];
             int totalQtyAvail = storeItem.QuantityAvailable;
             int qtyInCart;
-            if (CartItems.Any(item => item.StoreItemId == storeItem.StoreItemId))
+            if (CartItems.Any(item => item.StoreItem == storeItem))
             {
-                qtyInCart = CartItems.Where(item => item.StoreItemId == storeItem.StoreItemId).First().QuantitySelected;
+                qtyInCart = CartItems.Where(item => item.StoreItem == storeItem).First().QuantitySelected;
             }
             else
             {
@@ -195,9 +201,9 @@ namespace SemesterProject
         #region CartManagement
         private void AddItemToCart(CartItem cartItem, Control controlToUpdate)
         {
-            if (CartItems.Any(item => item.StoreItemId == cartItem.StoreItemId))  // todo use hashmap from StoreItemId -> CartItem for CartItems for faster lookup? now it is n for each search
+            if (CartItems.Any(item => item.StoreItem == cartItem.StoreItem))  // todo use hashmap from StoreItemId -> CartItem for CartItems for faster lookup? now it is n for each search
             {
-                CartItems.Where(item => item.StoreItemId == cartItem.StoreItemId).First().QuantitySelected += cartItem.QuantitySelected;
+                CartItems.Where(item => item.StoreItem == cartItem.StoreItem).First().QuantitySelected += cartItem.QuantitySelected;
             }
             else
             {
@@ -264,18 +270,24 @@ namespace SemesterProject
         // On purchase button click - purchase all items in cart and then empty the cart
         private void btnPurchaseCartItems_Click(object sender, EventArgs e)
         {
-            // todo connect to db and add purchases for the loggedInCustomer. use CartItems list
-            foreach (CartItem cartItem in CartItems)
+            PURCHASE purchase = new PURCHASE()
             {
-                db.PURCHASEs.InsertOnSubmit(new PURCHASE()
-                {
-                    CustomerId = LoggedInCustomerId,
-                    StoreItemId = cartItem.StoreItemId,
-                    Quantity = cartItem.QuantitySelected,
-                    UnitPrice = cartItem.Price,
-                    PurchaseDateTime = DateTime.Now  // todo use db datetime?
-                });
-            }
+                CUSTOMER = LoggedInCustomer,
+                TotalQuantity = CartItems.Sum(item => item.QuantitySelected),
+                TotalPrice = CartItems.Sum(item => item.UnitPrice),
+                PurchaseDateTime = DateTime.Now  // todo use db datetime?
+            };
+            db.PURCHASEs.InsertOnSubmit(purchase);
+
+            CartItems.Select(item => new PURCHASE_STORE_ITEM()
+            {
+                PURCHASE = purchase,
+                STORE_ITEM = item.StoreItem,
+                Quantity = item.QuantitySelected,
+                UnitPrice = item.UnitPrice
+            })
+            .ToList()
+            .ForEach(item => db.PURCHASE_STORE_ITEMs.InsertOnSubmit(item));
             db.SubmitChanges();
 
             CartItems.Clear();

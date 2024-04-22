@@ -13,13 +13,19 @@ namespace SemesterProject
     public partial class LoginForm : Form
     {
         public bool Successful { get; private set; } = false;
-        private int? customerId = null;
-        public int? CustomerId {
+        private CUSTOMER _customer;
+        public CUSTOMER Customer
+        {
             get
             {
-                return customerId;
+                return _customer;
+            }
+            private set
+            {
+                _customer = value;
             }
         }
+
         private DataClasses1DataContext db;
         public LoginForm(DataClasses1DataContext db)
         {
@@ -29,7 +35,7 @@ namespace SemesterProject
 
         private void btnLogin_Click(object sender, EventArgs e)
         {
-            Successful = AttemptLogin(tbLoginId.Text, tbPassword.Text, label2, ref customerId);
+            Successful = AttemptLogin(tbLoginId.Text, tbPassword.Text, label2, ref _customer);
             if (Successful)
             {
                 // close the login form. Program class will then see that login.successful is true and launch storefront
@@ -39,7 +45,7 @@ namespace SemesterProject
 
         private void btnCreateAccount_Click(object sender, EventArgs e)
         {
-            Successful = CreateLogin(tbLoginId.Text, tbPassword.Text, label2, ref customerId);
+            Successful = CreateLogin(tbLoginId.Text, tbPassword.Text, label2, ref _customer);
             if (Successful)
             {
                 // close the login form. Program class will then see that login.successful is true and launch storefront
@@ -47,18 +53,18 @@ namespace SemesterProject
             }
         }
 
-        private bool AttemptLogin(string LoginId, string Password, Label lblResult, ref int? customerId)
+        private bool AttemptLogin(string LoginId, string Password, Label lblResult, ref CUSTOMER customerLoggedIn)
         {
             // todo not so good this method has kinda 3 outputs - bool, customer, and label.Text?
             bool loginExists = db.CUSTOMERs.Select(row => row.LoginId).Contains(LoginId);
             if (loginExists)
             {
-                CUSTOMER customer = db.CUSTOMERs.First(row => row.LoginId == LoginId);  // login id is enforced as unique by db index
+                CUSTOMER foundCustomer = db.CUSTOMERs.First(row => row.LoginId == LoginId);  // login id is enforced as unique by db index
                 // validate password:
-                if (customer.Password == Password)
+                if (foundCustomer.Password == Password)
                 {
                     lblResult.Text = "Successful login";
-                    customerId = customer.CustomerId;
+                    customerLoggedIn = foundCustomer;
                     return true;
                 }
                 else
@@ -70,31 +76,31 @@ namespace SemesterProject
             {
                 lblResult.Text = "Login ID not found";
             }
-            customerId = null;
+            customerLoggedIn = null;  // only return customer on successful login
             return false;
         }
 
-        private bool CreateLogin(string LoginId, string Password, Label lblResult, ref int? customerId)
+        private bool CreateLogin(string LoginId, string Password, Label lblResult, ref CUSTOMER loggedInCustomer)
         {
             // todo not so good this method has kinda 3 outputs - bool, customer, and label.Text?
             bool loginAlreadyExists = db.CUSTOMERs.Select(row => row.LoginId).Contains(LoginId);
             if (!loginAlreadyExists)
             {
-                CUSTOMER customer = new CUSTOMER()
+                CUSTOMER createdCustomer = new CUSTOMER()
                 {
                     LoginId = LoginId,
                     Password = Password
                 };
-                db.CUSTOMERs.InsertOnSubmit(customer);
+                db.CUSTOMERs.InsertOnSubmit(createdCustomer);
                 db.SubmitChanges();
                 lblResult.Text = "Account successfully created.";
-                customerId = customer.CustomerId;
+                loggedInCustomer = createdCustomer;
                 return true;
             }
             else
             {
                 lblResult.Text = "That login ID is not available. Please try again.";
-                customerId = null;
+                loggedInCustomer = null;  // only return customer on successful login
                 return false;
             }
         }

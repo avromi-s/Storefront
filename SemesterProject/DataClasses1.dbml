@@ -20,23 +20,25 @@
       <Association Name="STORE_ITEM_PURCHASE_STORE_ITEM" Member="PURCHASE_STORE_ITEMs" ThisKey="StoreItemId" OtherKey="StoreItemId" Type="PURCHASE_STORE_ITEM" />
     </Type>
   </Table>
-  <Table Name="dbo.PURCHASE_STORE_ITEM" Member="PURCHASE_STORE_ITEMs">
-    <Type Name="PURCHASE_STORE_ITEM">
-      <Column Name="PurchaseId" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
-      <Column Name="StoreItemId" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
-      <Association Name="STORE_ITEM_PURCHASE_STORE_ITEM" Member="STORE_ITEM" ThisKey="StoreItemId" OtherKey="StoreItemId" Type="STORE_ITEM" IsForeignKey="true" />
-      <Association Name="PURCHASE_PURCHASE_STORE_ITEM" Member="PURCHASE" ThisKey="PurchaseId" OtherKey="PurchaseId" Type="PURCHASE" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
-    </Type>
-  </Table>
   <Table Name="dbo.PURCHASE" Member="PURCHASEs">
     <Type Name="PURCHASE">
       <Column Name="PurchaseId" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
       <Column Name="CustomerId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
-      <Column Name="Quantity" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
-      <Column Name="UnitPrice" Type="System.Decimal" DbType="Money NOT NULL" CanBeNull="false" />
+      <Column Name="TotalQuantity" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="TotalPrice" Type="System.Decimal" DbType="Money NOT NULL" CanBeNull="false" />
       <Column Name="PurchaseDateTime" Type="System.DateTime" DbType="DateTime2 NOT NULL" CanBeNull="false" />
       <Association Name="PURCHASE_PURCHASE_STORE_ITEM" Member="PURCHASE_STORE_ITEMs" ThisKey="PurchaseId" OtherKey="PurchaseId" Type="PURCHASE_STORE_ITEM" />
       <Association Name="CUSTOMER_PURCHASE" Member="CUSTOMER" ThisKey="CustomerId" OtherKey="CustomerId" Type="CUSTOMER" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.PURCHASE_STORE_ITEM" Member="PURCHASE_STORE_ITEMs">
+    <Type Name="PURCHASE_STORE_ITEM">
+      <Column Name="PurchaseId" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="StoreItemId" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="Quantity" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="UnitPrice" Type="System.Decimal" DbType="Money NOT NULL" CanBeNull="false" />
+      <Association Name="PURCHASE_PURCHASE_STORE_ITEM" Member="PURCHASE" ThisKey="PurchaseId" OtherKey="PurchaseId" Type="PURCHASE" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
+      <Association Name="STORE_ITEM_PURCHASE_STORE_ITEM" Member="STORE_ITEM" ThisKey="StoreItemId" OtherKey="StoreItemId" Type="STORE_ITEM" IsForeignKey="true" />
     </Type>
   </Table>
 </Database>

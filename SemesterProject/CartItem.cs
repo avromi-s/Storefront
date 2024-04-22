@@ -8,18 +8,18 @@ namespace SemesterProject
 {
     public class CartItem
     {
-        public int StoreItemId { get; set; }
+        public STORE_ITEM StoreItem { get; set; }
         public string Manufacturer { get; set; }
         public string ProductName { get; set; }
-        public decimal Price { get; set; }
+        public decimal UnitPrice { get; set; }
         public int QuantitySelected { get; set; }
 
         public CartItem(STORE_ITEM storeItem, int quantitySelected)
         {
-            this.StoreItemId = storeItem.StoreItemId;
+            this.StoreItem = storeItem;
             this.Manufacturer = storeItem.Manufacturer;
             this.ProductName = storeItem.ProductName;
-            this.Price = storeItem.Price;
+            this.UnitPrice = storeItem.Price;
             this.QuantitySelected = quantitySelected;
         }
 

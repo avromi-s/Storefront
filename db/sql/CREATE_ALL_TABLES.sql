@@ -50,8 +50,8 @@ GO
 CREATE TABLE [dbo].[PURCHASE](
 	[PurchaseId] [int] IDENTITY(1,1) NOT NULL,
 	[CustomerId] [int] NOT NULL,
-	[Quantity] [int] NOT NULL,
-	[UnitPrice] [money] NOT NULL,
+	[TotalQuantity] [int] NOT NULL,
+	[TotalPrice] [money] NOT NULL,
 	[PurchaseDateTime] [datetime2](7) NOT NULL,
 PRIMARY KEY CLUSTERED 
 (
@@ -71,6 +71,8 @@ GO
 CREATE TABLE [dbo].[PURCHASE_STORE_ITEM](
 	[PurchaseId] [int] NOT NULL,
 	[StoreItemId] [int] NOT NULL,
+	[Quantity] [int] NOT NULL,
+	[UnitPrice] [money] NOT NULL
  CONSTRAINT [PK_PURCHASE_STORE_ITEM] PRIMARY KEY CLUSTERED 
 (
 	[PurchaseId] ASC,
