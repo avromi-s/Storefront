@@ -13,6 +13,8 @@ namespace SemesterProject
 {
     public partial class Storefront : Form
     {
+        // todo update label in cart based on items for summary
+        // todo add db trigger or application function to update store_item quantity on purchase made
         private DataClasses1DataContext db;
         private IEnumerator<STORE_ITEM> AllStoreItems;
         private List<STORE_ITEM> CachedStoreItems = new List<STORE_ITEM>();
@@ -120,8 +122,8 @@ namespace SemesterProject
             {
                 STORE_ITEM storeItem = AllStoreItems.Current;
                 CachedStoreItems.Add(storeItem);  // cache item before returning in case another method tries to retrieve it already
+                IsAnotherItem = AllStoreItems.MoveNext(); // also, update IsAnotherItem before return so that it is accurate regardless of if this loop finishes (which is dependent on how much the calling method iterates)
                 yield return storeItem;
-                IsAnotherItem = AllStoreItems.MoveNext(); // todo move this before yield return?
             }
         }
 
@@ -144,7 +146,7 @@ namespace SemesterProject
             LoadStoreItemsIntoGUI(GetStoreItems(CurrentPageNum));
 
             btnPreviousPage.Enabled = true;
-            bool IsNoMoreCachedItems = CurrentPageNum >= CachedStoreItems.Count / NumItemsPerPage;
+            bool IsNoMoreCachedItems = CurrentPageNum * NumItemsPerPage >= CachedStoreItems.Count / NumItemsPerPage;
             if (IsNoMoreCachedItems && !IsAnotherItem)
             {
                 btnNextPage.Enabled = false;
@@ -274,7 +276,7 @@ namespace SemesterProject
             {
                 CUSTOMER = LoggedInCustomer,
                 TotalQuantity = CartItems.Sum(item => item.QuantitySelected),
-                TotalPrice = CartItems.Sum(item => item.UnitPrice),
+                TotalPrice = CartItems.Sum(item => item.UnitPrice * item.QuantitySelected),
                 PurchaseDateTime = DateTime.Now  // todo use db datetime?
             };
             db.PURCHASEs.InsertOnSubmit(purchase);
