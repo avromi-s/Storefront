@@ -45,6 +45,24 @@ namespace SemesterProject
             }
         }
 
+        #region Setup
+        // On load, set up cart data source
+        private void Storefront_Load(object sender, EventArgs e)
+        {
+            // TODO: This line of code loads data into the 'storeDB_Purchases2.PURCHASE' table. You can move, or remove it, as needed.
+            //this.pURCHASETableAdapter1.Fill(db.PURCHASEs.Where(row => row.CustomerId == LoggedInCustomerId);
+            dgvCartItems.DataSource = CartItems;
+            dgvCartItems.Columns["StoreItemId"].HeaderText = "Item ID";
+        }
+
+        private void LoadCustomerInfo()
+        {
+            // todo
+        }
+        #endregion
+
+        #region ListingLoading
+
         /// <summary>
         /// Go through each of the storeItems and populate each GUI listing with the item's details.
         /// </summary>
@@ -61,7 +79,7 @@ namespace SemesterProject
                 // ((PictureBox) listing.Controls["pbxItemImage" + i]) todo set
                 listing.Controls["rtbMainItemInfo" + i].Text = sil.Title;
                 listing.Controls["rtbMinorItemInfo" + i].Text = sil.FormattedPrice;
-                (listing.Controls["nudQuantity" + i] as NumericUpDown).Maximum = sil.StoreItem.QuantityAvailable;
+                UpdateQuantityControlForListing(i);
 
                 i = (i + 1) % NumItemsPerPage;  // move to next listing to update, reset to the first listing (index 0) if we move past the last listing
             }
@@ -95,9 +113,9 @@ namespace SemesterProject
             for (; i < NumItemsPerPage && IsAnotherItem; i++)
             {
                 STORE_ITEM storeItem = AllStoreItems.Current;
-                CachedStoreItems.Add(storeItem);
+                CachedStoreItems.Add(storeItem);  // cache item before returning in case another method tries to retrieve it already
                 yield return storeItem;
-                IsAnotherItem = AllStoreItems.MoveNext();
+                IsAnotherItem = AllStoreItems.MoveNext(); // todo move this before yield return?
             }
         }
 
@@ -108,11 +126,11 @@ namespace SemesterProject
             AllStoreItems = db.STORE_ITEMs.OrderByDescending(item => item.QuantityAvailable).GetEnumerator();
         }
 
-        private void LoadCustomerInfo()
-        {
-            // todo
-        }
+        #endregion
 
+        #region ButtonClickHandlers 
+
+        #region ListingManagement
         private void btnNextPage_Click(object sender, EventArgs e)
         {
             CurrentPageNum++;
@@ -145,56 +163,36 @@ namespace SemesterProject
             lblPageNum.Text = "Page " + CurrentPageNumDisplay;
         }
 
-
-        private void Storefront_Load(object sender, EventArgs e)
+        private RichTextBox GetRichTextBoxForListing(int listingIndex)
         {
-            // TODO: This line of code loads data into the 'storeDB_Purchases2.PURCHASE' table. You can move, or remove it, as needed.
-            //this.pURCHASETableAdapter1.Fill(db.PURCHASEs.Where(row => row.CustomerId == LoggedInCustomerId);
-            dgvCartItems.DataSource = CartItems;
-            dgvCartItems.Columns["StoreItemId"].HeaderText = "Item ID";
+            // todo this can be updated to be a checkbox or something non-text that updates on add to cart
+            return pnlAllListings.Controls["pnlListing" + listingIndex].Controls["rtbMainItemInfo" + listingIndex] as RichTextBox;
         }
 
-        private void btnAddToCart0_Click(object sender, EventArgs e)
+        private void UpdateQuantityControlForListing(int listingIndex)
         {
-            // todo do gui acknowledgment of add to cart with a timer so it goes back to normal:
-            (sender as Button).BackColor = Color.Green;
-            (sender as Button).ForeColor = Color.White;
-            CartItem cartItem = GetCartItemForListing(0);
-            RichTextBox listingrtb = GetRichTextBoxForListing(0);
-            AddItemToCart(cartItem, listingrtb);
+            STORE_ITEM storeItem = CachedStoreItems[(CurrentPageNum * NumItemsPerPage) + listingIndex];
+            int totalQtyAvail = storeItem.QuantityAvailable;
+            int qtyInCart;
+            if (CartItems.Any(item => item.StoreItemId == storeItem.StoreItemId))
+            {
+                qtyInCart = CartItems.Where(item => item.StoreItemId == storeItem.StoreItemId).First().QuantitySelected;
+            }
+            else
+            {
+                qtyInCart = 0;
+            }
+            int remainingQty = totalQtyAvail - qtyInCart;
+
+            NumericUpDown nudControl = (pnlAllListings.Controls["pnlListing" + listingIndex].Controls["nudQuantity" + listingIndex] as NumericUpDown);
+            nudControl.Maximum = remainingQty;
+            nudControl.Value = remainingQty > 0 ? 1 : 0;
+            // todo if remainingQty <= 0 disable listing or at least add to cart button?
         }
 
-        private void btnAddToCart1_Click(object sender, EventArgs e)
-        {
-            // todo do gui acknowledgment of add to cart with a timer so it goes back to normal:
-            (sender as Button).BackColor = Color.Green;
-            (sender as Button).ForeColor = Color.White;
-            CartItem cartItem = GetCartItemForListing(1);
-            RichTextBox listingrtb = GetRichTextBoxForListing(1);
-            AddItemToCart(cartItem, listingrtb);
-        }
+        #endregion
 
-        private void btnAddToCart2_Click(object sender, EventArgs e)
-        {
-            // todo do gui acknowledgment of add to cart with a timer so it goes back to normal:
-            (sender as Button).BackColor = Color.Green;
-            (sender as Button).ForeColor = Color.White;
-            CartItem cartItem = GetCartItemForListing(2);
-            RichTextBox listingrtb = GetRichTextBoxForListing(2);
-            AddItemToCart(cartItem, listingrtb);
-        }
-
-        private void btnAddToCart3_Click(object sender, EventArgs e)
-        {
-            // todo do gui acknowledgment of add to cart with a timer so it goes back to normal:
-            (sender as Button).BackColor = Color.Green;
-            (sender as Button).ForeColor = Color.White;
-            CartItem cartItem = GetCartItemForListing(3);
-            RichTextBox listingrtb = GetRichTextBoxForListing(3);
-            AddItemToCart(cartItem, listingrtb);
-            UpdateQuantityControlMaxForListing(3);
-        }
-
+        #region CartManagement
         private void AddItemToCart(CartItem cartItem, Control controlToUpdate)
         {
             if (CartItems.Any(item => item.StoreItemId == cartItem.StoreItemId))  // todo use hashmap from StoreItemId -> CartItem for CartItems for faster lookup? now it is n for each search
@@ -219,15 +217,49 @@ namespace SemesterProject
             return new CartItem(storeItem, quantitySelected);
         }
 
-        private RichTextBox GetRichTextBoxForListing(int listingIndex)
+
+        private void btnAddToCart0_Click(object sender, EventArgs e)
         {
-            // todo this can be updated to be a checkbox or something non-text that updates on add to cart
-            return pnlAllListings.Controls["pnlListing" + listingIndex].Controls["rtbMainItemInfo" + listingIndex] as RichTextBox;
+            // todo do gui acknowledgment of add to cart with a timer so it goes back to normal:
+            (sender as Button).BackColor = Color.Green;
+            (sender as Button).ForeColor = Color.White;
+            CartItem cartItem = GetCartItemForListing(0);
+            RichTextBox listingrtb = GetRichTextBoxForListing(0);
+            AddItemToCart(cartItem, listingrtb);
+            UpdateQuantityControlForListing(0);
         }
 
-        private void UpdateQuantityControlMaxForListing(int listingIndex)
+        private void btnAddToCart1_Click(object sender, EventArgs e)
         {
-            //CachedStoreItems[(CurrentPageNum * NumItemsPerPage) + 3].QuantityAvailable - cartItem
+            // todo do gui acknowledgment of add to cart with a timer so it goes back to normal:
+            (sender as Button).BackColor = Color.Green;
+            (sender as Button).ForeColor = Color.White;
+            CartItem cartItem = GetCartItemForListing(1);
+            RichTextBox listingrtb = GetRichTextBoxForListing(1);
+            AddItemToCart(cartItem, listingrtb);
+            UpdateQuantityControlForListing(1);
+        }
+
+        private void btnAddToCart2_Click(object sender, EventArgs e)
+        {
+            // todo do gui acknowledgment of add to cart with a timer so it goes back to normal:
+            (sender as Button).BackColor = Color.Green;
+            (sender as Button).ForeColor = Color.White;
+            CartItem cartItem = GetCartItemForListing(2);
+            RichTextBox listingrtb = GetRichTextBoxForListing(2);
+            AddItemToCart(cartItem, listingrtb);
+            UpdateQuantityControlForListing(2);
+        }
+
+        private void btnAddToCart3_Click(object sender, EventArgs e)
+        {
+            // todo do gui acknowledgment of add to cart with a timer so it goes back to normal:
+            (sender as Button).BackColor = Color.Green;
+            (sender as Button).ForeColor = Color.White;
+            CartItem cartItem = GetCartItemForListing(3);
+            RichTextBox listingrtb = GetRichTextBoxForListing(3);
+            AddItemToCart(cartItem, listingrtb);
+            UpdateQuantityControlForListing(3);
         }
 
         private void btnPurchaseCartItems_Click(object sender, EventArgs e)
@@ -252,5 +284,9 @@ namespace SemesterProject
         {
             // todo remove item from CartItems. Allow update quantity?
         }
+        #endregion
+
+        #endregion
+
     }
 }
