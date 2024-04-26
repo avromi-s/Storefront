@@ -79,6 +79,25 @@ namespace SemesterProject
             this.tabControl2 = new System.Windows.Forms.TabControl();
             this.tpBalance = new System.Windows.Forms.TabPage();
             this.tpPurchases = new System.Windows.Forms.TabPage();
+            this.lblCurrentBalance = new System.Windows.Forms.Label();
+            this.dataGridView1 = new System.Windows.Forms.DataGridView();
+            this.btnPayToBalance = new System.Windows.Forms.Button();
+            this.gbAccountBalance = new System.Windows.Forms.GroupBox();
+            this.nudPayToBalance = new System.Windows.Forms.NumericUpDown();
+            this.label4 = new System.Windows.Forms.Label();
+            this.lblMoneySign = new System.Windows.Forms.Label();
+            this.gbFilters = new System.Windows.Forms.GroupBox();
+            this.label8 = new System.Windows.Forms.Label();
+            this.label7 = new System.Windows.Forms.Label();
+            this.numericUpDown3 = new System.Windows.Forms.NumericUpDown();
+            this.label6 = new System.Windows.Forms.Label();
+            this.numericUpDown2 = new System.Windows.Forms.NumericUpDown();
+            this.label5 = new System.Windows.Forms.Label();
+            this.dateTimePicker1 = new System.Windows.Forms.DateTimePicker();
+            this.label9 = new System.Windows.Forms.Label();
+            this.label10 = new System.Windows.Forms.Label();
+            this.dateTimePicker2 = new System.Windows.Forms.DateTimePicker();
+            this.lblAccountBalanceResults = new System.Windows.Forms.Label();
             this.storeItemListingBindingSource = new System.Windows.Forms.BindingSource(this.components);
             this.tabControl1.SuspendLayout();
             this.tpStore.SuspendLayout();
@@ -102,6 +121,14 @@ namespace SemesterProject
             ((System.ComponentModel.ISupportInitialize)(this.dgvCartItems)).BeginInit();
             this.tpAccount.SuspendLayout();
             this.tabControl2.SuspendLayout();
+            this.tpBalance.SuspendLayout();
+            this.tpPurchases.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
+            this.gbAccountBalance.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.nudPayToBalance)).BeginInit();
+            this.gbFilters.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown3)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.storeItemListingBindingSource)).BeginInit();
             this.SuspendLayout();
             // 
@@ -593,6 +620,7 @@ namespace SemesterProject
             // 
             // tpBalance
             // 
+            this.tpBalance.Controls.Add(this.gbAccountBalance);
             this.tpBalance.Location = new System.Drawing.Point(4, 25);
             this.tpBalance.Name = "tpBalance";
             this.tpBalance.Padding = new System.Windows.Forms.Padding(3);
@@ -603,6 +631,8 @@ namespace SemesterProject
             // 
             // tpPurchases
             // 
+            this.tpPurchases.Controls.Add(this.gbFilters);
+            this.tpPurchases.Controls.Add(this.dataGridView1);
             this.tpPurchases.Location = new System.Drawing.Point(4, 25);
             this.tpPurchases.Name = "tpPurchases";
             this.tpPurchases.Padding = new System.Windows.Forms.Padding(3);
@@ -610,6 +640,206 @@ namespace SemesterProject
             this.tpPurchases.TabIndex = 1;
             this.tpPurchases.Text = "Purchases";
             this.tpPurchases.UseVisualStyleBackColor = true;
+            // 
+            // lblCurrentBalance
+            // 
+            this.lblCurrentBalance.AutoSize = true;
+            this.lblCurrentBalance.Location = new System.Drawing.Point(6, 18);
+            this.lblCurrentBalance.Name = "lblCurrentBalance";
+            this.lblCurrentBalance.Size = new System.Drawing.Size(162, 17);
+            this.lblCurrentBalance.TabIndex = 0;
+            this.lblCurrentBalance.Text = "Current Balance: $__.__";
+            // 
+            // dataGridView1
+            // 
+            this.dataGridView1.AllowUserToAddRows = false;
+            this.dataGridView1.AllowUserToDeleteRows = false;
+            this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dataGridView1.Location = new System.Drawing.Point(134, 152);
+            this.dataGridView1.Name = "dataGridView1";
+            this.dataGridView1.ReadOnly = true;
+            this.dataGridView1.RowHeadersWidthSizeMode = System.Windows.Forms.DataGridViewRowHeadersWidthSizeMode.AutoSizeToDisplayedHeaders;
+            this.dataGridView1.RowTemplate.Height = 24;
+            this.dataGridView1.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
+            this.dataGridView1.Size = new System.Drawing.Size(710, 400);
+            this.dataGridView1.TabIndex = 1;
+            // 
+            // btnPayToBalance
+            // 
+            this.btnPayToBalance.Location = new System.Drawing.Point(222, 149);
+            this.btnPayToBalance.Name = "btnPayToBalance";
+            this.btnPayToBalance.Size = new System.Drawing.Size(110, 45);
+            this.btnPayToBalance.TabIndex = 1;
+            this.btnPayToBalance.Text = "Pay to Balance";
+            this.btnPayToBalance.UseVisualStyleBackColor = true;
+            this.btnPayToBalance.Click += new System.EventHandler(this.btnPayToBalance_Click);
+            // 
+            // gbAccountBalance
+            // 
+            this.gbAccountBalance.Controls.Add(this.lblAccountBalanceResults);
+            this.gbAccountBalance.Controls.Add(this.lblMoneySign);
+            this.gbAccountBalance.Controls.Add(this.label4);
+            this.gbAccountBalance.Controls.Add(this.nudPayToBalance);
+            this.gbAccountBalance.Controls.Add(this.btnPayToBalance);
+            this.gbAccountBalance.Controls.Add(this.lblCurrentBalance);
+            this.gbAccountBalance.Location = new System.Drawing.Point(289, 25);
+            this.gbAccountBalance.Name = "gbAccountBalance";
+            this.gbAccountBalance.Size = new System.Drawing.Size(400, 226);
+            this.gbAccountBalance.TabIndex = 2;
+            this.gbAccountBalance.TabStop = false;
+            this.gbAccountBalance.Text = "Balance";
+            // 
+            // nudPayToBalance
+            // 
+            this.nudPayToBalance.DecimalPlaces = 2;
+            this.nudPayToBalance.Location = new System.Drawing.Point(86, 161);
+            this.nudPayToBalance.Maximum = new decimal(new int[] {
+            100000,
+            0,
+            0,
+            0});
+            this.nudPayToBalance.Name = "nudPayToBalance";
+            this.nudPayToBalance.Size = new System.Drawing.Size(120, 22);
+            this.nudPayToBalance.TabIndex = 2;
+            // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Location = new System.Drawing.Point(6, 129);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(339, 17);
+            this.label4.TabIndex = 3;
+            this.label4.Text = "Enter an amount to pay towards your balance below:";
+            // 
+            // lblMoneySign
+            // 
+            this.lblMoneySign.AutoSize = true;
+            this.lblMoneySign.Location = new System.Drawing.Point(64, 163);
+            this.lblMoneySign.Name = "lblMoneySign";
+            this.lblMoneySign.Size = new System.Drawing.Size(16, 17);
+            this.lblMoneySign.TabIndex = 4;
+            this.lblMoneySign.Text = "$";
+            // 
+            // gbFilters
+            // 
+            this.gbFilters.Controls.Add(this.label10);
+            this.gbFilters.Controls.Add(this.dateTimePicker2);
+            this.gbFilters.Controls.Add(this.label9);
+            this.gbFilters.Controls.Add(this.label8);
+            this.gbFilters.Controls.Add(this.label7);
+            this.gbFilters.Controls.Add(this.numericUpDown3);
+            this.gbFilters.Controls.Add(this.label6);
+            this.gbFilters.Controls.Add(this.numericUpDown2);
+            this.gbFilters.Controls.Add(this.label5);
+            this.gbFilters.Controls.Add(this.dateTimePicker1);
+            this.gbFilters.Location = new System.Drawing.Point(134, 25);
+            this.gbFilters.Name = "gbFilters";
+            this.gbFilters.Size = new System.Drawing.Size(710, 121);
+            this.gbFilters.TabIndex = 12;
+            this.gbFilters.TabStop = false;
+            this.gbFilters.Text = "Filters";
+            // 
+            // label8
+            // 
+            this.label8.AutoSize = true;
+            this.label8.Location = new System.Drawing.Point(362, 31);
+            this.label8.Name = "label8";
+            this.label8.Size = new System.Drawing.Size(86, 17);
+            this.label8.TabIndex = 16;
+            this.label8.Text = "Price Range";
+            // 
+            // label7
+            // 
+            this.label7.AutoSize = true;
+            this.label7.Location = new System.Drawing.Point(525, 53);
+            this.label7.Name = "label7";
+            this.label7.Size = new System.Drawing.Size(53, 17);
+            this.label7.TabIndex = 15;
+            this.label7.Text = "-        $";
+            // 
+            // numericUpDown3
+            // 
+            this.numericUpDown3.DecimalPlaces = 2;
+            this.numericUpDown3.Location = new System.Drawing.Point(584, 51);
+            this.numericUpDown3.Maximum = new decimal(new int[] {
+            100000,
+            0,
+            0,
+            0});
+            this.numericUpDown3.Name = "numericUpDown3";
+            this.numericUpDown3.Size = new System.Drawing.Size(120, 22);
+            this.numericUpDown3.TabIndex = 14;
+            // 
+            // label6
+            // 
+            this.label6.AutoSize = true;
+            this.label6.Location = new System.Drawing.Point(362, 53);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(16, 17);
+            this.label6.TabIndex = 13;
+            this.label6.Text = "$";
+            // 
+            // numericUpDown2
+            // 
+            this.numericUpDown2.DecimalPlaces = 2;
+            this.numericUpDown2.Location = new System.Drawing.Point(384, 51);
+            this.numericUpDown2.Maximum = new decimal(new int[] {
+            100000,
+            0,
+            0,
+            0});
+            this.numericUpDown2.Name = "numericUpDown2";
+            this.numericUpDown2.Size = new System.Drawing.Size(120, 22);
+            this.numericUpDown2.TabIndex = 12;
+            // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Location = new System.Drawing.Point(6, 31);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(84, 17);
+            this.label5.TabIndex = 11;
+            this.label5.Text = "Date Range";
+            // 
+            // dateTimePicker1
+            // 
+            this.dateTimePicker1.Location = new System.Drawing.Point(59, 51);
+            this.dateTimePicker1.Name = "dateTimePicker1";
+            this.dateTimePicker1.Size = new System.Drawing.Size(227, 22);
+            this.dateTimePicker1.TabIndex = 10;
+            // 
+            // label9
+            // 
+            this.label9.AutoSize = true;
+            this.label9.Location = new System.Drawing.Point(9, 53);
+            this.label9.Name = "label9";
+            this.label9.Size = new System.Drawing.Size(44, 17);
+            this.label9.TabIndex = 17;
+            this.label9.Text = "From:";
+            // 
+            // label10
+            // 
+            this.label10.AutoSize = true;
+            this.label10.Location = new System.Drawing.Point(9, 81);
+            this.label10.Name = "label10";
+            this.label10.Size = new System.Drawing.Size(29, 17);
+            this.label10.TabIndex = 19;
+            this.label10.Text = "To:";
+            // 
+            // dateTimePicker2
+            // 
+            this.dateTimePicker2.Location = new System.Drawing.Point(59, 79);
+            this.dateTimePicker2.Name = "dateTimePicker2";
+            this.dateTimePicker2.Size = new System.Drawing.Size(227, 22);
+            this.dateTimePicker2.TabIndex = 18;
+            // 
+            // lblAccountBalanceResults
+            // 
+            this.lblAccountBalanceResults.AutoSize = true;
+            this.lblAccountBalanceResults.Location = new System.Drawing.Point(6, 195);
+            this.lblAccountBalanceResults.Name = "lblAccountBalanceResults";
+            this.lblAccountBalanceResults.Size = new System.Drawing.Size(0, 17);
+            this.lblAccountBalanceResults.TabIndex = 5;
             // 
             // storeItemListingBindingSource
             // 
@@ -652,6 +882,16 @@ namespace SemesterProject
             ((System.ComponentModel.ISupportInitialize)(this.dgvCartItems)).EndInit();
             this.tpAccount.ResumeLayout(false);
             this.tabControl2.ResumeLayout(false);
+            this.tpBalance.ResumeLayout(false);
+            this.tpPurchases.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
+            this.gbAccountBalance.ResumeLayout(false);
+            this.gbAccountBalance.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.nudPayToBalance)).EndInit();
+            this.gbFilters.ResumeLayout(false);
+            this.gbFilters.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown3)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown2)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.storeItemListingBindingSource)).EndInit();
             this.ResumeLayout(false);
 
@@ -707,5 +947,24 @@ namespace SemesterProject
         private System.Windows.Forms.Button btnPurchaseCartItems;
         private System.Windows.Forms.Label lblCartSummary;
         private System.Windows.Forms.Button btnRemoveItemFromCart;
+        private System.Windows.Forms.GroupBox gbAccountBalance;
+        private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.NumericUpDown nudPayToBalance;
+        private System.Windows.Forms.Button btnPayToBalance;
+        private System.Windows.Forms.Label lblCurrentBalance;
+        private System.Windows.Forms.DataGridView dataGridView1;
+        private System.Windows.Forms.Label lblMoneySign;
+        private System.Windows.Forms.GroupBox gbFilters;
+        private System.Windows.Forms.Label label8;
+        private System.Windows.Forms.Label label7;
+        private System.Windows.Forms.NumericUpDown numericUpDown3;
+        private System.Windows.Forms.Label label6;
+        private System.Windows.Forms.NumericUpDown numericUpDown2;
+        private System.Windows.Forms.Label label5;
+        private System.Windows.Forms.DateTimePicker dateTimePicker1;
+        private System.Windows.Forms.Label label10;
+        private System.Windows.Forms.DateTimePicker dateTimePicker2;
+        private System.Windows.Forms.Label label9;
+        private System.Windows.Forms.Label lblAccountBalanceResults;
     }
 }

@@ -49,6 +49,8 @@ namespace SemesterProject
             }
         }
 
+        #region Store
+
         #region Setup
         // On load, set up cart data source
         private void Storefront_Load(object sender, EventArgs e)
@@ -138,8 +140,6 @@ namespace SemesterProject
         }
 
         #endregion
-
-        #region ButtonClickHandlers 
 
         #region ListingManagement
         private void btnNextPage_Click(object sender, EventArgs e)
@@ -362,6 +362,23 @@ namespace SemesterProject
         }
 
         #endregion
+
+        #endregion
+
+        #region Account
+        private void btnPayToBalance_Click(object sender, EventArgs e)
+        {
+            if (nudPayToBalance.Value <= 0)  // todo shouldn't be possible because button should remain disabled until valid amount entered
+            {
+                lblAccountBalanceResults.Text = $"Please enter a valid amount";
+                return;
+            }
+
+            LoggedInCustomer.Balance += nudPayToBalance.Value;
+            db.SubmitChanges();
+            lblAccountBalanceResults.Text = $"${nudPayToBalance.Value} successfully paid to balance";
+            nudPayToBalance.Value = 0;
+        }
 
         #endregion
     }
