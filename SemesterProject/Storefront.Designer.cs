@@ -524,18 +524,19 @@ namespace SemesterProject
             this.tpCart.TabIndex = 1;
             this.tpCart.Text = "Cart";
             this.tpCart.UseVisualStyleBackColor = true;
-            this.tpCart.Click += new System.EventHandler(this.tpCart_Click);
+            this.tpCart.Enter += new System.EventHandler(this.tpCart_Enter);
             // 
             // lblCartSummary
             // 
             this.lblCartSummary.AutoSize = true;
-            this.lblCartSummary.Location = new System.Drawing.Point(501, 470);
+            this.lblCartSummary.Location = new System.Drawing.Point(424, 456);
             this.lblCartSummary.Name = "lblCartSummary";
             this.lblCartSummary.Size = new System.Drawing.Size(0, 17);
             this.lblCartSummary.TabIndex = 3;
             // 
             // btnRemoveItemFromCart
             // 
+            this.btnRemoveItemFromCart.Enabled = false;
             this.btnRemoveItemFromCart.Location = new System.Drawing.Point(145, 456);
             this.btnRemoveItemFromCart.Name = "btnRemoveItemFromCart";
             this.btnRemoveItemFromCart.Size = new System.Drawing.Size(110, 45);
@@ -546,6 +547,7 @@ namespace SemesterProject
             // 
             // btnPurchaseCartItems
             // 
+            this.btnPurchaseCartItems.Enabled = false;
             this.btnPurchaseCartItems.Location = new System.Drawing.Point(745, 456);
             this.btnPurchaseCartItems.Name = "btnPurchaseCartItems";
             this.btnPurchaseCartItems.Size = new System.Drawing.Size(110, 45);

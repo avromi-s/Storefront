@@ -13,8 +13,12 @@ namespace SemesterProject
 {
     public partial class Storefront : Form
     {
-        // todo update label in cart based on items for summary
         // todo add db trigger or application function to update store_item quantity on purchase made
+        // todo disable purchase button unless cart is populated
+        // todo disable remove item button (in cart page) unless cart is populated and an item is selected
+        // todo fix currency display accross all displays
+        // todo separate different sections of the GUI Store into classes within Storefront class for better organization, instead of just regions
+        //      Store > Listings, Store > Cart, & Account > Balance, Account > Purchases
         private DataClasses1DataContext db;
         private IEnumerator<STORE_ITEM> AllStoreItems;
         private List<STORE_ITEM> CachedStoreItems = new List<STORE_ITEM>();
@@ -54,7 +58,8 @@ namespace SemesterProject
             // TODO: This line of code loads data into the 'storeDB_Purchases2.PURCHASE' table. You can move, or remove it, as needed.
             //this.pURCHASETableAdapter1.Fill(db.PURCHASEs.Where(row => row.CustomerId == LoggedInCustomerId);
             dgvCartItems.DataSource = CartItems;
-            dgvCartItems.Columns["StoreItem"].Visible = false;
+            DataGridViewBindingCompleteEventHandler hideStoreItemColumn = new DataGridViewBindingCompleteEventHandler((_sender, _e) => dgvCartItems.Columns["StoreItem"].Visible = false);
+            dgvCartItems.DataBindingComplete += hideStoreItemColumn;
 
             // todo see if we can implement adding an 'item id' column linked to each cartitems' storeitem.storeitemid
             //DataGridViewColumn dgvCol = new DataGridViewColumn();
@@ -272,35 +277,38 @@ namespace SemesterProject
         // On purchase button click - purchase all items in cart and then empty the cart
         private void btnPurchaseCartItems_Click(object sender, EventArgs e)
         {
-            if (CartItems.Count > 0)
+            if (CartItems.Count == 0)  // shouldn't be possible because purchase button should be disabled
             {
-                PURCHASE purchase = new PURCHASE()
-                {
-                    CUSTOMER = LoggedInCustomer,
-                    TotalQuantity = CartItems.Sum(item => item.QuantitySelected),
-                    TotalPrice = CartItems.Sum(item => item.UnitPrice * item.QuantitySelected),
-                    PurchaseDateTime = DateTime.Now  // todo use db datetime?
-                };
-                db.PURCHASEs.InsertOnSubmit(purchase);
-
-                CartItems.Select(item => new PURCHASE_STORE_ITEM()
-                {
-                    PURCHASE = purchase,
-                    STORE_ITEM = item.StoreItem,
-                    Quantity = item.QuantitySelected,
-                    UnitPrice = item.UnitPrice
-                })
-                .ToList()
-                .ForEach(item => db.PURCHASE_STORE_ITEMs.InsertOnSubmit(item));
-                db.SubmitChanges();
-
-                CartItems.Clear();
+                lblCartSummary.Text = "Please add items to cart before purchasing";
+                return;
             }
-            else
+
+            // Create new purchase and linked purchase_store_items and insert into db  (// todo extract to separate method for modularity, readability)
+            PURCHASE purchase = new PURCHASE()
             {
-                // todo, shouldn't be an else - purchase button should be disabled unless there are items in cart
-                // and also the remove item button unless an item is selected
-            }
+                CUSTOMER = LoggedInCustomer,
+                TotalQuantity = CartItems.Sum(item => item.QuantitySelected),
+                TotalPrice = CartItems.Sum(item => item.UnitPrice * item.QuantitySelected),
+                PurchaseDateTime = DateTime.Now  // todo use db datetime?
+            };
+            db.PURCHASEs.InsertOnSubmit(purchase);
+
+            CartItems.Select(item => new PURCHASE_STORE_ITEM()
+            {
+                PURCHASE = purchase,
+                STORE_ITEM = item.StoreItem,
+                Quantity = item.QuantitySelected,
+                UnitPrice = item.UnitPrice
+            })
+            .ToList()
+            .ForEach(item => db.PURCHASE_STORE_ITEMs.InsertOnSubmit(item));
+            db.SubmitChanges();
+
+
+            CartItems.Clear();
+            lblCartSummary.Text = "Purchase completed";
+            btnRemoveItemFromCart.Enabled = false;
+            btnPurchaseCartItems.Enabled = false;
         }
 
         private void btnRemoveItemFromCart_Click(object sender, EventArgs e)
@@ -308,10 +316,17 @@ namespace SemesterProject
             // todo remove item from CartItems. Allow update quantity?
         }
 
-        private void tpCart_Click(object sender, EventArgs e)
+        private void tpCart_Enter(object sender, EventArgs e)
         {
-            lblCartSummary.Text = "hi";
+            if (CartItems.Count > 0)
+            {
+                btnRemoveItemFromCart.Enabled = true;
+                btnPurchaseCartItems.Enabled = true;
+            }
+
+            lblCartSummary.Text = $"Total Quantity: {CartItems.Sum(item => item.QuantitySelected)}\nPurchase Total: ${CartItems.Sum(item => item.QuantitySelected * item.UnitPrice)}";
         }
+
         #endregion
 
         #endregion
