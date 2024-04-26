@@ -14,8 +14,6 @@ namespace SemesterProject
     public partial class Storefront : Form
     {
         // todo add db trigger or application function to update store_item quantity on purchase made
-        // todo disable purchase button unless cart is populated
-        // todo disable remove item button (in cart page) unless cart is populated and an item is selected
         // todo fix currency display accross all displays
         // todo separate different sections of the GUI Store into classes within Storefront class for better organization, instead of just regions
         //      Store > Listings, Store > Cart, & Account > Balance, Account > Purchases
@@ -92,7 +90,7 @@ namespace SemesterProject
                 // ((PictureBox) listing.Controls["pbxItemImage" + i]) todo set
                 listing.Controls["rtbMainItemInfo" + i].Text = sil.Title;
                 listing.Controls["rtbMinorItemInfo" + i].Text = sil.FormattedPrice;
-                UpdateQuantityControlForListing(i);
+                RefreshQuantityControlLimitsForListing(i);
 
                 i = (i + 1) % NumItemsPerPage;  // move to next listing to update, reset to the first listing (index 0) if we move past the last listing
             }
@@ -147,7 +145,7 @@ namespace SemesterProject
         private void btnNextPage_Click(object sender, EventArgs e)
         {
             CurrentPageNum++;
-            UpdateLblPageNum();
+            RefreshLblPageNum();
             LoadStoreItemsIntoGUI(GetStoreItems(CurrentPageNum));
 
             btnPreviousPage.Enabled = true;
@@ -161,7 +159,7 @@ namespace SemesterProject
         private void btnPreviousPage_Click(object sender, EventArgs e)
         {
             CurrentPageNum--;
-            UpdateLblPageNum();
+            RefreshLblPageNum();
             LoadStoreItemsIntoGUI(GetStoreItems(CurrentPageNum));
 
             btnNextPage.Enabled = true;
@@ -171,7 +169,7 @@ namespace SemesterProject
             }
         }
 
-        private void UpdateLblPageNum()
+        private void RefreshLblPageNum()
         {
             lblPageNum.Text = "Page " + CurrentPageNumDisplay;
         }
@@ -182,7 +180,7 @@ namespace SemesterProject
             return pnlAllListings.Controls["pnlListing" + listingIndex].Controls["rtbMainItemInfo" + listingIndex] as RichTextBox;
         }
 
-        private void UpdateQuantityControlForListing(int listingIndex)
+        private void RefreshQuantityControlLimitsForListing(int listingIndex)
         {
             STORE_ITEM storeItem = CachedStoreItems[(CurrentPageNum * NumItemsPerPage) + listingIndex];
             int totalQtyAvail = storeItem.QuantityAvailable;
@@ -238,7 +236,7 @@ namespace SemesterProject
             CartItem cartItem = GetCartItemForListing(0);
             RichTextBox listingrtb = GetRichTextBoxForListing(0);
             AddItemToCart(cartItem, listingrtb);
-            UpdateQuantityControlForListing(0);
+            RefreshQuantityControlLimitsForListing(0);
         }
 
         private void btnAddToCart1_Click(object sender, EventArgs e)
@@ -249,7 +247,7 @@ namespace SemesterProject
             CartItem cartItem = GetCartItemForListing(1);
             RichTextBox listingrtb = GetRichTextBoxForListing(1);
             AddItemToCart(cartItem, listingrtb);
-            UpdateQuantityControlForListing(1);
+            RefreshQuantityControlLimitsForListing(1);
         }
 
         private void btnAddToCart2_Click(object sender, EventArgs e)
@@ -260,7 +258,7 @@ namespace SemesterProject
             CartItem cartItem = GetCartItemForListing(2);
             RichTextBox listingrtb = GetRichTextBoxForListing(2);
             AddItemToCart(cartItem, listingrtb);
-            UpdateQuantityControlForListing(2);
+            RefreshQuantityControlLimitsForListing(2);
         }
 
         private void btnAddToCart3_Click(object sender, EventArgs e)
@@ -271,7 +269,7 @@ namespace SemesterProject
             CartItem cartItem = GetCartItemForListing(3);
             RichTextBox listingrtb = GetRichTextBoxForListing(3);
             AddItemToCart(cartItem, listingrtb);
-            UpdateQuantityControlForListing(3);
+            RefreshQuantityControlLimitsForListing(3);
         }
 
         // On purchase button click - purchase all items in cart and then empty the cart
@@ -304,27 +302,52 @@ namespace SemesterProject
             .ForEach(item => db.PURCHASE_STORE_ITEMs.InsertOnSubmit(item));
             db.SubmitChanges();
 
-
             CartItems.Clear();
             lblCartSummary.Text = "Purchase completed";
-            btnRemoveItemFromCart.Enabled = false;
-            btnPurchaseCartItems.Enabled = false;
+            RefreshCartButtonsEnabledStatus();
         }
 
         private void btnRemoveItemFromCart_Click(object sender, EventArgs e)
         {
-            // todo remove item from CartItems. Allow update quantity?
+            // todo also allow update quantity?
+            RemoveSelectedItemsFromCart();
+
+            RefreshCartButtonsEnabledStatus();
+            RefreshCartSummary();
         }
 
         private void tpCart_Enter(object sender, EventArgs e)
         {
+            RefreshCartButtonsEnabledStatus();
+            RefreshCartSummary();
+        }
+
+        private void RefreshCartButtonsEnabledStatus()
+        {
+            // todo this should really be two separate methods maybe because doing 2 separate things (2 buttons)
             if (CartItems.Count > 0)
             {
                 btnRemoveItemFromCart.Enabled = true;
                 btnPurchaseCartItems.Enabled = true;
             }
+            else
+            {
+                btnRemoveItemFromCart.Enabled = false;
+                btnPurchaseCartItems.Enabled = false;
+            }
+        }
 
+        private void RefreshCartSummary()
+        {
             lblCartSummary.Text = $"Total Quantity: {CartItems.Sum(item => item.QuantitySelected)}\nPurchase Total: ${CartItems.Sum(item => item.QuantitySelected * item.UnitPrice)}";
+        }
+
+        private void RemoveSelectedItemsFromCart()
+        {
+            foreach (DataGridViewRow selectedItem in dgvCartItems.SelectedRows)
+            {
+                CartItems.Remove(selectedItem.DataBoundItem as CartItem);
+            }
         }
 
         #endregion
