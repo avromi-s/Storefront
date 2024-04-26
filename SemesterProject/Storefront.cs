@@ -14,9 +14,11 @@ namespace SemesterProject
     public partial class Storefront : Form
     {
         // todo add db trigger or application function to update store_item quantity on purchase made
+        // todo all add db trigger to update customer balance on purchase made
         // todo fix currency display accross all displays
         // todo separate different sections of the GUI Store into classes within Storefront class for better organization, instead of just regions
         //      Store > Listings, Store > Cart, & Account > Balance, Account > Purchases
+        // todo manage when less than 4 items in store > remove item triggers exception because iterating over all 4 listings, also, other 3 items should be disabled
         private DataClasses1DataContext db;
         private IEnumerator<STORE_ITEM> AllStoreItems;
         private List<STORE_ITEM> CachedStoreItems = new List<STORE_ITEM>();
@@ -40,13 +42,6 @@ namespace SemesterProject
 
             this.db = db;
             this.LoggedInCustomer = loggedInCustomer;
-            LoadCustomerInfo();
-            LoadStoreItemsIntoGUI(GetStoreItems(CurrentPageNum));
-            // todo should next page button be disabled if less than 4 items in store? else will throw error
-            if (IsAnotherItem)
-            {
-                btnNextPage.Enabled = true;
-            }
         }
 
         #region Store
@@ -57,21 +52,21 @@ namespace SemesterProject
         {
             // TODO: This line of code loads data into the 'storeDB_Purchases2.PURCHASE' table. You can move, or remove it, as needed.
             //this.pURCHASETableAdapter1.Fill(db.PURCHASEs.Where(row => row.CustomerId == LoggedInCustomerId);
+
+            // todo extract below 3 lines to method:
             dgvCartItems.DataSource = CartItems;
             DataGridViewBindingCompleteEventHandler hideStoreItemColumn = new DataGridViewBindingCompleteEventHandler((_sender, _e) => dgvCartItems.Columns["StoreItem"].Visible = false);
             dgvCartItems.DataBindingComplete += hideStoreItemColumn;
 
-            // todo see if we can implement adding an 'item id' column linked to each cartitems' storeitem.storeitemid
-            //DataGridViewColumn dgvCol = new DataGridViewColumn();
-            //dgvCol.HeaderText = "Item ID";
-            //dgvCol.DataPropertyName = "StoreItem.StoreItemId";
-            //dgvCartItems.Columns.Add(dgvCol);
+            RefreshDisplayedBalance();
+            LoadStoreItemsIntoGUI(GetStoreItems(CurrentPageNum));
+            // todo should next page button be disabled if less than 4 items in store? else will throw error
+            if (IsAnotherItem)
+            {
+                btnNextPage.Enabled = true;
+            }
         }
 
-        private void LoadCustomerInfo()
-        {
-            // todo
-        }
         #endregion
 
         #region ListingLoading
@@ -366,18 +361,30 @@ namespace SemesterProject
         #endregion
 
         #region Account
+
         private void btnPayToBalance_Click(object sender, EventArgs e)
         {
+            // todo round nud value on validate. see: https://stackoverflow.com/questions/21811303/numericupdown-value-not-rounded-to-decimalplaces
+
             if (nudPayToBalance.Value <= 0)  // todo shouldn't be possible because button should remain disabled until valid amount entered
             {
                 lblAccountBalanceResults.Text = $"Please enter a valid amount";
+                lblAccountBalanceResults.ForeColor = Color.Red;
                 return;
             }
 
             LoggedInCustomer.Balance += nudPayToBalance.Value;
             db.SubmitChanges();
+
+            RefreshDisplayedBalance();
+            lblAccountBalanceResults.ForeColor = Color.Green;
             lblAccountBalanceResults.Text = $"${nudPayToBalance.Value} successfully paid to balance";
             nudPayToBalance.Value = 0;
+        }
+
+        private void RefreshDisplayedBalance()
+        {
+            lblCurrentBalance.Text = $"Current Balance: ${LoggedInCustomer.Balance}";
         }
 
         #endregion

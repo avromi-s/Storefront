@@ -78,15 +78,18 @@ namespace SemesterProject
             this.tpAccount = new System.Windows.Forms.TabPage();
             this.tabControl2 = new System.Windows.Forms.TabControl();
             this.tpBalance = new System.Windows.Forms.TabPage();
-            this.tpPurchases = new System.Windows.Forms.TabPage();
-            this.lblCurrentBalance = new System.Windows.Forms.Label();
-            this.dataGridView1 = new System.Windows.Forms.DataGridView();
-            this.btnPayToBalance = new System.Windows.Forms.Button();
             this.gbAccountBalance = new System.Windows.Forms.GroupBox();
-            this.nudPayToBalance = new System.Windows.Forms.NumericUpDown();
-            this.label4 = new System.Windows.Forms.Label();
+            this.lblAccountBalanceResults = new System.Windows.Forms.Label();
             this.lblMoneySign = new System.Windows.Forms.Label();
+            this.label4 = new System.Windows.Forms.Label();
+            this.nudPayToBalance = new System.Windows.Forms.NumericUpDown();
+            this.btnPayToBalance = new System.Windows.Forms.Button();
+            this.lblCurrentBalance = new System.Windows.Forms.Label();
+            this.tpPurchases = new System.Windows.Forms.TabPage();
             this.gbFilters = new System.Windows.Forms.GroupBox();
+            this.label10 = new System.Windows.Forms.Label();
+            this.dateTimePicker2 = new System.Windows.Forms.DateTimePicker();
+            this.label9 = new System.Windows.Forms.Label();
             this.label8 = new System.Windows.Forms.Label();
             this.label7 = new System.Windows.Forms.Label();
             this.numericUpDown3 = new System.Windows.Forms.NumericUpDown();
@@ -94,10 +97,7 @@ namespace SemesterProject
             this.numericUpDown2 = new System.Windows.Forms.NumericUpDown();
             this.label5 = new System.Windows.Forms.Label();
             this.dateTimePicker1 = new System.Windows.Forms.DateTimePicker();
-            this.label9 = new System.Windows.Forms.Label();
-            this.label10 = new System.Windows.Forms.Label();
-            this.dateTimePicker2 = new System.Windows.Forms.DateTimePicker();
-            this.lblAccountBalanceResults = new System.Windows.Forms.Label();
+            this.dataGridView1 = new System.Windows.Forms.DataGridView();
             this.storeItemListingBindingSource = new System.Windows.Forms.BindingSource(this.components);
             this.tabControl1.SuspendLayout();
             this.tpStore.SuspendLayout();
@@ -122,13 +122,13 @@ namespace SemesterProject
             this.tpAccount.SuspendLayout();
             this.tabControl2.SuspendLayout();
             this.tpBalance.SuspendLayout();
-            this.tpPurchases.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.gbAccountBalance.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.nudPayToBalance)).BeginInit();
+            this.tpPurchases.SuspendLayout();
             this.gbFilters.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown3)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown2)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.storeItemListingBindingSource)).BeginInit();
             this.SuspendLayout();
             // 
@@ -519,6 +519,7 @@ namespace SemesterProject
             // 
             // btnNextPage
             // 
+            this.btnNextPage.Enabled = false;
             this.btnNextPage.Location = new System.Drawing.Point(854, 24);
             this.btnNextPage.Name = "btnNextPage";
             this.btnNextPage.Size = new System.Drawing.Size(120, 32);
@@ -629,51 +630,6 @@ namespace SemesterProject
             this.tpBalance.Text = "Balance";
             this.tpBalance.UseVisualStyleBackColor = true;
             // 
-            // tpPurchases
-            // 
-            this.tpPurchases.Controls.Add(this.gbFilters);
-            this.tpPurchases.Controls.Add(this.dataGridView1);
-            this.tpPurchases.Location = new System.Drawing.Point(4, 25);
-            this.tpPurchases.Name = "tpPurchases";
-            this.tpPurchases.Padding = new System.Windows.Forms.Padding(3);
-            this.tpPurchases.Size = new System.Drawing.Size(971, 659);
-            this.tpPurchases.TabIndex = 1;
-            this.tpPurchases.Text = "Purchases";
-            this.tpPurchases.UseVisualStyleBackColor = true;
-            // 
-            // lblCurrentBalance
-            // 
-            this.lblCurrentBalance.AutoSize = true;
-            this.lblCurrentBalance.Location = new System.Drawing.Point(6, 18);
-            this.lblCurrentBalance.Name = "lblCurrentBalance";
-            this.lblCurrentBalance.Size = new System.Drawing.Size(162, 17);
-            this.lblCurrentBalance.TabIndex = 0;
-            this.lblCurrentBalance.Text = "Current Balance: $__.__";
-            // 
-            // dataGridView1
-            // 
-            this.dataGridView1.AllowUserToAddRows = false;
-            this.dataGridView1.AllowUserToDeleteRows = false;
-            this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridView1.Location = new System.Drawing.Point(134, 152);
-            this.dataGridView1.Name = "dataGridView1";
-            this.dataGridView1.ReadOnly = true;
-            this.dataGridView1.RowHeadersWidthSizeMode = System.Windows.Forms.DataGridViewRowHeadersWidthSizeMode.AutoSizeToDisplayedHeaders;
-            this.dataGridView1.RowTemplate.Height = 24;
-            this.dataGridView1.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dataGridView1.Size = new System.Drawing.Size(710, 400);
-            this.dataGridView1.TabIndex = 1;
-            // 
-            // btnPayToBalance
-            // 
-            this.btnPayToBalance.Location = new System.Drawing.Point(222, 149);
-            this.btnPayToBalance.Name = "btnPayToBalance";
-            this.btnPayToBalance.Size = new System.Drawing.Size(110, 45);
-            this.btnPayToBalance.TabIndex = 1;
-            this.btnPayToBalance.Text = "Pay to Balance";
-            this.btnPayToBalance.UseVisualStyleBackColor = true;
-            this.btnPayToBalance.Click += new System.EventHandler(this.btnPayToBalance_Click);
-            // 
             // gbAccountBalance
             // 
             this.gbAccountBalance.Controls.Add(this.lblAccountBalanceResults);
@@ -689,6 +645,32 @@ namespace SemesterProject
             this.gbAccountBalance.TabStop = false;
             this.gbAccountBalance.Text = "Balance";
             // 
+            // lblAccountBalanceResults
+            // 
+            this.lblAccountBalanceResults.AutoSize = true;
+            this.lblAccountBalanceResults.Location = new System.Drawing.Point(6, 195);
+            this.lblAccountBalanceResults.Name = "lblAccountBalanceResults";
+            this.lblAccountBalanceResults.Size = new System.Drawing.Size(0, 17);
+            this.lblAccountBalanceResults.TabIndex = 5;
+            // 
+            // lblMoneySign
+            // 
+            this.lblMoneySign.AutoSize = true;
+            this.lblMoneySign.Location = new System.Drawing.Point(64, 163);
+            this.lblMoneySign.Name = "lblMoneySign";
+            this.lblMoneySign.Size = new System.Drawing.Size(16, 17);
+            this.lblMoneySign.TabIndex = 4;
+            this.lblMoneySign.Text = "$";
+            // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Location = new System.Drawing.Point(6, 129);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(339, 17);
+            this.label4.TabIndex = 3;
+            this.label4.Text = "Enter an amount to pay towards your balance below:";
+            // 
             // nudPayToBalance
             // 
             this.nudPayToBalance.DecimalPlaces = 2;
@@ -702,23 +684,36 @@ namespace SemesterProject
             this.nudPayToBalance.Size = new System.Drawing.Size(120, 22);
             this.nudPayToBalance.TabIndex = 2;
             // 
-            // label4
+            // btnPayToBalance
             // 
-            this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(6, 129);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(339, 17);
-            this.label4.TabIndex = 3;
-            this.label4.Text = "Enter an amount to pay towards your balance below:";
+            this.btnPayToBalance.Location = new System.Drawing.Point(222, 149);
+            this.btnPayToBalance.Name = "btnPayToBalance";
+            this.btnPayToBalance.Size = new System.Drawing.Size(110, 45);
+            this.btnPayToBalance.TabIndex = 1;
+            this.btnPayToBalance.Text = "Pay to Balance";
+            this.btnPayToBalance.UseVisualStyleBackColor = true;
+            this.btnPayToBalance.Click += new System.EventHandler(this.btnPayToBalance_Click);
             // 
-            // lblMoneySign
+            // lblCurrentBalance
             // 
-            this.lblMoneySign.AutoSize = true;
-            this.lblMoneySign.Location = new System.Drawing.Point(64, 163);
-            this.lblMoneySign.Name = "lblMoneySign";
-            this.lblMoneySign.Size = new System.Drawing.Size(16, 17);
-            this.lblMoneySign.TabIndex = 4;
-            this.lblMoneySign.Text = "$";
+            this.lblCurrentBalance.AutoSize = true;
+            this.lblCurrentBalance.Location = new System.Drawing.Point(6, 18);
+            this.lblCurrentBalance.Name = "lblCurrentBalance";
+            this.lblCurrentBalance.Size = new System.Drawing.Size(162, 17);
+            this.lblCurrentBalance.TabIndex = 0;
+            this.lblCurrentBalance.Text = "Current Balance: $__.__";
+            // 
+            // tpPurchases
+            // 
+            this.tpPurchases.Controls.Add(this.gbFilters);
+            this.tpPurchases.Controls.Add(this.dataGridView1);
+            this.tpPurchases.Location = new System.Drawing.Point(4, 25);
+            this.tpPurchases.Name = "tpPurchases";
+            this.tpPurchases.Padding = new System.Windows.Forms.Padding(3);
+            this.tpPurchases.Size = new System.Drawing.Size(971, 659);
+            this.tpPurchases.TabIndex = 1;
+            this.tpPurchases.Text = "Purchases";
+            this.tpPurchases.UseVisualStyleBackColor = true;
             // 
             // gbFilters
             // 
@@ -738,6 +733,31 @@ namespace SemesterProject
             this.gbFilters.TabIndex = 12;
             this.gbFilters.TabStop = false;
             this.gbFilters.Text = "Filters";
+            // 
+            // label10
+            // 
+            this.label10.AutoSize = true;
+            this.label10.Location = new System.Drawing.Point(9, 81);
+            this.label10.Name = "label10";
+            this.label10.Size = new System.Drawing.Size(29, 17);
+            this.label10.TabIndex = 19;
+            this.label10.Text = "To:";
+            // 
+            // dateTimePicker2
+            // 
+            this.dateTimePicker2.Location = new System.Drawing.Point(59, 79);
+            this.dateTimePicker2.Name = "dateTimePicker2";
+            this.dateTimePicker2.Size = new System.Drawing.Size(227, 22);
+            this.dateTimePicker2.TabIndex = 18;
+            // 
+            // label9
+            // 
+            this.label9.AutoSize = true;
+            this.label9.Location = new System.Drawing.Point(9, 53);
+            this.label9.Name = "label9";
+            this.label9.Size = new System.Drawing.Size(44, 17);
+            this.label9.TabIndex = 17;
+            this.label9.Text = "From:";
             // 
             // label8
             // 
@@ -808,38 +828,19 @@ namespace SemesterProject
             this.dateTimePicker1.Size = new System.Drawing.Size(227, 22);
             this.dateTimePicker1.TabIndex = 10;
             // 
-            // label9
+            // dataGridView1
             // 
-            this.label9.AutoSize = true;
-            this.label9.Location = new System.Drawing.Point(9, 53);
-            this.label9.Name = "label9";
-            this.label9.Size = new System.Drawing.Size(44, 17);
-            this.label9.TabIndex = 17;
-            this.label9.Text = "From:";
-            // 
-            // label10
-            // 
-            this.label10.AutoSize = true;
-            this.label10.Location = new System.Drawing.Point(9, 81);
-            this.label10.Name = "label10";
-            this.label10.Size = new System.Drawing.Size(29, 17);
-            this.label10.TabIndex = 19;
-            this.label10.Text = "To:";
-            // 
-            // dateTimePicker2
-            // 
-            this.dateTimePicker2.Location = new System.Drawing.Point(59, 79);
-            this.dateTimePicker2.Name = "dateTimePicker2";
-            this.dateTimePicker2.Size = new System.Drawing.Size(227, 22);
-            this.dateTimePicker2.TabIndex = 18;
-            // 
-            // lblAccountBalanceResults
-            // 
-            this.lblAccountBalanceResults.AutoSize = true;
-            this.lblAccountBalanceResults.Location = new System.Drawing.Point(6, 195);
-            this.lblAccountBalanceResults.Name = "lblAccountBalanceResults";
-            this.lblAccountBalanceResults.Size = new System.Drawing.Size(0, 17);
-            this.lblAccountBalanceResults.TabIndex = 5;
+            this.dataGridView1.AllowUserToAddRows = false;
+            this.dataGridView1.AllowUserToDeleteRows = false;
+            this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dataGridView1.Location = new System.Drawing.Point(134, 152);
+            this.dataGridView1.Name = "dataGridView1";
+            this.dataGridView1.ReadOnly = true;
+            this.dataGridView1.RowHeadersWidthSizeMode = System.Windows.Forms.DataGridViewRowHeadersWidthSizeMode.AutoSizeToDisplayedHeaders;
+            this.dataGridView1.RowTemplate.Height = 24;
+            this.dataGridView1.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
+            this.dataGridView1.Size = new System.Drawing.Size(710, 400);
+            this.dataGridView1.TabIndex = 1;
             // 
             // storeItemListingBindingSource
             // 
@@ -883,15 +884,15 @@ namespace SemesterProject
             this.tpAccount.ResumeLayout(false);
             this.tabControl2.ResumeLayout(false);
             this.tpBalance.ResumeLayout(false);
-            this.tpPurchases.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
             this.gbAccountBalance.ResumeLayout(false);
             this.gbAccountBalance.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.nudPayToBalance)).EndInit();
+            this.tpPurchases.ResumeLayout(false);
             this.gbFilters.ResumeLayout(false);
             this.gbFilters.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown3)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown2)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.storeItemListingBindingSource)).EndInit();
             this.ResumeLayout(false);
 
