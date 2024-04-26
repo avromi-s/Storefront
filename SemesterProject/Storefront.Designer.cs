@@ -97,7 +97,7 @@ namespace SemesterProject
             this.numericUpDown2 = new System.Windows.Forms.NumericUpDown();
             this.label5 = new System.Windows.Forms.Label();
             this.dateTimePicker1 = new System.Windows.Forms.DateTimePicker();
-            this.dataGridView1 = new System.Windows.Forms.DataGridView();
+            this.dgvPastPurchases = new System.Windows.Forms.DataGridView();
             this.storeItemListingBindingSource = new System.Windows.Forms.BindingSource(this.components);
             this.tabControl1.SuspendLayout();
             this.tpStore.SuspendLayout();
@@ -128,7 +128,7 @@ namespace SemesterProject
             this.gbFilters.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown3)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown2)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dgvPastPurchases)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.storeItemListingBindingSource)).BeginInit();
             this.SuspendLayout();
             // 
@@ -706,7 +706,7 @@ namespace SemesterProject
             // tpPurchases
             // 
             this.tpPurchases.Controls.Add(this.gbFilters);
-            this.tpPurchases.Controls.Add(this.dataGridView1);
+            this.tpPurchases.Controls.Add(this.dgvPastPurchases);
             this.tpPurchases.Location = new System.Drawing.Point(4, 25);
             this.tpPurchases.Name = "tpPurchases";
             this.tpPurchases.Padding = new System.Windows.Forms.Padding(3);
@@ -828,19 +828,19 @@ namespace SemesterProject
             this.dateTimePicker1.Size = new System.Drawing.Size(227, 22);
             this.dateTimePicker1.TabIndex = 10;
             // 
-            // dataGridView1
+            // dgvPastPurchases
             // 
-            this.dataGridView1.AllowUserToAddRows = false;
-            this.dataGridView1.AllowUserToDeleteRows = false;
-            this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridView1.Location = new System.Drawing.Point(134, 152);
-            this.dataGridView1.Name = "dataGridView1";
-            this.dataGridView1.ReadOnly = true;
-            this.dataGridView1.RowHeadersWidthSizeMode = System.Windows.Forms.DataGridViewRowHeadersWidthSizeMode.AutoSizeToDisplayedHeaders;
-            this.dataGridView1.RowTemplate.Height = 24;
-            this.dataGridView1.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dataGridView1.Size = new System.Drawing.Size(710, 400);
-            this.dataGridView1.TabIndex = 1;
+            this.dgvPastPurchases.AllowUserToAddRows = false;
+            this.dgvPastPurchases.AllowUserToDeleteRows = false;
+            this.dgvPastPurchases.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dgvPastPurchases.Location = new System.Drawing.Point(134, 152);
+            this.dgvPastPurchases.Name = "dgvPastPurchases";
+            this.dgvPastPurchases.ReadOnly = true;
+            this.dgvPastPurchases.RowHeadersWidthSizeMode = System.Windows.Forms.DataGridViewRowHeadersWidthSizeMode.AutoSizeToDisplayedHeaders;
+            this.dgvPastPurchases.RowTemplate.Height = 24;
+            this.dgvPastPurchases.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
+            this.dgvPastPurchases.Size = new System.Drawing.Size(710, 400);
+            this.dgvPastPurchases.TabIndex = 1;
             // 
             // storeItemListingBindingSource
             // 
@@ -892,7 +892,7 @@ namespace SemesterProject
             this.gbFilters.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown3)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown2)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dgvPastPurchases)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.storeItemListingBindingSource)).EndInit();
             this.ResumeLayout(false);
 
@@ -953,7 +953,7 @@ namespace SemesterProject
         private System.Windows.Forms.NumericUpDown nudPayToBalance;
         private System.Windows.Forms.Button btnPayToBalance;
         private System.Windows.Forms.Label lblCurrentBalance;
-        private System.Windows.Forms.DataGridView dataGridView1;
+        private System.Windows.Forms.DataGridView dgvPastPurchases;
         private System.Windows.Forms.Label lblMoneySign;
         private System.Windows.Forms.GroupBox gbFilters;
         private System.Windows.Forms.Label label8;

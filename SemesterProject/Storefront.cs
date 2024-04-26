@@ -15,6 +15,7 @@ namespace SemesterProject
     {
         // todo add db trigger or application function to update store_item quantity on purchase made
         // todo all add db trigger to update customer balance on purchase made
+        // maybe do application logic for above 2, or above 1 (for balance). This way it is clear when viewing code that it's getting updated and how.
         // todo fix currency display accross all displays
         // todo separate different sections of the GUI Store into classes within Storefront class for better organization, instead of just regions
         //      Store > Listings, Store > Cart, & Account > Balance, Account > Purchases
@@ -53,18 +54,30 @@ namespace SemesterProject
             // TODO: This line of code loads data into the 'storeDB_Purchases2.PURCHASE' table. You can move, or remove it, as needed.
             //this.pURCHASETableAdapter1.Fill(db.PURCHASEs.Where(row => row.CustomerId == LoggedInCustomerId);
 
-            // todo extract below 3 lines to method:
-            dgvCartItems.DataSource = CartItems;
-            DataGridViewBindingCompleteEventHandler hideStoreItemColumn = new DataGridViewBindingCompleteEventHandler((_sender, _e) => dgvCartItems.Columns["StoreItem"].Visible = false);
-            dgvCartItems.DataBindingComplete += hideStoreItemColumn;
-
+            BindCartItemsToViewControl();
+            BindCustomerPurchasesToPastPurchaseViewControl();
             RefreshDisplayedBalance();
             LoadStoreItemsIntoGUI(GetStoreItems(CurrentPageNum));
-            // todo should next page button be disabled if less than 4 items in store? else will throw error
             if (IsAnotherItem)
             {
                 btnNextPage.Enabled = true;
             }
+        }
+
+        private void BindCartItemsToViewControl()
+        {
+            dgvCartItems.DataSource = CartItems;
+            DataGridViewBindingCompleteEventHandler hideStoreItemColumn = new DataGridViewBindingCompleteEventHandler((_sender, _e) => dgvCartItems.Columns["StoreItem"].Visible = false);
+            dgvCartItems.DataBindingComplete += hideStoreItemColumn;
+        }
+
+        private void BindCustomerPurchasesToPastPurchaseViewControl()
+        {
+            // todo hide unwanted columns, implement filters, refresh purchases on purchase made in GUI
+            // todo get store items for each purchase and display? or only total and total quantity?
+            dgvPastPurchases.DataSource = db.PURCHASEs.Where(p => p.CUSTOMER == LoggedInCustomer);
+            //DataGridViewBindingCompleteEventHandler hideStoreItemColumn = new DataGridViewBindingCompleteEventHandler((_sender, _e) => dgvPastPurchases.Columns["StoreItem"].Visible = false);
+            //dgvPastPurchases.DataBindingComplete += hideStoreItemColumn;
         }
 
         #endregion
