@@ -1,3 +1,5 @@
+use [StoreDB]
+
 select * from
 PURCHASE
 inner join

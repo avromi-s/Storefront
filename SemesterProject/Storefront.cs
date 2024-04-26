@@ -310,7 +310,7 @@ namespace SemesterProject
         private void btnRemoveItemFromCart_Click(object sender, EventArgs e)
         {
             // todo also allow update quantity?
-            RemoveSelectedItemsFromCart();
+            RemoveSelectedItemsFromCart(refreshQtyLimits: true);
 
             RefreshCartButtonsEnabledStatus();
             RefreshCartSummary();
@@ -342,11 +342,22 @@ namespace SemesterProject
             lblCartSummary.Text = $"Total Quantity: {CartItems.Sum(item => item.QuantitySelected)}\nPurchase Total: ${CartItems.Sum(item => item.QuantitySelected * item.UnitPrice)}";
         }
 
-        private void RemoveSelectedItemsFromCart()
+        private void RemoveSelectedItemsFromCart(bool refreshQtyLimits = true)
         {
             foreach (DataGridViewRow selectedItem in dgvCartItems.SelectedRows)
             {
                 CartItems.Remove(selectedItem.DataBoundItem as CartItem);
+            }
+
+            if (refreshQtyLimits)
+            {
+                for (int i = 0; i < NumItemsPerPage; i++)
+                {
+                    // todo this is a bit wasteful because we really only need to update the listing for the items that were removed, not all items. 
+                    // move this into the foreach loop maybe and refresh the listings based on the items being removed
+                    // OR, maybe only refresh listing qty limits on Listings tab enter?
+                    RefreshQuantityControlLimitsForListing(i);
+                }
             }
         }
 
