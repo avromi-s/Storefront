@@ -52,8 +52,8 @@ namespace SemesterProject
             //this.pURCHASETableAdapter1.Fill(db.PURCHASEs.Where(row => row.CustomerId == LoggedInCustomerId);
 
             // todo below refreshes shouldn't be needed since they should automatically be called based on the visible / selected handlers once they come into view
-            RefreshCartItemsViewControl();
-            RefreshPastPurchasesViewControl();
+            //RefreshCartItemsViewControl();
+            //RefreshPastPurchasesViewControl();
             RefreshDisplayedBalance();
             LoadStoreItemsIntoGui(GetStoreItems(CurrentPageNum));
             if (IsAnotherItem)
@@ -212,9 +212,7 @@ namespace SemesterProject
         {
             if (tpCart.Visible)
             {
-                RefreshCartButtonsEnabledStatus();
-                RefreshCartSummary();
-                RefreshCartItemsViewControl();
+                RefreshCartTab();
             }
         }
 
@@ -223,10 +221,15 @@ namespace SemesterProject
         {
             if (e.TabPage == tpCart)
             {
-                RefreshCartButtonsEnabledStatus();
-                RefreshCartSummary();
-                RefreshCartItemsViewControl();
+                RefreshCartTab();
             }
+        }
+
+        private void RefreshCartTab()
+        {
+            RefreshCartButtonsEnabledStatus();
+            RefreshCartSummary();
+            RefreshCartItemsViewControl();
         }
 
         private void RefreshCartItemsViewControl()
@@ -352,9 +355,7 @@ namespace SemesterProject
             // todo also allow update quantity?
             RemoveSelectedItemsFromCart(refreshQtyLimits: true);
 
-            RefreshCartButtonsEnabledStatus();
-            RefreshCartSummary();
-            RefreshCartItemsViewControl();
+            RefreshCartTab();
         }
 
         private void RefreshCartButtonsEnabledStatus()
