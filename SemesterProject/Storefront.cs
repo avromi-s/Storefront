@@ -183,9 +183,9 @@ namespace SemesterProject
             STORE_ITEM storeItem = CachedStoreItems[(CurrentPageNum * NumItemsPerPage) + listingIndex];
             int totalQtyAvail = storeItem.QuantityAvailable;
             int qtyInCart;
-            if (CartItems.Any(item => item.StoreItem == storeItem))
+            if (CartItems.Any(item => item.GetStoreItem() == storeItem))
             {
-                qtyInCart = CartItems.Where(item => item.StoreItem == storeItem).First().QuantitySelected;
+                qtyInCart = CartItems.Where(item => item.GetStoreItem() == storeItem).First().Quantity;
             }
             else
             {
@@ -220,15 +220,7 @@ namespace SemesterProject
 
         private void RefreshCartItemsViewControl()
         {
-            dgvCartItems.DataSource = CartItems.Select(item => new
-                {
-                    item.Manufacturer,
-                    item.ProductName,
-                    item.UnitPrice,
-                    Quantity = item.QuantitySelected,
-                    Price = item.UnitPrice * item.QuantitySelected
-                })
-                .ToList();
+            dgvCartItems.DataSource = CartItems.ToList();
             dgvCartItems.AutoResizeColumns();
             dgvCartItems.Update();
             dgvCartItems.Refresh();
@@ -237,21 +229,20 @@ namespace SemesterProject
         private void AddItemToCart(CartItem cartItem, Control controlToUpdate)
         {
             if (CartItems.Any(item =>
-                    item.StoreItem ==
-                    cartItem.StoreItem)) // todo use hashmap from StoreItemId -> CartItem for CartItems for faster lookup? now it is n for each search
+                    item.GetStoreItem() ==
+                    cartItem.GetStoreItem())) // todo use hashmap from StoreItemId -> CartItem for CartItems for faster lookup? now it is n for each search
             {
-                CartItems.Where(item => item.StoreItem == cartItem.StoreItem).First().QuantitySelected +=
-                    cartItem.QuantitySelected;
+                CartItems.Where(item => item.GetStoreItem() == cartItem.GetStoreItem()).First().Quantity +=
+                    cartItem.Quantity;
             }
             else
             {
                 CartItems.Add(cartItem);
             }
 
-            dgvCartItems.Update();
-            dgvCartItems.Refresh();
             controlToUpdate.Text +=
                 "\nItem added to cart"; // todo this can be updated to be a checkbox or something non-text that updates on add to cart
+            RefreshCartItemsViewControl();
         }
 
         private CartItem GetCartItemForListing(int listingIndex)
@@ -322,8 +313,8 @@ namespace SemesterProject
             PURCHASE purchase = new PURCHASE()
             {
                 CUSTOMER = LoggedInCustomer,
-                TotalQuantity = CartItems.Sum(item => item.QuantitySelected),
-                TotalPrice = CartItems.Sum(item => item.UnitPrice * item.QuantitySelected),
+                TotalQuantity = CartItems.Sum(item => item.Quantity),
+                TotalPrice = CartItems.Sum(item => item.UnitPrice * item.Quantity),
                 PurchaseDateTime = DateTime.Now // todo use db datetime?
             };
             db.PURCHASEs.InsertOnSubmit(purchase);
@@ -331,8 +322,8 @@ namespace SemesterProject
             CartItems.Select(item => new PURCHASE_STORE_ITEM()
                 {
                     PURCHASE = purchase,
-                    STORE_ITEM = item.StoreItem,
-                    Quantity = item.QuantitySelected,
+                    STORE_ITEM = item.GetStoreItem(),
+                    Quantity = item.Quantity,
                     UnitPrice = item.UnitPrice
                 })
                 .ToList()
@@ -341,6 +332,7 @@ namespace SemesterProject
 
             CartItems.Clear();
             lblCartSummary.Text = "Purchase completed";
+            RefreshCartItemsViewControl();
             RefreshCartButtonsEnabledStatus();
         }
 
@@ -351,6 +343,7 @@ namespace SemesterProject
 
             RefreshCartButtonsEnabledStatus();
             RefreshCartSummary();
+            RefreshCartItemsViewControl();
         }
 
         private void tpCart_Enter(object sender, EventArgs e)
@@ -374,12 +367,6 @@ namespace SemesterProject
             }
         }
 
-        private void RefreshCartSummary()
-        {
-            lblCartSummary.Text =
-                $"Total Quantity: {CartItems.Sum(item => item.QuantitySelected)}\nPurchase Total: ${CartItems.Sum(item => item.QuantitySelected * item.UnitPrice)}";
-        }
-
         private void RemoveSelectedItemsFromCart(bool refreshQtyLimits = true)
         {
             foreach (DataGridViewRow selectedItem in dgvCartItems.SelectedRows)
@@ -397,6 +384,12 @@ namespace SemesterProject
                     RefreshQuantityControlLimitsForListing(i);
                 }
             }
+        }
+
+        private void RefreshCartSummary()
+        {
+            lblCartSummary.Text =
+                $"Total Quantity: {CartItems.Sum(item => item.Quantity)}\nPurchase Total: ${CartItems.Sum(item => item.Quantity * item.UnitPrice)}";
         }
 
         #endregion
@@ -468,7 +461,7 @@ namespace SemesterProject
                     Items = // get summary of items in purchase: // todo extract to method or ToString() method in PURCHASE_STORE_ITEMs class?
                         string.Join(", ",
                             p.PURCHASE_STORE_ITEMs.Select(item =>
-                                $"({item.Quantity}) {item.STORE_ITEM.Manufacturer + " " + item.STORE_ITEM.ProductName} - {item.UnitPrice * item.Quantity}"))
+                                $"({item.Quantity}) {item.STORE_ITEM.Manufacturer + " " + item.STORE_ITEM.ProductName} - ${item.UnitPrice * item.Quantity}"))
                 })
                 .ToList();
             dgvPastPurchases.AutoResizeColumns();
