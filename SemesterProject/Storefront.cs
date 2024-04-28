@@ -53,17 +53,17 @@ namespace SemesterProject
             // TODO: This line of code loads data into the 'storeDB_Purchases2.PURCHASE' table. You can move, or remove it, as needed.
             //this.pURCHASETableAdapter1.Fill(db.PURCHASEs.Where(row => row.CustomerId == LoggedInCustomerId);
 
-            BindCartItemsToViewControl();
-            BindCustomerPurchasesToPastPurchaseViewControl();
+            RefreshCartItemsViewControl();
+            RefreshPastPurchasesViewControl();
             RefreshDisplayedBalance();
-            LoadStoreItemsIntoGUI(GetStoreItems(CurrentPageNum));
+            LoadStoreItemsIntoGui(GetStoreItems(CurrentPageNum));
             if (IsAnotherItem)
             {
                 btnNextPage.Enabled = true;
             }
         }
 
-        private void BindCartItemsToViewControl()
+        private void RefreshCartItemsViewControl()
         {
             // todo below not showing actual cart items, and doesn't show even the headers unless using ToList(). likely because DataSource type needs to be a list and once we use ToList()
             // then that list is never updated when underlying item is
@@ -71,23 +71,18 @@ namespace SemesterProject
             // solution might be to have a RefreshCartItems method that reruns the below select query with a ToList() call and then calls dgvCartItems.Update() and .Refresh().
             // then, we'll call the RefreshCartItems method whenever cart needs to be updated (?). or maybe on binding complete?
             // (this can maybe also be instead of this bind method)
-            dgvCartItems.DataSource = CartItems.Select(item =>
-                    new
-                    {
-                        item.Manufacturer,
-                        item.ProductName,
-                        item.UnitPrice,
-                        Quantity = item.QuantitySelected,
-                        Price = item.UnitPrice * item.QuantitySelected
-                    })
+            dgvCartItems.DataSource = CartItems.Select(item => new
+                {
+                    item.Manufacturer,
+                    item.ProductName,
+                    item.UnitPrice,
+                    Quantity = item.QuantitySelected,
+                    Price = item.UnitPrice * item.QuantitySelected
+                })
                 .ToList();
-
-            // hide unwanted columns on DataBindingComplete event so that columns stay hidden. If we just hide the columns once at load, it is inconsistent if they remain hidden.
-            //DataGridViewBindingCompleteEventHandler hideStoreItemColumn = new DataGridViewBindingCompleteEventHandler((_sender, _e) => dgvCartItems.Columns["StoreItem"].Visible = false);
-            //dgvCartItems.DataBindingComplete += hideStoreItemColumn;
         }
 
-        private void BindCustomerPurchasesToPastPurchaseViewControl()
+        private void RefreshPastPurchasesViewControl()
         {
             // todo implement filters, refresh purchases on purchase made in GUI
             // todo get store items for each purchase and display? or only total and total quantity?
@@ -101,17 +96,11 @@ namespace SemesterProject
                         string.Join(", ",
                             p.PURCHASE_STORE_ITEMs.Select(item =>
                                 $"({item.Quantity}) {item.STORE_ITEM.Manufacturer + " " + item.STORE_ITEM.ProductName} - {item.UnitPrice * item.Quantity}"))
-                });
-
-            // hide unwanted columns on DataBindingComplete event so that columns stay hidden. If we just hide the columns once at load, it is inconsistent if they remain hidden.
-            //DataGridViewBindingCompleteEventHandler hideUnwantedColumns = new DataGridViewBindingCompleteEventHandler((_sender, _e) =>
-            //{
-            //    dgvPastPurchases.Columns["PurchaseId"].Visible = false;
-            //    dgvPastPurchases.Columns["CustomerId"].Visible = false;
-            //    dgvPastPurchases.Columns["Customer"].Visible = false;
-
-            //});
-            //dgvPastPurchases.DataBindingComplete += hideUnwantedColumns;
+                })
+                .ToList();
+            dgvPastPurchases.AutoResizeColumns();
+            dgvPastPurchases.Update();
+            dgvPastPurchases.Refresh();
         }
 
         #endregion
@@ -122,7 +111,7 @@ namespace SemesterProject
         /// Go through each of the storeItems and populate each GUI listing with the item's details.
         /// </summary>
         /// <param name="storeItems">The items to populate the GUI listings with</param>
-        private void LoadStoreItemsIntoGUI(IEnumerable<STORE_ITEM> storeItems)
+        private void LoadStoreItemsIntoGui(IEnumerable<STORE_ITEM> storeItems)
         {
             // current implementation of this method circles around and overwrites listings if more storeItems contains more than NumItemsPerPage
             // todo should we circle around though?
@@ -193,7 +182,7 @@ namespace SemesterProject
         {
             CurrentPageNum++;
             RefreshLblPageNum();
-            LoadStoreItemsIntoGUI(GetStoreItems(CurrentPageNum));
+            LoadStoreItemsIntoGui(GetStoreItems(CurrentPageNum));
 
             btnPreviousPage.Enabled = true;
             bool IsNoMoreCachedItems = CurrentPageNum * NumItemsPerPage >= CachedStoreItems.Count / NumItemsPerPage;
@@ -207,7 +196,7 @@ namespace SemesterProject
         {
             CurrentPageNum--;
             RefreshLblPageNum();
-            LoadStoreItemsIntoGUI(GetStoreItems(CurrentPageNum));
+            LoadStoreItemsIntoGui(GetStoreItems(CurrentPageNum));
 
             btnNextPage.Enabled = true;
             if (CurrentPageNum == 0)
@@ -454,5 +443,23 @@ namespace SemesterProject
         }
 
         #endregion
+
+        // Purchases tab may be immediately visible without being directly selected, so we refresh the purchases view when it becomes visible
+        private void tc_Balance_Purchases_VisibleChanged(object sender, EventArgs e)
+        {
+            if (tpPurchases.Visible)
+            {
+                RefreshPastPurchasesViewControl();
+            }
+        }
+
+        // When purchases tab is directly selected, refresh purchases view
+        private void tc_Balance_Purchases_Selecting(object sender, TabControlCancelEventArgs e)
+        {
+            if (e.TabPage == tpPurchases)
+            {
+                RefreshPastPurchasesViewControl();
+            }
+        }
     }
 }
