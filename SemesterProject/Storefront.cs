@@ -55,11 +55,7 @@ namespace SemesterProject
             //RefreshCartItemsViewControl();
             //RefreshPastPurchasesViewControl();
             RefreshDisplayedBalance();
-            LoadStoreItemsIntoGui(GetStoreItems(CurrentPageNum));
-            if (IsAnotherItem)
-            {
-                btnNextPage.Enabled = true;
-            }
+            RefreshListingsTab();
         }
 
         #endregion
@@ -71,6 +67,16 @@ namespace SemesterProject
 
         #region ListingLoading
 
+        private void RefreshListingsTab()
+        {
+            LoadStoreItemsIntoGui(GetStoreItems(CurrentPageNum));
+            RefreshLblPageNum();
+            if (IsAnotherItem)
+            {
+                btnNextPage.Enabled = true;
+            }
+        }
+
         /// <summary>
         /// Go through each of the storeItems and populate each GUI listing with the item's details.
         /// </summary>
@@ -79,6 +85,7 @@ namespace SemesterProject
         {
             // current implementation of this method circles around and overwrites listings if more storeItems contains more than NumItemsPerPage
             // todo should we circle around though?
+            // also, at the very least, just put in the last 4 items, no need to overwrite the listings - it is wasted work
             int i = 0;
             foreach (STORE_ITEM storeItem in storeItems)
             {
@@ -143,8 +150,7 @@ namespace SemesterProject
         private void btnNextPage_Click(object sender, EventArgs e)
         {
             CurrentPageNum++;
-            RefreshLblPageNum();
-            LoadStoreItemsIntoGui(GetStoreItems(CurrentPageNum));
+            RefreshListingsTab();
 
             btnPreviousPage.Enabled = true;
             bool IsNoMoreCachedItems = CurrentPageNum * NumItemsPerPage >= CachedStoreItems.Count / NumItemsPerPage;
@@ -157,8 +163,7 @@ namespace SemesterProject
         private void btnPreviousPage_Click(object sender, EventArgs e)
         {
             CurrentPageNum--;
-            RefreshLblPageNum();
-            LoadStoreItemsIntoGui(GetStoreItems(CurrentPageNum));
+            RefreshListingsTab();
 
             btnNextPage.Enabled = true;
             if (CurrentPageNum == 0)
@@ -206,6 +211,12 @@ namespace SemesterProject
         #endregion
 
         #region Cart
+        private void RefreshCartTab()
+        {
+            RefreshCartButtonsEnabledStatus();
+            RefreshCartSummary();
+            RefreshCartItemsViewControl();
+        }
 
         // Cart tab may be immediately visible without being directly selected, so we refresh the purchases view when it becomes visible
         private void tc_Listings_Cart_VisibleChanged(object sender, EventArgs e)
@@ -223,13 +234,6 @@ namespace SemesterProject
             {
                 RefreshCartTab();
             }
-        }
-
-        private void RefreshCartTab()
-        {
-            RefreshCartButtonsEnabledStatus();
-            RefreshCartSummary();
-            RefreshCartItemsViewControl();
         }
 
         private void RefreshCartItemsViewControl()
