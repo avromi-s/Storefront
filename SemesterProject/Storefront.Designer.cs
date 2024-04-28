@@ -701,9 +701,10 @@ namespace SemesterProject
             // lblCurrentBalance
             // 
             this.lblCurrentBalance.AutoSize = true;
+            this.lblCurrentBalance.Font = new System.Drawing.Font("Microsoft Sans Serif", 15F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblCurrentBalance.Location = new System.Drawing.Point(6, 18);
             this.lblCurrentBalance.Name = "lblCurrentBalance";
-            this.lblCurrentBalance.Size = new System.Drawing.Size(162, 17);
+            this.lblCurrentBalance.Size = new System.Drawing.Size(286, 29);
             this.lblCurrentBalance.TabIndex = 0;
             this.lblCurrentBalance.Text = "Current Balance: $__.__";
             // 

@@ -14,7 +14,7 @@ namespace SemesterProject
     {
         public bool Successful { get; private set; } = false;
         private CUSTOMER _customer;
-        public CUSTOMER Customer  // todo change to just a property with private set, no backing val needed
+        public CUSTOMER Customer
         {
             get
             {

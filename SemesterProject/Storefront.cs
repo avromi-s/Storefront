@@ -20,6 +20,8 @@ namespace SemesterProject
         // todo separate different sections of the GUI Store into classes within Storefront class for better organization, instead of just regions
         //      Store > Listings, Store > Cart, & Account > Balance, Account > Purchases
         // todo manage when less than 4 items in store > remove item triggers exception because iterating over all 4 listings, also, other 3 items should be disabled
+        // todo username & likely also password not case sensitive
+        // todo make balance label red or green based on positive or negative balance
         private DataClasses1DataContext db;
         private IEnumerator<STORE_ITEM> AllStoreItems;
         private List<STORE_ITEM> CachedStoreItems = new List<STORE_ITEM>();
