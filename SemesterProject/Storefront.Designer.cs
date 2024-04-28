@@ -147,6 +147,8 @@ namespace SemesterProject
             this.tc_Store_Account.SelectedIndex = 0;
             this.tc_Store_Account.Size = new System.Drawing.Size(1022, 776);
             this.tc_Store_Account.TabIndex = 11;
+            this.tc_Store_Account.Selecting += new System.Windows.Forms.TabControlCancelEventHandler(this.tc_Store_Account_Selecting);
+            this.tc_Store_Account.VisibleChanged += new System.EventHandler(this.tc_Store_Account_VisibleChanged);
             // 
             // tpStore
             // 

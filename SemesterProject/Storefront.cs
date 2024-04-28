@@ -43,8 +43,6 @@ namespace SemesterProject
             this.LoggedInCustomer = loggedInCustomer;
         }
 
-        #region Store
-
         #region Setup
 
         // On load, set up cart data source
@@ -64,6 +62,11 @@ namespace SemesterProject
         }
 
         #endregion
+
+
+        #region Store
+
+        #region Listings
 
         #region ListingLoading
 
@@ -136,8 +139,6 @@ namespace SemesterProject
 
         #endregion
 
-        #region ListingManagement
-
         private void btnNextPage_Click(object sender, EventArgs e)
         {
             CurrentPageNum++;
@@ -203,7 +204,35 @@ namespace SemesterProject
 
         #endregion
 
-        #region CartManagement
+        #region Cart
+
+        // Cart tab may be immediately visible without being directly selected, so we refresh the purchases view when it becomes visible
+        private void tc_Store_Account_VisibleChanged(object sender, EventArgs e)
+        {
+            RefreshCartItemsViewControl();
+        }
+
+        // When cart tab is directly selected, refresh purchases view
+        private void tc_Store_Account_Selecting(object sender, TabControlCancelEventArgs e)
+        {
+            RefreshCartItemsViewControl();
+        }
+
+        private void RefreshCartItemsViewControl()
+        {
+            dgvCartItems.DataSource = CartItems.Select(item => new
+                {
+                    item.Manufacturer,
+                    item.ProductName,
+                    item.UnitPrice,
+                    Quantity = item.QuantitySelected,
+                    Price = item.UnitPrice * item.QuantitySelected
+                })
+                .ToList();
+            dgvCartItems.AutoResizeColumns();
+            dgvCartItems.Update();
+            dgvCartItems.Refresh();
+        }
 
         private void AddItemToCart(CartItem cartItem, Control controlToUpdate)
         {
@@ -330,25 +359,6 @@ namespace SemesterProject
             RefreshCartSummary();
         }
 
-        private void RefreshCartItemsViewControl()
-        {
-            // todo below not showing actual cart items, and doesn't show even the headers unless using ToList(). likely because DataSource type needs to be a list and once we use ToList()
-            // then that list is never updated when underlying item is
-            // this is likely an issue for past purchase view as well, it likely doesn't show new purchases made except for ones already in the db on gui load
-            // solution might be to have a RefreshCartItems method that reruns the below select query with a ToList() call and then calls dgvCartItems.Update() and .Refresh().
-            // then, we'll call the RefreshCartItems method whenever cart needs to be updated (?). or maybe on binding complete?
-            // (this can maybe also be instead of this bind method)
-            dgvCartItems.DataSource = CartItems.Select(item => new
-            {
-                item.Manufacturer,
-                item.ProductName,
-                item.UnitPrice,
-                Quantity = item.QuantitySelected,
-                Price = item.UnitPrice * item.QuantitySelected
-            })
-                .ToList();
-        }
-
         private void RefreshCartButtonsEnabledStatus()
         {
             // todo this should really be two separate methods maybe because doing 2 separate things (2 buttons)
@@ -393,6 +403,7 @@ namespace SemesterProject
 
         #endregion
 
+
         #region Account
 
         #region Balance
@@ -423,7 +434,6 @@ namespace SemesterProject
             lblCurrentBalance.Text = $"Current Balance: ${LoggedInCustomer.Balance}";
         }
 
-
         #endregion
 
         #region Purchases
@@ -448,8 +458,7 @@ namespace SemesterProject
 
         private void RefreshPastPurchasesViewControl()
         {
-            // todo implement filters, refresh purchases on purchase made in GUI
-            // todo get store items for each purchase and display? or only total and total quantity?
+            // todo implement filters
             dgvPastPurchases.DataSource = db.PURCHASEs.Where(p => p.CUSTOMER == LoggedInCustomer)
                 .Select(p => new
                 {
