@@ -27,13 +27,10 @@ namespace SemesterProject
         private BindingList<CartItem> CartItems = new BindingList<CartItem>();
         private bool IsAnotherItem { get; set; } // todo naming
 
-        private readonly int NumItemsPerPage = 4; // todo maybe derive from gui
+        private readonly int NUM_LISTINGS_PER_PAGE = 4; // todo maybe derive from gui
         private int CurrentPageNum = 0; // 0-indexed for easy use with collections
 
-        private int CurrentPageNumDisplay // 1-indexed for user display
-        {
-            get { return CurrentPageNum + 1; }
-        }
+        private int CurrentPageNumDisplay => CurrentPageNum + 1; // 1-indexed for user display
 
         public Storefront(DataClasses1DataContext db, CUSTOMER loggedInCustomer)
         {
@@ -43,25 +40,33 @@ namespace SemesterProject
             this.LoggedInCustomer = loggedInCustomer;
         }
 
-        #region Setup
+        #region Store
 
-        // On load, set up cart data source
-        private void Storefront_Load(object sender, EventArgs e)
+        // When a tab is directly selected, refresh it
+        private void tc_Listings_Cart_Selecting(object sender, TabControlCancelEventArgs e)
         {
-            // TODO: This line of code loads data into the 'storeDB_Purchases2.PURCHASE' table. You can move, or remove it, as needed.
-            //this.pURCHASETableAdapter1.Fill(db.PURCHASEs.Where(row => row.CustomerId == LoggedInCustomerId);
-
-            // todo below refreshes shouldn't be needed since they should automatically be called based on the visible / selected handlers once they come into view
-            //RefreshCartItemsViewControl();
-            //RefreshPastPurchasesViewControl();
-            RefreshDisplayedBalance();
-            RefreshListingsTab();
+            if (e.TabPage == tpListings)
+            {
+                RefreshListingsTab();
+            }
+            else if (e.TabPage == tpCart)
+            {
+                RefreshCartTab();
+            }
         }
 
-        #endregion
-
-
-        #region Store
+        // A tab may be immediately visible without being directly selected, so we refresh a tab when it becomes visible
+        private void tc_Listings_Cart_VisibleChanged(object sender, EventArgs e)
+        {
+            if (tpListings.Visible)
+            {
+                RefreshListingsTab();
+            }
+            else if (tpCart.Visible)
+            {
+                RefreshCartTab();
+            }
+        }
 
         #region Listings
 
@@ -83,7 +88,7 @@ namespace SemesterProject
         /// <param name="storeItems">The items to populate the GUI listings with</param>
         private void LoadStoreItemsIntoGui(IEnumerable<STORE_ITEM> storeItems)
         {
-            // current implementation of this method circles around and overwrites listings if more storeItems contains more than NumItemsPerPage
+            // current implementation of this method circles around and overwrites listings if more storeItems contains more than NUM_LISTINGS_PER_PAGE
             // todo should we circle around though?
             // also, at the very least, just put in the last 4 items, no need to overwrite the listings - it is wasted work
             int i = 0;
@@ -97,7 +102,7 @@ namespace SemesterProject
                 RefreshQuantityControlLimitsForListing(i);
 
                 i = (i + 1) %
-                    NumItemsPerPage; // move to next listing to update, reset to the first listing (index 0) if we move past the last listing
+                    NUM_LISTINGS_PER_PAGE; // move to next listing to update, reset to the first listing (index 0) if we move past the last listing
             }
         }
 
@@ -116,17 +121,17 @@ namespace SemesterProject
 
             // get any items from cache before retrieving from the db
             int i = 0;
-            bool desiredItemIsCached = (pageNum * NumItemsPerPage + i) < CachedStoreItems.Count;
-            while (desiredItemIsCached && i < NumItemsPerPage)
+            bool desiredItemIsCached = (pageNum * NUM_LISTINGS_PER_PAGE + i) < CachedStoreItems.Count;
+            while (desiredItemIsCached && i < NUM_LISTINGS_PER_PAGE)
             {
-                yield return CachedStoreItems[pageNum * NumItemsPerPage + i];
+                yield return CachedStoreItems[pageNum * NUM_LISTINGS_PER_PAGE + i];
                 i++;
-                desiredItemIsCached = (pageNum * NumItemsPerPage + i) < CachedStoreItems.Count;
+                desiredItemIsCached = (pageNum * NUM_LISTINGS_PER_PAGE + i) < CachedStoreItems.Count;
             }
 
             // retrieve the rest of the items from the db (unless we already retrieved all items
-            // (i.e., i == NumItemsPerPage), and/or until there are no more items left)
-            for (; i < NumItemsPerPage && IsAnotherItem; i++)
+            // (i.e., i == NUM_LISTINGS_PER_PAGE), and/or until there are no more items left)
+            for (; i < NUM_LISTINGS_PER_PAGE && IsAnotherItem; i++)
             {
                 STORE_ITEM storeItem = AllStoreItems.Current;
                 CachedStoreItems
@@ -153,7 +158,7 @@ namespace SemesterProject
             RefreshListingsTab();
 
             btnPreviousPage.Enabled = true;
-            bool IsNoMoreCachedItems = CurrentPageNum * NumItemsPerPage >= CachedStoreItems.Count / NumItemsPerPage;
+            bool IsNoMoreCachedItems = CurrentPageNum * NUM_LISTINGS_PER_PAGE >= CachedStoreItems.Count / NUM_LISTINGS_PER_PAGE;
             if (IsNoMoreCachedItems && !IsAnotherItem)
             {
                 btnNextPage.Enabled = false;
@@ -186,7 +191,7 @@ namespace SemesterProject
 
         private void RefreshQuantityControlLimitsForListing(int listingIndex)
         {
-            STORE_ITEM storeItem = CachedStoreItems[(CurrentPageNum * NumItemsPerPage) + listingIndex];
+            STORE_ITEM storeItem = CachedStoreItems[(CurrentPageNum * NUM_LISTINGS_PER_PAGE) + listingIndex];
             int totalQtyAvail = storeItem.QuantityAvailable;
             int qtyInCart;
             if (CartItems.Any(item => item.GetStoreItem() == storeItem))
@@ -211,29 +216,12 @@ namespace SemesterProject
         #endregion
 
         #region Cart
+
         private void RefreshCartTab()
         {
             RefreshCartButtonsEnabledStatus();
             RefreshCartSummary();
             RefreshCartItemsViewControl();
-        }
-
-        // Cart tab may be immediately visible without being directly selected, so we refresh the purchases view when it becomes visible
-        private void tc_Listings_Cart_VisibleChanged(object sender, EventArgs e)
-        {
-            if (tpCart.Visible)
-            {
-                RefreshCartTab();
-            }
-        }
-
-        // When cart tab is directly selected, refresh purchases view
-        private void tc_Listings_Cart_Selecting(object sender, TabControlCancelEventArgs e)
-        {
-            if (e.TabPage == tpCart)
-            {
-                RefreshCartTab();
-            }
         }
 
         private void RefreshCartItemsViewControl()
@@ -270,7 +258,7 @@ namespace SemesterProject
             int quantitySelected =
                 Convert.ToInt32((pnlAllListings.Controls["pnlListing" + listingIndex]
                     .Controls["nudQuantity" + listingIndex] as NumericUpDown).Value);
-            STORE_ITEM storeItem = CachedStoreItems[(CurrentPageNum * NumItemsPerPage) + listingIndex];
+            STORE_ITEM storeItem = CachedStoreItems[(CurrentPageNum * NUM_LISTINGS_PER_PAGE) + listingIndex];
             return new CartItem(storeItem, quantitySelected);
         }
 
@@ -386,7 +374,7 @@ namespace SemesterProject
 
             if (refreshQtyLimits)
             {
-                for (int i = 0; i < NumItemsPerPage; i++)
+                for (int i = 0; i < NUM_LISTINGS_PER_PAGE; i++)
                 {
                     // todo this is a bit wasteful because we really only need to update the listing for the items that were removed, not all items. 
                     // move this into the foreach loop maybe and refresh the listings based on the items being removed
@@ -406,10 +394,41 @@ namespace SemesterProject
 
         #endregion
 
-
         #region Account
 
+        // When a tab is directly selected, refresh it
+        private void tc_Balance_Purchases_Selecting(object sender, TabControlCancelEventArgs e)
+        {
+            if (e.TabPage == tpPurchases)
+            {
+                RefreshPurchasesTab();
+            }
+            else if (e.TabPage == tpAccount)
+            {
+                RefreshBalanceTab();
+            }
+        }
+
+        // A tab may be immediately visible without being directly selected, so we refresh a tab when it becomes visible
+        private void tc_Balance_Purchases_VisibleChanged(object sender, EventArgs e)
+        {
+            if (tpPurchases.Visible)
+            {
+                RefreshPurchasesTab();
+            }
+            else if (tpAccount.Visible)
+            {
+                RefreshBalanceTab();
+            }
+        }
+
         #region Balance
+
+        private void RefreshBalanceTab()
+        {
+            RefreshDisplayedBalance();
+            // todo can delete if not being used, just created for symmetry/potential future use
+        }
 
         private void btnPayToBalance_Click(object sender, EventArgs e)
         {
@@ -441,25 +460,12 @@ namespace SemesterProject
 
         #region Purchases
 
-        // Purchases tab may be immediately visible without being directly selected, so we refresh the purchases view when it becomes visible
-        private void tc_Balance_Purchases_VisibleChanged(object sender, EventArgs e)
+        private void RefreshPurchasesTab()
         {
-            if (tpPurchases.Visible)
-            {
-                RefreshPastPurchasesViewControl();
-            }
+            RefreshPurchasesViewControl();
         }
 
-        // When purchases tab is directly selected, refresh purchases view
-        private void tc_Balance_Purchases_Selecting(object sender, TabControlCancelEventArgs e)
-        {
-            if (e.TabPage == tpPurchases)
-            {
-                RefreshPastPurchasesViewControl();
-            }
-        }
-
-        private void RefreshPastPurchasesViewControl()
+        private void RefreshPurchasesViewControl()
         {
             // todo implement filters
             dgvPastPurchases.DataSource = db.PURCHASEs.Where(p => p.CUSTOMER == LoggedInCustomer)

@@ -859,7 +859,6 @@ namespace SemesterProject
             this.Controls.Add(this.tc_Store_Account);
             this.Name = "Storefront";
             this.Text = "Storefront";
-            this.Load += new System.EventHandler(this.Storefront_Load);
             this.tc_Store_Account.ResumeLayout(false);
             this.tpStore.ResumeLayout(false);
             this.tc_Listings_Cart.ResumeLayout(false);
