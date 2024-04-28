@@ -416,6 +416,8 @@ namespace SemesterProject
 
         #region Account
 
+        #region Balance
+
         private void btnPayToBalance_Click(object sender, EventArgs e)
         {
             // todo round nud value on validate. see: https://stackoverflow.com/questions/21811303/numericupdown-value-not-rounded-to-decimalplaces
@@ -442,7 +444,10 @@ namespace SemesterProject
             lblCurrentBalance.Text = $"Current Balance: ${LoggedInCustomer.Balance}";
         }
 
+
         #endregion
+
+        #region Purchases
 
         // Purchases tab may be immediately visible without being directly selected, so we refresh the purchases view when it becomes visible
         private void tc_Balance_Purchases_VisibleChanged(object sender, EventArgs e)
@@ -461,5 +466,9 @@ namespace SemesterProject
                 RefreshPastPurchasesViewControl();
             }
         }
+
+        #endregion
+
+        #endregion
     }
 }
