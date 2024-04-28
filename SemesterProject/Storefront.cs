@@ -14,7 +14,7 @@ namespace SemesterProject
     public partial class Storefront : Form
     {
         // todo add db trigger or application function to update store_item quantity on purchase made
-        // todo all add db trigger to update customer balance on purchase made
+        // todo add db trigger to update customer balance on purchase made
         // maybe do application logic for above 2, or above 1 (for balance). This way it is clear when viewing code that it's getting updated and how.
         // todo fix currency display accross all displays
         // todo separate different sections of the GUI Store into classes within Storefront class for better organization, instead of just regions
@@ -67,6 +67,8 @@ namespace SemesterProject
         private void BindCartItemsToViewControl()
         {
             dgvCartItems.DataSource = CartItems;
+
+            // hide unwanted columns on DataBindingComplete event so that columns stay hidden. If we just hide the columns once at load, it is inconsistent if they remain hidden.
             DataGridViewBindingCompleteEventHandler hideStoreItemColumn = new DataGridViewBindingCompleteEventHandler((_sender, _e) => dgvCartItems.Columns["StoreItem"].Visible = false);
             dgvCartItems.DataBindingComplete += hideStoreItemColumn;
         }
@@ -76,8 +78,16 @@ namespace SemesterProject
             // todo hide unwanted columns, implement filters, refresh purchases on purchase made in GUI
             // todo get store items for each purchase and display? or only total and total quantity?
             dgvPastPurchases.DataSource = db.PURCHASEs.Where(p => p.CUSTOMER == LoggedInCustomer);
-            //DataGridViewBindingCompleteEventHandler hideStoreItemColumn = new DataGridViewBindingCompleteEventHandler((_sender, _e) => dgvPastPurchases.Columns["StoreItem"].Visible = false);
-            //dgvPastPurchases.DataBindingComplete += hideStoreItemColumn;
+            
+            // hide unwanted columns on DataBindingComplete event so that columns stay hidden. If we just hide the columns once at load, it is inconsistent if they remain hidden.
+            DataGridViewBindingCompleteEventHandler hideUnwantedColumns = new DataGridViewBindingCompleteEventHandler((_sender, _e) => 
+            {
+                dgvPastPurchases.Columns["PurchaseId"].Visible = false;
+                dgvPastPurchases.Columns["CustomerId"].Visible = false;
+                dgvPastPurchases.Columns["Customer"].Visible = false;
+
+            });
+            dgvPastPurchases.DataBindingComplete += hideUnwantedColumns;
         }
 
         #endregion
