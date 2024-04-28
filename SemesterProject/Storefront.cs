@@ -51,6 +51,7 @@ namespace SemesterProject
             // TODO: This line of code loads data into the 'storeDB_Purchases2.PURCHASE' table. You can move, or remove it, as needed.
             //this.pURCHASETableAdapter1.Fill(db.PURCHASEs.Where(row => row.CustomerId == LoggedInCustomerId);
 
+            // todo below refreshes shouldn't be needed since they should automatically be called based on the visible / selected handlers once they come into view
             RefreshCartItemsViewControl();
             RefreshPastPurchasesViewControl();
             RefreshDisplayedBalance();
@@ -207,19 +208,30 @@ namespace SemesterProject
         #region Cart
 
         // Cart tab may be immediately visible without being directly selected, so we refresh the purchases view when it becomes visible
-        private void tc_Store_Account_VisibleChanged(object sender, EventArgs e)
+        private void tc_Listings_Cart_VisibleChanged(object sender, EventArgs e)
         {
-            RefreshCartItemsViewControl();
+            if (tpCart.Visible)
+            {
+                RefreshCartButtonsEnabledStatus();
+                RefreshCartSummary();
+                RefreshCartItemsViewControl();
+            }
         }
 
         // When cart tab is directly selected, refresh purchases view
-        private void tc_Store_Account_Selecting(object sender, TabControlCancelEventArgs e)
+        private void tc_Listings_Cart_Selecting(object sender, TabControlCancelEventArgs e)
         {
-            RefreshCartItemsViewControl();
+            if (e.TabPage == tpCart)
+            {
+                RefreshCartButtonsEnabledStatus();
+                RefreshCartSummary();
+                RefreshCartItemsViewControl();
+            }
         }
 
         private void RefreshCartItemsViewControl()
         {
+            // this method needs to be called whenever the cart tab comes into view and whenever the cart items change while the user is on the cart page
             dgvCartItems.DataSource = CartItems.ToList();
             dgvCartItems.AutoResizeColumns();
             dgvCartItems.Update();
@@ -242,7 +254,6 @@ namespace SemesterProject
 
             controlToUpdate.Text +=
                 "\nItem added to cart"; // todo this can be updated to be a checkbox or something non-text that updates on add to cart
-            RefreshCartItemsViewControl();
         }
 
         private CartItem GetCartItemForListing(int listingIndex)
@@ -344,12 +355,6 @@ namespace SemesterProject
             RefreshCartButtonsEnabledStatus();
             RefreshCartSummary();
             RefreshCartItemsViewControl();
-        }
-
-        private void tpCart_Enter(object sender, EventArgs e)
-        {
-            RefreshCartButtonsEnabledStatus();
-            RefreshCartSummary();
         }
 
         private void RefreshCartButtonsEnabledStatus()

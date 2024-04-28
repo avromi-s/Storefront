@@ -35,7 +35,7 @@ namespace SemesterProject
             this.tc_Store_Account = new System.Windows.Forms.TabControl();
             this.tpStore = new System.Windows.Forms.TabPage();
             this.tc_Listings_Cart = new System.Windows.Forms.TabControl();
-            this.tbListings = new System.Windows.Forms.TabPage();
+            this.tpListings = new System.Windows.Forms.TabPage();
             this.pnlAllListings = new System.Windows.Forms.Panel();
             this.pnlListing3 = new System.Windows.Forms.Panel();
             this.label3 = new System.Windows.Forms.Label();
@@ -102,7 +102,7 @@ namespace SemesterProject
             this.tc_Store_Account.SuspendLayout();
             this.tpStore.SuspendLayout();
             this.tc_Listings_Cart.SuspendLayout();
-            this.tbListings.SuspendLayout();
+            this.tpListings.SuspendLayout();
             this.pnlAllListings.SuspendLayout();
             this.pnlListing3.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.nudQuantity3)).BeginInit();
@@ -147,8 +147,6 @@ namespace SemesterProject
             this.tc_Store_Account.SelectedIndex = 0;
             this.tc_Store_Account.Size = new System.Drawing.Size(1022, 776);
             this.tc_Store_Account.TabIndex = 11;
-            this.tc_Store_Account.Selecting += new System.Windows.Forms.TabControlCancelEventHandler(this.tc_Store_Account_Selecting);
-            this.tc_Store_Account.VisibleChanged += new System.EventHandler(this.tc_Store_Account_VisibleChanged);
             // 
             // tpStore
             // 
@@ -163,25 +161,27 @@ namespace SemesterProject
             // 
             // tc_Listings_Cart
             // 
-            this.tc_Listings_Cart.Controls.Add(this.tbListings);
+            this.tc_Listings_Cart.Controls.Add(this.tpListings);
             this.tc_Listings_Cart.Controls.Add(this.tpCart);
             this.tc_Listings_Cart.Location = new System.Drawing.Point(7, 7);
             this.tc_Listings_Cart.Name = "tc_Listings_Cart";
             this.tc_Listings_Cart.SelectedIndex = 0;
             this.tc_Listings_Cart.Size = new System.Drawing.Size(1001, 734);
             this.tc_Listings_Cart.TabIndex = 0;
+            this.tc_Listings_Cart.Selecting += new System.Windows.Forms.TabControlCancelEventHandler(this.tc_Listings_Cart_Selecting);
+            this.tc_Listings_Cart.VisibleChanged += new System.EventHandler(this.tc_Listings_Cart_VisibleChanged);
             // 
-            // tbListings
+            // tpListings
             // 
-            this.tbListings.Controls.Add(this.pnlAllListings);
-            this.tbListings.Controls.Add(this.groupBox1);
-            this.tbListings.Location = new System.Drawing.Point(4, 25);
-            this.tbListings.Name = "tbListings";
-            this.tbListings.Padding = new System.Windows.Forms.Padding(3);
-            this.tbListings.Size = new System.Drawing.Size(993, 705);
-            this.tbListings.TabIndex = 0;
-            this.tbListings.Text = "Listings";
-            this.tbListings.UseVisualStyleBackColor = true;
+            this.tpListings.Controls.Add(this.pnlAllListings);
+            this.tpListings.Controls.Add(this.groupBox1);
+            this.tpListings.Location = new System.Drawing.Point(4, 25);
+            this.tpListings.Name = "tpListings";
+            this.tpListings.Padding = new System.Windows.Forms.Padding(3);
+            this.tpListings.Size = new System.Drawing.Size(993, 705);
+            this.tpListings.TabIndex = 0;
+            this.tpListings.Text = "Listings";
+            this.tpListings.UseVisualStyleBackColor = true;
             // 
             // pnlAllListings
             // 
@@ -554,7 +554,6 @@ namespace SemesterProject
             this.tpCart.TabIndex = 1;
             this.tpCart.Text = "Cart";
             this.tpCart.UseVisualStyleBackColor = true;
-            this.tpCart.Enter += new System.EventHandler(this.tpCart_Enter);
             // 
             // lblCartSummary
             // 
@@ -864,7 +863,7 @@ namespace SemesterProject
             this.tc_Store_Account.ResumeLayout(false);
             this.tpStore.ResumeLayout(false);
             this.tc_Listings_Cart.ResumeLayout(false);
-            this.tbListings.ResumeLayout(false);
+            this.tpListings.ResumeLayout(false);
             this.pnlAllListings.ResumeLayout(false);
             this.pnlListing3.ResumeLayout(false);
             this.pnlListing3.PerformLayout();
@@ -913,7 +912,7 @@ namespace SemesterProject
         private System.Windows.Forms.TabPage tpBalance;
         private System.Windows.Forms.TabPage tpPurchases;
         private System.Windows.Forms.TabControl tc_Listings_Cart;
-        private System.Windows.Forms.TabPage tbListings;
+        private System.Windows.Forms.TabPage tpListings;
         private System.Windows.Forms.Panel pnlAllListings;
         private System.Windows.Forms.Panel pnlListing3;
         private System.Windows.Forms.Label label3;
