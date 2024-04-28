@@ -63,46 +63,6 @@ namespace SemesterProject
             }
         }
 
-        private void RefreshCartItemsViewControl()
-        {
-            // todo below not showing actual cart items, and doesn't show even the headers unless using ToList(). likely because DataSource type needs to be a list and once we use ToList()
-            // then that list is never updated when underlying item is
-            // this is likely an issue for past purchase view as well, it likely doesn't show new purchases made except for ones already in the db on gui load
-            // solution might be to have a RefreshCartItems method that reruns the below select query with a ToList() call and then calls dgvCartItems.Update() and .Refresh().
-            // then, we'll call the RefreshCartItems method whenever cart needs to be updated (?). or maybe on binding complete?
-            // (this can maybe also be instead of this bind method)
-            dgvCartItems.DataSource = CartItems.Select(item => new
-                {
-                    item.Manufacturer,
-                    item.ProductName,
-                    item.UnitPrice,
-                    Quantity = item.QuantitySelected,
-                    Price = item.UnitPrice * item.QuantitySelected
-                })
-                .ToList();
-        }
-
-        private void RefreshPastPurchasesViewControl()
-        {
-            // todo implement filters, refresh purchases on purchase made in GUI
-            // todo get store items for each purchase and display? or only total and total quantity?
-            dgvPastPurchases.DataSource = db.PURCHASEs.Where(p => p.CUSTOMER == LoggedInCustomer)
-                .Select(p => new
-                {
-                    Date = p.PurchaseDateTime, // todo format to date
-                    OrderTotal = p.TotalPrice, // todo format as currency (with '$')
-                    p.TotalQuantity,
-                    Items = // get summary of items in purchase: // todo extract to method or ToString() method in PURCHASE_STORE_ITEMs class?
-                        string.Join(", ",
-                            p.PURCHASE_STORE_ITEMs.Select(item =>
-                                $"({item.Quantity}) {item.STORE_ITEM.Manufacturer + " " + item.STORE_ITEM.ProductName} - {item.UnitPrice * item.Quantity}"))
-                })
-                .ToList();
-            dgvPastPurchases.AutoResizeColumns();
-            dgvPastPurchases.Update();
-            dgvPastPurchases.Refresh();
-        }
-
         #endregion
 
         #region ListingLoading
@@ -370,6 +330,25 @@ namespace SemesterProject
             RefreshCartSummary();
         }
 
+        private void RefreshCartItemsViewControl()
+        {
+            // todo below not showing actual cart items, and doesn't show even the headers unless using ToList(). likely because DataSource type needs to be a list and once we use ToList()
+            // then that list is never updated when underlying item is
+            // this is likely an issue for past purchase view as well, it likely doesn't show new purchases made except for ones already in the db on gui load
+            // solution might be to have a RefreshCartItems method that reruns the below select query with a ToList() call and then calls dgvCartItems.Update() and .Refresh().
+            // then, we'll call the RefreshCartItems method whenever cart needs to be updated (?). or maybe on binding complete?
+            // (this can maybe also be instead of this bind method)
+            dgvCartItems.DataSource = CartItems.Select(item => new
+            {
+                item.Manufacturer,
+                item.ProductName,
+                item.UnitPrice,
+                Quantity = item.QuantitySelected,
+                Price = item.UnitPrice * item.QuantitySelected
+            })
+                .ToList();
+        }
+
         private void RefreshCartButtonsEnabledStatus()
         {
             // todo this should really be two separate methods maybe because doing 2 separate things (2 buttons)
@@ -465,6 +444,27 @@ namespace SemesterProject
             {
                 RefreshPastPurchasesViewControl();
             }
+        }
+
+        private void RefreshPastPurchasesViewControl()
+        {
+            // todo implement filters, refresh purchases on purchase made in GUI
+            // todo get store items for each purchase and display? or only total and total quantity?
+            dgvPastPurchases.DataSource = db.PURCHASEs.Where(p => p.CUSTOMER == LoggedInCustomer)
+                .Select(p => new
+                {
+                    Date = p.PurchaseDateTime, // todo format to date
+                    OrderTotal = p.TotalPrice, // todo format as currency (with '$')
+                    p.TotalQuantity,
+                    Items = // get summary of items in purchase: // todo extract to method or ToString() method in PURCHASE_STORE_ITEMs class?
+                        string.Join(", ",
+                            p.PURCHASE_STORE_ITEMs.Select(item =>
+                                $"({item.Quantity}) {item.STORE_ITEM.Manufacturer + " " + item.STORE_ITEM.ProductName} - {item.UnitPrice * item.Quantity}"))
+                })
+                .ToList();
+            dgvPastPurchases.AutoResizeColumns();
+            dgvPastPurchases.Update();
+            dgvPastPurchases.Refresh();
         }
 
         #endregion
