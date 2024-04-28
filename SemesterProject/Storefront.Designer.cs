@@ -588,11 +588,12 @@ namespace SemesterProject
             // 
             this.dgvCartItems.AllowUserToAddRows = false;
             this.dgvCartItems.AllowUserToDeleteRows = false;
+            this.dgvCartItems.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.DisplayedCells;
             this.dgvCartItems.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dgvCartItems.Location = new System.Drawing.Point(145, 25);
             this.dgvCartItems.Name = "dgvCartItems";
             this.dgvCartItems.ReadOnly = true;
-            this.dgvCartItems.RowHeadersWidthSizeMode = System.Windows.Forms.DataGridViewRowHeadersWidthSizeMode.AutoSizeToDisplayedHeaders;
+            this.dgvCartItems.RowHeadersWidth = 51;
             this.dgvCartItems.RowTemplate.Height = 24;
             this.dgvCartItems.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.dgvCartItems.Size = new System.Drawing.Size(710, 400);
@@ -832,14 +833,15 @@ namespace SemesterProject
             // 
             this.dgvPastPurchases.AllowUserToAddRows = false;
             this.dgvPastPurchases.AllowUserToDeleteRows = false;
+            this.dgvPastPurchases.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.DisplayedCells;
             this.dgvPastPurchases.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dgvPastPurchases.Location = new System.Drawing.Point(134, 152);
+            this.dgvPastPurchases.Location = new System.Drawing.Point(6, 152);
             this.dgvPastPurchases.Name = "dgvPastPurchases";
             this.dgvPastPurchases.ReadOnly = true;
-            this.dgvPastPurchases.RowHeadersWidthSizeMode = System.Windows.Forms.DataGridViewRowHeadersWidthSizeMode.AutoSizeToDisplayedHeaders;
+            this.dgvPastPurchases.RowHeadersWidth = 51;
             this.dgvPastPurchases.RowTemplate.Height = 24;
             this.dgvPastPurchases.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dgvPastPurchases.Size = new System.Drawing.Size(710, 400);
+            this.dgvPastPurchases.Size = new System.Drawing.Size(959, 400);
             this.dgvPastPurchases.TabIndex = 1;
             // 
             // storeItemListingBindingSource

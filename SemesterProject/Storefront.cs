@@ -25,16 +25,14 @@ namespace SemesterProject
         private List<STORE_ITEM> CachedStoreItems = new List<STORE_ITEM>();
         private readonly CUSTOMER LoggedInCustomer;
         private BindingList<CartItem> CartItems = new BindingList<CartItem>();
-        private bool IsAnotherItem { get; set; }  // todo naming
+        private bool IsAnotherItem { get; set; } // todo naming
 
-        private readonly int NumItemsPerPage = 4;  // todo maybe derive from gui
-        private int CurrentPageNum = 0;  // 0-indexed for easy use with collections
-        private int CurrentPageNumDisplay  // 1-indexed for user display
+        private readonly int NumItemsPerPage = 4; // todo maybe derive from gui
+        private int CurrentPageNum = 0; // 0-indexed for easy use with collections
+
+        private int CurrentPageNumDisplay // 1-indexed for user display
         {
-            get
-            {
-                return CurrentPageNum + 1;
-            }
+            get { return CurrentPageNum + 1; }
         }
 
         public Storefront(DataClasses1DataContext db, CUSTOMER loggedInCustomer)
@@ -48,6 +46,7 @@ namespace SemesterProject
         #region Store
 
         #region Setup
+
         // On load, set up cart data source
         private void Storefront_Load(object sender, EventArgs e)
         {
@@ -66,28 +65,53 @@ namespace SemesterProject
 
         private void BindCartItemsToViewControl()
         {
-            dgvCartItems.DataSource = CartItems;
+            // todo below not showing actual cart items, and doesn't show even the headers unless using ToList(). likely because DataSource type needs to be a list and once we use ToList()
+            // then that list is never updated when underlying item is
+            // this is likely an issue for past purchase view as well, it likely doesn't show new purchases made except for ones already in the db on gui load
+            // solution might be to have a RefreshCartItems method that reruns the below select query with a ToList() call and then calls dgvCartItems.Update() and .Refresh().
+            // then, we'll call the RefreshCartItems method whenever cart needs to be updated (?). or maybe on binding complete?
+            // (this can maybe also be instead of this bind method)
+            dgvCartItems.DataSource = CartItems.Select(item =>
+                    new
+                    {
+                        item.Manufacturer,
+                        item.ProductName,
+                        item.UnitPrice,
+                        Quantity = item.QuantitySelected,
+                        Price = item.UnitPrice * item.QuantitySelected
+                    })
+                .ToList();
 
             // hide unwanted columns on DataBindingComplete event so that columns stay hidden. If we just hide the columns once at load, it is inconsistent if they remain hidden.
-            DataGridViewBindingCompleteEventHandler hideStoreItemColumn = new DataGridViewBindingCompleteEventHandler((_sender, _e) => dgvCartItems.Columns["StoreItem"].Visible = false);
-            dgvCartItems.DataBindingComplete += hideStoreItemColumn;
+            //DataGridViewBindingCompleteEventHandler hideStoreItemColumn = new DataGridViewBindingCompleteEventHandler((_sender, _e) => dgvCartItems.Columns["StoreItem"].Visible = false);
+            //dgvCartItems.DataBindingComplete += hideStoreItemColumn;
         }
 
         private void BindCustomerPurchasesToPastPurchaseViewControl()
         {
-            // todo hide unwanted columns, implement filters, refresh purchases on purchase made in GUI
+            // todo implement filters, refresh purchases on purchase made in GUI
             // todo get store items for each purchase and display? or only total and total quantity?
-            dgvPastPurchases.DataSource = db.PURCHASEs.Where(p => p.CUSTOMER == LoggedInCustomer);
-            
-            // hide unwanted columns on DataBindingComplete event so that columns stay hidden. If we just hide the columns once at load, it is inconsistent if they remain hidden.
-            DataGridViewBindingCompleteEventHandler hideUnwantedColumns = new DataGridViewBindingCompleteEventHandler((_sender, _e) => 
-            {
-                dgvPastPurchases.Columns["PurchaseId"].Visible = false;
-                dgvPastPurchases.Columns["CustomerId"].Visible = false;
-                dgvPastPurchases.Columns["Customer"].Visible = false;
+            dgvPastPurchases.DataSource = db.PURCHASEs.Where(p => p.CUSTOMER == LoggedInCustomer)
+                .Select(p => new
+                {
+                    Date = p.PurchaseDateTime, // todo format to date
+                    OrderTotal = p.TotalPrice, // todo format as currency (with '$')
+                    p.TotalQuantity,
+                    Items = // get summary of items in purchase: // todo extract to method or ToString() method in PURCHASE_STORE_ITEMs class?
+                        string.Join(", ",
+                            p.PURCHASE_STORE_ITEMs.Select(item =>
+                                $"({item.Quantity}) {item.STORE_ITEM.Manufacturer + " " + item.STORE_ITEM.ProductName} - {item.UnitPrice * item.Quantity}"))
+                });
 
-            });
-            dgvPastPurchases.DataBindingComplete += hideUnwantedColumns;
+            // hide unwanted columns on DataBindingComplete event so that columns stay hidden. If we just hide the columns once at load, it is inconsistent if they remain hidden.
+            //DataGridViewBindingCompleteEventHandler hideUnwantedColumns = new DataGridViewBindingCompleteEventHandler((_sender, _e) =>
+            //{
+            //    dgvPastPurchases.Columns["PurchaseId"].Visible = false;
+            //    dgvPastPurchases.Columns["CustomerId"].Visible = false;
+            //    dgvPastPurchases.Columns["Customer"].Visible = false;
+
+            //});
+            //dgvPastPurchases.DataBindingComplete += hideUnwantedColumns;
         }
 
         #endregion
@@ -112,7 +136,8 @@ namespace SemesterProject
                 listing.Controls["rtbMinorItemInfo" + i].Text = sil.FormattedPrice;
                 RefreshQuantityControlLimitsForListing(i);
 
-                i = (i + 1) % NumItemsPerPage;  // move to next listing to update, reset to the first listing (index 0) if we move past the last listing
+                i = (i + 1) %
+                    NumItemsPerPage; // move to next listing to update, reset to the first listing (index 0) if we move past the last listing
             }
         }
 
@@ -144,8 +169,11 @@ namespace SemesterProject
             for (; i < NumItemsPerPage && IsAnotherItem; i++)
             {
                 STORE_ITEM storeItem = AllStoreItems.Current;
-                CachedStoreItems.Add(storeItem);  // cache item before returning in case another method tries to retrieve it already
-                IsAnotherItem = AllStoreItems.MoveNext(); // also, update IsAnotherItem before return so that it is accurate regardless of if this loop finishes (which is dependent on how much the calling method iterates)
+                CachedStoreItems
+                    .Add(storeItem); // cache item before returning in case another method tries to retrieve it already
+                IsAnotherItem =
+                    AllStoreItems
+                        .MoveNext(); // also, update IsAnotherItem before return so that it is accurate regardless of if this loop finishes (which is dependent on how much the calling method iterates)
                 yield return storeItem;
             }
         }
@@ -160,6 +188,7 @@ namespace SemesterProject
         #endregion
 
         #region ListingManagement
+
         private void btnNextPage_Click(object sender, EventArgs e)
         {
             CurrentPageNum++;
@@ -195,7 +224,8 @@ namespace SemesterProject
         private RichTextBox GetRichTextBoxForListing(int listingIndex)
         {
             // todo this can be updated to be a checkbox or something non-text that updates on add to cart
-            return pnlAllListings.Controls["pnlListing" + listingIndex].Controls["rtbMainItemInfo" + listingIndex] as RichTextBox;
+            return pnlAllListings.Controls["pnlListing" + listingIndex]
+                .Controls["rtbMainItemInfo" + listingIndex] as RichTextBox;
         }
 
         private void RefreshQuantityControlLimitsForListing(int listingIndex)
@@ -211,9 +241,12 @@ namespace SemesterProject
             {
                 qtyInCart = 0;
             }
+
             int remainingQty = totalQtyAvail - qtyInCart;
 
-            NumericUpDown nudControl = (pnlAllListings.Controls["pnlListing" + listingIndex].Controls["nudQuantity" + listingIndex] as NumericUpDown);
+            NumericUpDown nudControl =
+                (pnlAllListings.Controls["pnlListing" + listingIndex].Controls["nudQuantity" + listingIndex] as
+                    NumericUpDown);
             nudControl.Maximum = remainingQty;
             nudControl.Value = remainingQty > 0 ? 1 : 0;
             // todo if remainingQty <= 0 disable listing or at least add to cart button?
@@ -222,26 +255,34 @@ namespace SemesterProject
         #endregion
 
         #region CartManagement
+
         private void AddItemToCart(CartItem cartItem, Control controlToUpdate)
         {
-            if (CartItems.Any(item => item.StoreItem == cartItem.StoreItem))  // todo use hashmap from StoreItemId -> CartItem for CartItems for faster lookup? now it is n for each search
+            if (CartItems.Any(item =>
+                    item.StoreItem ==
+                    cartItem.StoreItem)) // todo use hashmap from StoreItemId -> CartItem for CartItems for faster lookup? now it is n for each search
             {
-                CartItems.Where(item => item.StoreItem == cartItem.StoreItem).First().QuantitySelected += cartItem.QuantitySelected;
+                CartItems.Where(item => item.StoreItem == cartItem.StoreItem).First().QuantitySelected +=
+                    cartItem.QuantitySelected;
             }
             else
             {
                 CartItems.Add(cartItem);
             }
+
             dgvCartItems.Update();
             dgvCartItems.Refresh();
-            controlToUpdate.Text += "\nItem added to cart";  // todo this can be updated to be a checkbox or something non-text that updates on add to cart
+            controlToUpdate.Text +=
+                "\nItem added to cart"; // todo this can be updated to be a checkbox or something non-text that updates on add to cart
         }
 
         private CartItem GetCartItemForListing(int listingIndex)
         {
             // todo this extracted to a separate method so that we can replace when we use a custom user control for each listing
             // instead of accessing everything based on their names and index like here
-            int quantitySelected = Convert.ToInt32((pnlAllListings.Controls["pnlListing" + listingIndex].Controls["nudQuantity" + listingIndex] as NumericUpDown).Value);
+            int quantitySelected =
+                Convert.ToInt32((pnlAllListings.Controls["pnlListing" + listingIndex]
+                    .Controls["nudQuantity" + listingIndex] as NumericUpDown).Value);
             STORE_ITEM storeItem = CachedStoreItems[(CurrentPageNum * NumItemsPerPage) + listingIndex];
             return new CartItem(storeItem, quantitySelected);
         }
@@ -293,7 +334,7 @@ namespace SemesterProject
         // On purchase button click - purchase all items in cart and then empty the cart
         private void btnPurchaseCartItems_Click(object sender, EventArgs e)
         {
-            if (CartItems.Count == 0)  // shouldn't be possible because purchase button should be disabled
+            if (CartItems.Count == 0) // shouldn't be possible because purchase button should be disabled
             {
                 lblCartSummary.Text = "Please add items to cart before purchasing";
                 return;
@@ -305,19 +346,19 @@ namespace SemesterProject
                 CUSTOMER = LoggedInCustomer,
                 TotalQuantity = CartItems.Sum(item => item.QuantitySelected),
                 TotalPrice = CartItems.Sum(item => item.UnitPrice * item.QuantitySelected),
-                PurchaseDateTime = DateTime.Now  // todo use db datetime?
+                PurchaseDateTime = DateTime.Now // todo use db datetime?
             };
             db.PURCHASEs.InsertOnSubmit(purchase);
 
             CartItems.Select(item => new PURCHASE_STORE_ITEM()
-            {
-                PURCHASE = purchase,
-                STORE_ITEM = item.StoreItem,
-                Quantity = item.QuantitySelected,
-                UnitPrice = item.UnitPrice
-            })
-            .ToList()
-            .ForEach(item => db.PURCHASE_STORE_ITEMs.InsertOnSubmit(item));
+                {
+                    PURCHASE = purchase,
+                    STORE_ITEM = item.StoreItem,
+                    Quantity = item.QuantitySelected,
+                    UnitPrice = item.UnitPrice
+                })
+                .ToList()
+                .ForEach(item => db.PURCHASE_STORE_ITEMs.InsertOnSubmit(item));
             db.SubmitChanges();
 
             CartItems.Clear();
@@ -357,7 +398,8 @@ namespace SemesterProject
 
         private void RefreshCartSummary()
         {
-            lblCartSummary.Text = $"Total Quantity: {CartItems.Sum(item => item.QuantitySelected)}\nPurchase Total: ${CartItems.Sum(item => item.QuantitySelected * item.UnitPrice)}";
+            lblCartSummary.Text =
+                $"Total Quantity: {CartItems.Sum(item => item.QuantitySelected)}\nPurchase Total: ${CartItems.Sum(item => item.QuantitySelected * item.UnitPrice)}";
         }
 
         private void RemoveSelectedItemsFromCart(bool refreshQtyLimits = true)
@@ -389,7 +431,8 @@ namespace SemesterProject
         {
             // todo round nud value on validate. see: https://stackoverflow.com/questions/21811303/numericupdown-value-not-rounded-to-decimalplaces
 
-            if (nudPayToBalance.Value <= 0)  // todo shouldn't be possible because button should remain disabled until valid amount entered
+            if (nudPayToBalance.Value <=
+                0) // todo shouldn't be possible because button should remain disabled until valid amount entered
             {
                 lblAccountBalanceResults.Text = $"Please enter a valid amount";
                 lblAccountBalanceResults.ForeColor = Color.Red;
