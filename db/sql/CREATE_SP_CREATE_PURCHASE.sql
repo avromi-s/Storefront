@@ -11,39 +11,44 @@ GO
 -- based on the PURCHASE's details.
 CREATE OR ALTER PROCEDURE [dbo].CREATE_NEW_PURCHASE
 	@CustomerId INT,
-	@PurchasedStoreItems PurchaseStoreItem READONLY
+	@PurchasedStoreItems VARCHAR(MAX)
 AS
 BEGIN
 	-- SET NOCOUNT ON added to prevent extra result sets from
 	-- interfering with SELECT statements.
 	SET NOCOUNT ON;
 
+	DECLARE @PurchaseId INT;
 	BEGIN TRANSACTION;
 		-- Insert PURCHASE record so we can associate the PURCHASE_STORE_ITEMS with its PK
 		-- We will update the PURCHASE record with the total price and quantity after iterating
-		DECLARE @PurchaseId INT;
 		DECLARE @PurchaseTotalQuantity INT = 0;
 		DECLARE @PurchaseTotalPrice MONEY = 0;
 
-		SET @PurchaseId = NEXT VALUE FOR [dbo].[PURCHASE].[PurchaseId];
 		INSERT INTO [dbo].[PURCHASE]
-           ([PurchaseId]
-		   ,[CustomerId]
+           ([CustomerId]
            ,[TotalQuantity]
            ,[TotalPrice]
            ,[PurchaseDateTime])
 		 VALUES
-			   (@PurchaseId
-			   ,@CustomerId
+			   (@CustomerId
 			   ,-1
 			   ,-1
 			   ,GETDATE());
+		SET @PurchaseId = SCOPE_IDENTITY();
 
 		-- For each PurchasedStoreItem:
 		--		- insert it into the PURCHASE_STORE_ITEM table and link it to this purchase
 		--		- remove the purchased quantity from the STORE_ITEM
 		--		- reduce customer quantity by price * quantity (or total up and remove all after)
-		DECLARE StoreItems CURSOR FOR (SELECT StoreItemId, Quantity, UnitPrice from @PurchasedStoreItems);
+		DECLARE StoreItems CURSOR FOR
+			(SELECT StoreItemId, Quantity, UnitPrice FROM OPENJSON(@PurchasedStoreItems)
+				WITH (
+					StoreItemId INT '$.StoreItemId',
+					Quantity INT '$.Quantity',
+					UnitPrice MONEY '$.UnitPrice'
+				)
+			);
 		OPEN StoreItems;
 		DECLARE @StoreItemId INT;
 		DECLARE @QuantityPurchased INT;
@@ -79,15 +84,18 @@ BEGIN
 
 			SET @PurchaseTotalQuantity += @QuantityPurchased;
 			SET @PurchaseTotalPrice += (@UnitPrice * @QuantityPurchased);
+
+			FETCH NEXT FROM StoreItems INTO @StoreItemId, @QuantityPurchased, @UnitPrice;
 		END
-		CLOSE StoreItemPkIds;
-		DEALLOCATE StoreItemPkIds;
+		CLOSE StoreItems;
+		DEALLOCATE StoreItems;
 
 		-- Update the PURCHASE record with the total price and quantity after iterating
 		UPDATE [dbo].[PURCHASE]
-		   SET [TotalQuantity] = @PurchaseTotalQuantity
-			  ,[TotalPrice] = @PurchaseTotalPrice
-		 WHERE PurchaseId = @PurchaseId;
+			SET [TotalQuantity] = @PurchaseTotalQuantity
+				,[TotalPrice] = @PurchaseTotalPrice
+			WHERE PurchaseId = @PurchaseId;
 	COMMIT TRANSACTION;
+	SELECT TOP 1 * FROM PURCHASE WHERE PurchaseId = @PurchaseId;  -- todo what if it fails? this will not return anything?
 END
 GO

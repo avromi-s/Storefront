@@ -105,6 +105,13 @@ namespace SemesterProject
 				return this.GetTable<PURCHASE_STORE_ITEM>();
 			}
 		}
+		
+		[global::System.Data.Linq.Mapping.FunctionAttribute(Name="dbo.CREATE_NEW_PURCHASE")]
+		public ISingleResult<PURCHASE> CREATE_NEW_PURCHASE([global::System.Data.Linq.Mapping.ParameterAttribute(Name="CustomerId", DbType="Int")] System.Nullable<int> customerId, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="PurchasedStoreItems", DbType="VarChar(MAX)")] string purchasedStoreItems)
+		{
+			IExecuteResult result = this.ExecuteMethodCall(this, ((MethodInfo)(MethodInfo.GetCurrentMethod())), customerId, purchasedStoreItems);
+			return ((ISingleResult<PURCHASE>)(result.ReturnValue));
+		}
 	}
 	
 	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.CUSTOMER")]

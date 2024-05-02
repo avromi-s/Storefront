@@ -21,7 +21,7 @@
     </Type>
   </Table>
   <Table Name="dbo.PURCHASE" Member="PURCHASEs">
-    <Type Name="PURCHASE">
+    <Type Name="PURCHASE" Id="ID1">
       <Column Name="PurchaseId" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
       <Column Name="CustomerId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
       <Column Name="TotalQuantity" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
@@ -41,4 +41,9 @@
       <Association Name="STORE_ITEM_PURCHASE_STORE_ITEM" Member="STORE_ITEM" ThisKey="StoreItemId" OtherKey="StoreItemId" Type="STORE_ITEM" IsForeignKey="true" />
     </Type>
   </Table>
+  <Function Name="dbo.CREATE_NEW_PURCHASE" Method="CREATE_NEW_PURCHASE">
+    <Parameter Name="CustomerId" Parameter="customerId" Type="System.Int32" DbType="Int" />
+    <Parameter Name="PurchasedStoreItems" Parameter="purchasedStoreItems" Type="System.String" DbType="VarChar(MAX)" />
+    <ElementType IdRef="ID1" />
+  </Function>
 </Database>

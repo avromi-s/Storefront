@@ -99,13 +99,3 @@ ALTER TABLE [dbo].[PURCHASE_STORE_ITEM] CHECK CONSTRAINT [FK_STORE_ITEM_TO_PURCH
 GO
 
 --------------------
-
--- create PURCHASE_STORE_ITEM TYPE for use in the CREATE_NEW_PURCHASE stored procedure:
--- this TYPE is used to represent a store_item within any arbitrary purchase
--- so it holds just the store_item pk, quantity, and price
-CREATE TYPE PurchaseStoreItem AS TABLE   
-(
-	StoreItemId int,
-	Quantity int,
-	UnitPrice money
-)

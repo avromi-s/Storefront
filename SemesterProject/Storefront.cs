@@ -8,14 +8,12 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Text.Json;
 
 namespace SemesterProject
 {
     public partial class Storefront : Form
     {
-        // todo add db trigger or application function to update store_item quantity on purchase made
-        // todo add db trigger to update customer balance on purchase made
-        // maybe do application logic for above 2, or above 1 (for balance). This way it is clear when viewing code that it's getting updated and how.
         // todo fix currency display accross all displays
         // todo separate different sections of the GUI Store into classes within Storefront class for better organization, instead of just regions
         //      Store > Listings, Store > Cart, & Account > Balance, Account > Purchases
@@ -319,7 +317,7 @@ namespace SemesterProject
                 return;
             }
 
-            MakePurchase(loggedInCustomer, cartItems.ToList());
+            CreatePurchase(loggedInCustomer, cartItems.ToList());
             cartItems.Clear();
 
             lblCartSummary.Text = "Purchase completed";
@@ -327,30 +325,17 @@ namespace SemesterProject
             RefreshCartButtonsEnabledStatus();
         }
 
-        // Create new purchase and linked purchase_store_items and insert into db
-        private void MakePurchase(CUSTOMER loggedInCustomer, List<CartItem> cartItems)
+        private void CreatePurchase(CUSTOMER loggedInCustomer, List<CartItem> cartItems)
         {
-            
-
-            PURCHASE purchase = new PURCHASE()
+            var list = new List<object>();
+            cartItems.ForEach(item => list.Add(new
             {
-                CUSTOMER = loggedInCustomer,
-                TotalQuantity = cartItems.Sum(item => item.Quantity), // calculate based on store_items
-                TotalPrice = cartItems.Sum(item => item.UnitPrice * item.Quantity), // ditto
-                PurchaseDateTime = DateTime.Now // todo use db datetime?  // get from db now
-            };
-            db.PURCHASEs.InsertOnSubmit(purchase);
-
-            cartItems.Select(item => new PURCHASE_STORE_ITEM()
-                {
-                    PURCHASE = purchase,
-                    STORE_ITEM = item.GetStoreItem(),
-                    Quantity = item.Quantity,
-                    UnitPrice = item.UnitPrice
-                })
-                .ToList()
-                .ForEach(item => db.PURCHASE_STORE_ITEMs.InsertOnSubmit(item));
-            db.SubmitChanges();
+                StoreItemId = item.GetStoreItem().StoreItemId,
+                Quantity = item.Quantity,
+                UnitPrice = item.UnitPrice
+            }));
+            string jsonString = JsonSerializer.Serialize(list);
+            db.CREATE_NEW_PURCHASE(loggedInCustomer.CustomerId, jsonString);
         }
 
         private void btnRemoveItemFromCart_Click(object sender, EventArgs e)
