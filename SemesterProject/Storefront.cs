@@ -22,24 +22,25 @@ namespace SemesterProject
         // todo manage when less than 4 items in store > remove item triggers exception because iterating over all 4 listings, also, other 3 items should be disabled
         // todo username & likely also password not case sensitive
         // todo make balance label red or green based on positive or negative balance
+        // todo update listing title + desc to nicer GUI and make uneditable, also move add to cart confirmation to either just visual cue, or to better area
         private DataClasses1DataContext db;
-        private IEnumerator<STORE_ITEM> AllStoreItems;
-        private List<STORE_ITEM> CachedStoreItems = new List<STORE_ITEM>();
-        private readonly CUSTOMER LoggedInCustomer;
-        private BindingList<CartItem> CartItems = new BindingList<CartItem>();
-        private bool IsAnotherItem { get; set; } // todo naming
+        private IEnumerator<STORE_ITEM> allStoreItems;
+        private List<STORE_ITEM> cachedStoreItems = new List<STORE_ITEM>();
+        private readonly CUSTOMER loggedInCustomer;
+        private BindingList<CartItem> cartItems = new BindingList<CartItem>();
+        private bool isAnotherItem { get; set; } // todo naming
 
         private readonly int NUM_LISTINGS_PER_PAGE = 4; // todo maybe derive from gui
-        private int CurrentPageNum = 0; // 0-indexed for easy use with collections
+        private int currentPageNum = 0; // 0-indexed for easy use with collections
 
-        private int CurrentPageNumDisplay => CurrentPageNum + 1; // 1-indexed for user display
+        private int currentPageNumDisplay => currentPageNum + 1; // 1-indexed for user display
 
         public Storefront(DataClasses1DataContext db, CUSTOMER loggedInCustomer)
         {
             InitializeComponent();
 
             this.db = db;
-            this.LoggedInCustomer = loggedInCustomer;
+            this.loggedInCustomer = loggedInCustomer;
         }
 
         #region Store
@@ -76,9 +77,9 @@ namespace SemesterProject
 
         private void RefreshListingsTab()
         {
-            LoadStoreItemsIntoGui(GetStoreItems(CurrentPageNum));
+            LoadStoreItemsIntoGui(GetStoreItems(currentPageNum));
             RefreshLblPageNum();
-            if (IsAnotherItem)
+            if (isAnotherItem)
             {
                 btnNextPage.Enabled = true;
             }
@@ -115,32 +116,32 @@ namespace SemesterProject
         /// <returns>An IEnumerable of the store items for the page</returns>
         private IEnumerable<STORE_ITEM> GetStoreItems(int pageNum)
         {
-            if (AllStoreItems == null)
+            if (allStoreItems == null)
             {
                 RetrieveAllStoreItems();
-                IsAnotherItem = AllStoreItems.MoveNext();
+                isAnotherItem = allStoreItems.MoveNext();
             }
 
             // get any items from cache before retrieving from the db
             int i = 0;
-            bool desiredItemIsCached = (pageNum * NUM_LISTINGS_PER_PAGE + i) < CachedStoreItems.Count;
+            bool desiredItemIsCached = (pageNum * NUM_LISTINGS_PER_PAGE + i) < cachedStoreItems.Count;
             while (desiredItemIsCached && i < NUM_LISTINGS_PER_PAGE)
             {
-                yield return CachedStoreItems[pageNum * NUM_LISTINGS_PER_PAGE + i];
+                yield return cachedStoreItems[pageNum * NUM_LISTINGS_PER_PAGE + i];
                 i++;
-                desiredItemIsCached = (pageNum * NUM_LISTINGS_PER_PAGE + i) < CachedStoreItems.Count;
+                desiredItemIsCached = (pageNum * NUM_LISTINGS_PER_PAGE + i) < cachedStoreItems.Count;
             }
 
             // retrieve the rest of the items from the db (unless we already retrieved all items
             // (i.e., i == NUM_LISTINGS_PER_PAGE), and/or until there are no more items left)
-            for (; i < NUM_LISTINGS_PER_PAGE && IsAnotherItem; i++)
+            for (; i < NUM_LISTINGS_PER_PAGE && isAnotherItem; i++)
             {
-                STORE_ITEM storeItem = AllStoreItems.Current;
-                CachedStoreItems
+                STORE_ITEM storeItem = allStoreItems.Current;
+                cachedStoreItems
                     .Add(storeItem); // cache item before returning in case another method tries to retrieve it already
-                IsAnotherItem =
-                    AllStoreItems
-                        .MoveNext(); // also, update IsAnotherItem before return so that it is accurate regardless of if this loop finishes (which is dependent on how much the calling method iterates)
+                isAnotherItem =
+                    allStoreItems
+                        .MoveNext(); // also, update isAnotherItem before return so that it is accurate regardless of if this loop finishes (which is dependent on how much the calling method iterates)
                 yield return storeItem;
             }
         }
@@ -149,19 +150,20 @@ namespace SemesterProject
         {
             // The order retrieved here will be the order of the items as displayed to the user
             // todo use a smarter ordering maybe? not just based on quantity
-            AllStoreItems = db.STORE_ITEMs.OrderByDescending(item => item.QuantityAvailable).GetEnumerator();
+            allStoreItems = db.STORE_ITEMs.OrderByDescending(item => item.QuantityAvailable).GetEnumerator();
         }
 
         #endregion
 
         private void btnNextPage_Click(object sender, EventArgs e)
         {
-            CurrentPageNum++;
+            currentPageNum++;
             RefreshListingsTab();
 
             btnPreviousPage.Enabled = true;
-            bool IsNoMoreCachedItems = CurrentPageNum * NUM_LISTINGS_PER_PAGE >= CachedStoreItems.Count / NUM_LISTINGS_PER_PAGE;
-            if (IsNoMoreCachedItems && !IsAnotherItem)
+            bool IsNoMoreCachedItems =
+                currentPageNum * NUM_LISTINGS_PER_PAGE >= cachedStoreItems.Count / NUM_LISTINGS_PER_PAGE;
+            if (IsNoMoreCachedItems && !isAnotherItem)
             {
                 btnNextPage.Enabled = false;
             }
@@ -169,11 +171,11 @@ namespace SemesterProject
 
         private void btnPreviousPage_Click(object sender, EventArgs e)
         {
-            CurrentPageNum--;
+            currentPageNum--;
             RefreshListingsTab();
 
             btnNextPage.Enabled = true;
-            if (CurrentPageNum == 0)
+            if (currentPageNum == 0)
             {
                 btnPreviousPage.Enabled = false;
             }
@@ -181,7 +183,7 @@ namespace SemesterProject
 
         private void RefreshLblPageNum()
         {
-            lblPageNum.Text = "Page " + CurrentPageNumDisplay;
+            lblPageNum.Text = "Page " + currentPageNumDisplay;
         }
 
         private RichTextBox GetRichTextBoxForListing(int listingIndex)
@@ -193,12 +195,12 @@ namespace SemesterProject
 
         private void RefreshQuantityControlLimitsForListing(int listingIndex)
         {
-            STORE_ITEM storeItem = CachedStoreItems[(CurrentPageNum * NUM_LISTINGS_PER_PAGE) + listingIndex];
+            STORE_ITEM storeItem = cachedStoreItems[(currentPageNum * NUM_LISTINGS_PER_PAGE) + listingIndex];
             int totalQtyAvail = storeItem.QuantityAvailable;
             int qtyInCart;
-            if (CartItems.Any(item => item.GetStoreItem() == storeItem))
+            if (cartItems.Any(item => item.GetStoreItem() == storeItem))
             {
-                qtyInCart = CartItems.Where(item => item.GetStoreItem() == storeItem).First().Quantity;
+                qtyInCart = cartItems.Where(item => item.GetStoreItem() == storeItem).First().Quantity;
             }
             else
             {
@@ -229,7 +231,7 @@ namespace SemesterProject
         private void RefreshCartItemsViewControl()
         {
             // this method needs to be called whenever the cart tab comes into view and whenever the cart items change while the user is on the cart page
-            dgvCartItems.DataSource = CartItems.ToList();
+            dgvCartItems.DataSource = cartItems.ToList();
             dgvCartItems.AutoResizeColumns();
             dgvCartItems.Update();
             dgvCartItems.Refresh();
@@ -237,16 +239,16 @@ namespace SemesterProject
 
         private void AddItemToCart(CartItem cartItem, Control controlToUpdate)
         {
-            if (CartItems.Any(item =>
+            if (cartItems.Any(item =>
                     item.GetStoreItem() ==
-                    cartItem.GetStoreItem())) // todo use hashmap from StoreItemId -> CartItem for CartItems for faster lookup? now it is n for each search
+                    cartItem.GetStoreItem())) // todo use hashmap from StoreItemId -> CartItem for cartItems for faster lookup? now it is n for each search
             {
-                CartItems.Where(item => item.GetStoreItem() == cartItem.GetStoreItem()).First().Quantity +=
+                cartItems.Where(item => item.GetStoreItem() == cartItem.GetStoreItem()).First().Quantity +=
                     cartItem.Quantity;
             }
             else
             {
-                CartItems.Add(cartItem);
+                cartItems.Add(cartItem);
             }
 
             controlToUpdate.Text +=
@@ -260,7 +262,7 @@ namespace SemesterProject
             int quantitySelected =
                 Convert.ToInt32((pnlAllListings.Controls["pnlListing" + listingIndex]
                     .Controls["nudQuantity" + listingIndex] as NumericUpDown).Value);
-            STORE_ITEM storeItem = CachedStoreItems[(CurrentPageNum * NUM_LISTINGS_PER_PAGE) + listingIndex];
+            STORE_ITEM storeItem = cachedStoreItems[(currentPageNum * NUM_LISTINGS_PER_PAGE) + listingIndex];
             return new CartItem(storeItem, quantitySelected);
         }
 
@@ -311,23 +313,35 @@ namespace SemesterProject
         // On purchase button click - purchase all items in cart and then empty the cart
         private void btnPurchaseCartItems_Click(object sender, EventArgs e)
         {
-            if (CartItems.Count == 0) // shouldn't be possible because purchase button should be disabled
+            if (cartItems.Count == 0) // shouldn't be possible because purchase button should be disabled
             {
                 lblCartSummary.Text = "Please add items to cart before purchasing";
                 return;
             }
 
-            // Create new purchase and linked purchase_store_items and insert into db  (// todo extract to separate method for modularity, readability)
+            MakePurchase(loggedInCustomer, cartItems.ToList());
+            cartItems.Clear();
+
+            lblCartSummary.Text = "Purchase completed";
+            RefreshCartItemsViewControl();
+            RefreshCartButtonsEnabledStatus();
+        }
+
+        // Create new purchase and linked purchase_store_items and insert into db
+        private void MakePurchase(CUSTOMER loggedInCustomer, List<CartItem> cartItems)
+        {
+            
+
             PURCHASE purchase = new PURCHASE()
             {
-                CUSTOMER = LoggedInCustomer,
-                TotalQuantity = CartItems.Sum(item => item.Quantity),
-                TotalPrice = CartItems.Sum(item => item.UnitPrice * item.Quantity),
-                PurchaseDateTime = DateTime.Now // todo use db datetime?
+                CUSTOMER = loggedInCustomer,
+                TotalQuantity = cartItems.Sum(item => item.Quantity), // calculate based on store_items
+                TotalPrice = cartItems.Sum(item => item.UnitPrice * item.Quantity), // ditto
+                PurchaseDateTime = DateTime.Now // todo use db datetime?  // get from db now
             };
             db.PURCHASEs.InsertOnSubmit(purchase);
 
-            CartItems.Select(item => new PURCHASE_STORE_ITEM()
+            cartItems.Select(item => new PURCHASE_STORE_ITEM()
                 {
                     PURCHASE = purchase,
                     STORE_ITEM = item.GetStoreItem(),
@@ -337,11 +351,6 @@ namespace SemesterProject
                 .ToList()
                 .ForEach(item => db.PURCHASE_STORE_ITEMs.InsertOnSubmit(item));
             db.SubmitChanges();
-
-            CartItems.Clear();
-            lblCartSummary.Text = "Purchase completed";
-            RefreshCartItemsViewControl();
-            RefreshCartButtonsEnabledStatus();
         }
 
         private void btnRemoveItemFromCart_Click(object sender, EventArgs e)
@@ -355,7 +364,7 @@ namespace SemesterProject
         private void RefreshCartButtonsEnabledStatus()
         {
             // todo this should really be two separate methods maybe because doing 2 separate things (2 buttons)
-            if (CartItems.Count > 0)
+            if (cartItems.Count > 0)
             {
                 btnRemoveItemFromCart.Enabled = true;
                 btnPurchaseCartItems.Enabled = true;
@@ -371,7 +380,7 @@ namespace SemesterProject
         {
             foreach (DataGridViewRow selectedItem in dgvCartItems.SelectedRows)
             {
-                CartItems.Remove(selectedItem.DataBoundItem as CartItem);
+                cartItems.Remove(selectedItem.DataBoundItem as CartItem);
             }
 
             if (refreshQtyLimits)
@@ -389,7 +398,7 @@ namespace SemesterProject
         private void RefreshCartSummary()
         {
             lblCartSummary.Text =
-                $"Total Quantity: {CartItems.Sum(item => item.Quantity)}\nPurchase Total: ${CartItems.Sum(item => item.Quantity * item.UnitPrice)}";
+                $"Total Quantity: {cartItems.Sum(item => item.Quantity)}\nPurchase Total: ${cartItems.Sum(item => item.Quantity * item.UnitPrice)}";
         }
 
         #endregion
@@ -444,7 +453,7 @@ namespace SemesterProject
                 return;
             }
 
-            LoggedInCustomer.Balance += nudPayToBalance.Value;
+            loggedInCustomer.Balance += nudPayToBalance.Value;
             db.SubmitChanges();
 
             RefreshDisplayedBalance();
@@ -455,7 +464,7 @@ namespace SemesterProject
 
         private void RefreshDisplayedBalance()
         {
-            lblCurrentBalance.Text = $"Current Balance: ${LoggedInCustomer.Balance}";
+            lblCurrentBalance.Text = $"Current Balance: ${loggedInCustomer.Balance}";
         }
 
         #endregion
@@ -470,7 +479,7 @@ namespace SemesterProject
         private void RefreshPurchasesViewControl()
         {
             // todo implement filters
-            dgvPastPurchases.DataSource = db.PURCHASEs.Where(p => p.CUSTOMER == LoggedInCustomer)
+            dgvPastPurchases.DataSource = db.PURCHASEs.Where(p => p.CUSTOMER == loggedInCustomer)
                 .Select(p => new
                 {
                     Date = p.PurchaseDateTime, // todo format to date
