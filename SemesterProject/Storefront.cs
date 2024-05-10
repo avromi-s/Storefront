@@ -99,7 +99,7 @@ namespace SemesterProject
             {
                 StoreItemListing sil = new StoreItemListing(storeItem);
                 Panel listing = pnlAllListings.Controls["pnlListing" + i] as Panel;
-                listing.Controls["rtbTitleDescription" + i].Text = sil.Title;
+                GetRichTextBoxForListing(i).Text = sil.Title;
                 listing.Controls["rtbPrice" + i].Text = sil.FormattedPrice;
                 PictureBox pbx = (listing.Controls["pbxItemImage" + i] as PictureBox);
                 pbx.Image = new Bitmap(sil.Image, pbx.Size.Width, pbx.Size.Height);
@@ -198,7 +198,7 @@ namespace SemesterProject
         {
             // todo this can be updated to be a checkbox or something non-text that updates on add to cart
             return pnlAllListings.Controls["pnlListing" + listingIndex]
-                .Controls["rtbListingTitleDescription" + listingIndex] as RichTextBox;
+                .Controls["rtbTitleDescription" + listingIndex] as RichTextBox;
         }
 
         private void RefreshQuantityControlLimitsForListing(int listingIndex)

@@ -41,7 +41,6 @@ namespace SemesterProject
             this.lblSelectQuantity = new System.Windows.Forms.Label();
             this.nudQuantity0 = new System.Windows.Forms.NumericUpDown();
             this.rtbTitleDescription0 = new System.Windows.Forms.RichTextBox();
-            this.pbxItemImage0 = new System.Windows.Forms.PictureBox();
             this.btnAddToCart0 = new System.Windows.Forms.Button();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.lblPageNum = new System.Windows.Forms.Label();
@@ -82,22 +81,23 @@ namespace SemesterProject
             this.label11 = new System.Windows.Forms.Label();
             this.nudQuantity1 = new System.Windows.Forms.NumericUpDown();
             this.rtbTitleDescription1 = new System.Windows.Forms.RichTextBox();
-            this.pbxItemImage1 = new System.Windows.Forms.PictureBox();
             this.btnAddToCart1 = new System.Windows.Forms.Button();
             this.pnlListing2 = new System.Windows.Forms.Panel();
             this.rtbPrice2 = new System.Windows.Forms.Label();
             this.label12 = new System.Windows.Forms.Label();
             this.nudQuantity2 = new System.Windows.Forms.NumericUpDown();
             this.rtbTitleDescription2 = new System.Windows.Forms.RichTextBox();
-            this.pbxItemImage2 = new System.Windows.Forms.PictureBox();
             this.btnAddToCart2 = new System.Windows.Forms.Button();
             this.pnlListing3 = new System.Windows.Forms.Panel();
             this.rtbPrice3 = new System.Windows.Forms.Label();
             this.label13 = new System.Windows.Forms.Label();
             this.nudQuantity3 = new System.Windows.Forms.NumericUpDown();
             this.rtbTitleDescription3 = new System.Windows.Forms.RichTextBox();
-            this.pbxItemImage3 = new System.Windows.Forms.PictureBox();
             this.btnAddToCart3 = new System.Windows.Forms.Button();
+            this.pbxItemImage3 = new System.Windows.Forms.PictureBox();
+            this.pbxItemImage2 = new System.Windows.Forms.PictureBox();
+            this.pbxItemImage1 = new System.Windows.Forms.PictureBox();
+            this.pbxItemImage0 = new System.Windows.Forms.PictureBox();
             this.storeItemListingBindingSource = new System.Windows.Forms.BindingSource(this.components);
             this.tc_Store_Account.SuspendLayout();
             this.tpStore.SuspendLayout();
@@ -106,7 +106,6 @@ namespace SemesterProject
             this.pnlAllListings.SuspendLayout();
             this.pnlListing0.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.nudQuantity0)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pbxItemImage0)).BeginInit();
             this.groupBox1.SuspendLayout();
             this.tpCart.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvCartItems)).BeginInit();
@@ -122,13 +121,14 @@ namespace SemesterProject
             ((System.ComponentModel.ISupportInitialize)(this.dgvPastPurchases)).BeginInit();
             this.pnlListing1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.nudQuantity1)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pbxItemImage1)).BeginInit();
             this.pnlListing2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.nudQuantity2)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pbxItemImage2)).BeginInit();
             this.pnlListing3.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.nudQuantity3)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pbxItemImage3)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pbxItemImage2)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pbxItemImage1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pbxItemImage0)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.storeItemListingBindingSource)).BeginInit();
             this.SuspendLayout();
             // 
@@ -245,14 +245,6 @@ namespace SemesterProject
             this.rtbTitleDescription0.Size = new System.Drawing.Size(250, 194);
             this.rtbTitleDescription0.TabIndex = 2;
             this.rtbTitleDescription0.Text = "Listing Title\nListing Description";
-            // 
-            // pbxItemImage0
-            // 
-            this.pbxItemImage0.Location = new System.Drawing.Point(3, 3);
-            this.pbxItemImage0.Name = "pbxItemImage0";
-            this.pbxItemImage0.Size = new System.Drawing.Size(216, 296);
-            this.pbxItemImage0.TabIndex = 1;
-            this.pbxItemImage0.TabStop = false;
             // 
             // btnAddToCart0
             // 
@@ -694,14 +686,6 @@ namespace SemesterProject
             this.rtbTitleDescription1.TabIndex = 2;
             this.rtbTitleDescription1.Text = "Listing Title\nListing Description";
             // 
-            // pbxItemImage1
-            // 
-            this.pbxItemImage1.Location = new System.Drawing.Point(3, 3);
-            this.pbxItemImage1.Name = "pbxItemImage1";
-            this.pbxItemImage1.Size = new System.Drawing.Size(216, 296);
-            this.pbxItemImage1.TabIndex = 1;
-            this.pbxItemImage1.TabStop = false;
-            // 
             // btnAddToCart1
             // 
             this.btnAddToCart1.Location = new System.Drawing.Point(368, 255);
@@ -710,6 +694,7 @@ namespace SemesterProject
             this.btnAddToCart1.TabIndex = 0;
             this.btnAddToCart1.Text = "Add to Cart";
             this.btnAddToCart1.UseVisualStyleBackColor = true;
+            this.btnAddToCart1.Click += new System.EventHandler(this.btnAddToCart1_Click);
             // 
             // pnlListing2
             // 
@@ -773,14 +758,6 @@ namespace SemesterProject
             this.rtbTitleDescription2.TabIndex = 2;
             this.rtbTitleDescription2.Text = "Listing Title\nListing Description";
             // 
-            // pbxItemImage2
-            // 
-            this.pbxItemImage2.Location = new System.Drawing.Point(3, 3);
-            this.pbxItemImage2.Name = "pbxItemImage2";
-            this.pbxItemImage2.Size = new System.Drawing.Size(216, 296);
-            this.pbxItemImage2.TabIndex = 1;
-            this.pbxItemImage2.TabStop = false;
-            // 
             // btnAddToCart2
             // 
             this.btnAddToCart2.Location = new System.Drawing.Point(368, 255);
@@ -789,6 +766,7 @@ namespace SemesterProject
             this.btnAddToCart2.TabIndex = 0;
             this.btnAddToCart2.Text = "Add to Cart";
             this.btnAddToCart2.UseVisualStyleBackColor = true;
+            this.btnAddToCart2.Click += new System.EventHandler(this.btnAddToCart2_Click);
             // 
             // pnlListing3
             // 
@@ -852,14 +830,6 @@ namespace SemesterProject
             this.rtbTitleDescription3.TabIndex = 2;
             this.rtbTitleDescription3.Text = "Listing Title\nListing Description";
             // 
-            // pbxItemImage3
-            // 
-            this.pbxItemImage3.Location = new System.Drawing.Point(3, 3);
-            this.pbxItemImage3.Name = "pbxItemImage3";
-            this.pbxItemImage3.Size = new System.Drawing.Size(216, 296);
-            this.pbxItemImage3.TabIndex = 1;
-            this.pbxItemImage3.TabStop = false;
-            // 
             // btnAddToCart3
             // 
             this.btnAddToCart3.Location = new System.Drawing.Point(368, 255);
@@ -868,6 +838,39 @@ namespace SemesterProject
             this.btnAddToCart3.TabIndex = 0;
             this.btnAddToCart3.Text = "Add to Cart";
             this.btnAddToCart3.UseVisualStyleBackColor = true;
+            this.btnAddToCart3.Click += new System.EventHandler(this.btnAddToCart3_Click);
+            // 
+            // pbxItemImage3
+            // 
+            this.pbxItemImage3.Location = new System.Drawing.Point(3, 3);
+            this.pbxItemImage3.Name = "pbxItemImage3";
+            this.pbxItemImage3.Size = new System.Drawing.Size(216, 296);
+            this.pbxItemImage3.TabIndex = 1;
+            this.pbxItemImage3.TabStop = false;
+            // 
+            // pbxItemImage2
+            // 
+            this.pbxItemImage2.Location = new System.Drawing.Point(3, 3);
+            this.pbxItemImage2.Name = "pbxItemImage2";
+            this.pbxItemImage2.Size = new System.Drawing.Size(216, 296);
+            this.pbxItemImage2.TabIndex = 1;
+            this.pbxItemImage2.TabStop = false;
+            // 
+            // pbxItemImage1
+            // 
+            this.pbxItemImage1.Location = new System.Drawing.Point(3, 3);
+            this.pbxItemImage1.Name = "pbxItemImage1";
+            this.pbxItemImage1.Size = new System.Drawing.Size(216, 296);
+            this.pbxItemImage1.TabIndex = 1;
+            this.pbxItemImage1.TabStop = false;
+            // 
+            // pbxItemImage0
+            // 
+            this.pbxItemImage0.Location = new System.Drawing.Point(3, 3);
+            this.pbxItemImage0.Name = "pbxItemImage0";
+            this.pbxItemImage0.Size = new System.Drawing.Size(216, 296);
+            this.pbxItemImage0.TabIndex = 1;
+            this.pbxItemImage0.TabStop = false;
             // 
             // storeItemListingBindingSource
             // 
@@ -889,7 +892,6 @@ namespace SemesterProject
             this.pnlListing0.ResumeLayout(false);
             this.pnlListing0.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.nudQuantity0)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pbxItemImage0)).EndInit();
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
             this.tpCart.ResumeLayout(false);
@@ -910,15 +912,16 @@ namespace SemesterProject
             this.pnlListing1.ResumeLayout(false);
             this.pnlListing1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.nudQuantity1)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pbxItemImage1)).EndInit();
             this.pnlListing2.ResumeLayout(false);
             this.pnlListing2.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.nudQuantity2)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pbxItemImage2)).EndInit();
             this.pnlListing3.ResumeLayout(false);
             this.pnlListing3.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.nudQuantity3)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pbxItemImage3)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pbxItemImage2)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pbxItemImage1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pbxItemImage0)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.storeItemListingBindingSource)).EndInit();
             this.ResumeLayout(false);
 

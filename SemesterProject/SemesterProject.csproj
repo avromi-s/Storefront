@@ -179,5 +179,8 @@
   <ItemGroup>
     <None Include="resources\SGS24U_titanium_gray.jpg" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="resources\ImageNotFound.jpg" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

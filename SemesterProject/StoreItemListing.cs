@@ -1,11 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Security.Policy;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using SemesterProject.Properties;
 
 namespace SemesterProject
 {
@@ -30,8 +32,17 @@ namespace SemesterProject
             };
             Title = this.StoreItem.Manufacturer + "\n" + this.StoreItem.ProductName;
             SubTitle = "Other details - store in db... todo"; // todo
-            FormattedPrice = "$" + Convert.ToString(this.StoreItem.Price);  // todo
-            Image = Image.FromFile(StoreItem.ImagePath);
+            FormattedPrice = "$" + Convert.ToString(this.StoreItem.Price); // todo
+            try
+            {
+                Image = Image.FromFile(StoreItem.ImagePath);
+            }
+
+            catch (Exception e)
+            {
+                Image = Resources.ImageNotFound;
+                Console.WriteLine("Unable to load Image file from ImagePath when constructing StoreItemListing: " + e);
+            }
         }
     }
 }
