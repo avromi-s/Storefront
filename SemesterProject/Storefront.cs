@@ -23,6 +23,7 @@ namespace SemesterProject
         // todo username & likely also password not case sensitive
         // todo make balance label red or green based on positive or negative balance
         // todo update listing title + desc to nicer GUI and make uneditable, also move add to cart confirmation to either just visual cue, or to better area
+        // todo add grand total of num orders, and sum of all purchases on account > purchases screen
         private DataClasses1DataContext db;
         private IEnumerator<STORE_ITEM> allStoreItems;
         private List<STORE_ITEM> cachedStoreItems = new List<STORE_ITEM>();
@@ -102,7 +103,7 @@ namespace SemesterProject
                 GetRichTextBoxForListing(i).Text = sil.Title;
                 listing.Controls["rtbPrice" + i].Text = sil.FormattedPrice;
                 PictureBox pbx = (listing.Controls["pbxItemImage" + i] as PictureBox);
-                pbx.Image = new Bitmap(sil.Image, pbx.Size.Width, pbx.Size.Height);
+                pbx.Image = new Bitmap(sil.ItemImage, pbx.Size.Width, pbx.Size.Height);
                 RefreshQuantityControlLimitsForListing(i);
 
                 i = (i + 1) %

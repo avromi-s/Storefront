@@ -13,11 +13,12 @@ namespace SemesterProject
 {
     public class StoreItemListing
     {
+        private readonly string STORE_ITEM_IMAGES_PATH = Directory.GetParent(Environment.CurrentDirectory).Parent.FullName + "\\img\\StoreItemImages\\";
         public STORE_ITEM StoreItem { get; private set; }
         public string Title { get; private set; }
         public string SubTitle { get; private set; }
         public string FormattedPrice { get; private set; }
-        public Image Image { get; private set; }
+        public Image ItemImage { get; private set; }
 
         public StoreItemListing(STORE_ITEM storeItem)
         {
@@ -35,13 +36,14 @@ namespace SemesterProject
             FormattedPrice = "$" + Convert.ToString(this.StoreItem.Price); // todo
             try
             {
-                Image = Image.FromFile(StoreItem.ImagePath);
+                //ItemImage = ItemImage.FromFile(StoreItem.ImagePath);
+                ItemImage = Image.FromFile(STORE_ITEM_IMAGES_PATH + storeItem.ImagePath);
             }
 
             catch (Exception e)
             {
-                Image = Resources.ImageNotFound;
-                Console.WriteLine("Unable to load Image file from ImagePath when constructing StoreItemListing: " + e);
+                ItemImage = Resources.ImageNotFound;
+                Console.WriteLine("Unable to load ItemImage file from ImagePath when constructing StoreItemListing: " + e);
             }
         }
     }
