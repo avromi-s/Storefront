@@ -9,6 +9,7 @@ using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Text.Json;
+using System.Threading;
 
 namespace SemesterProject
 {
@@ -24,6 +25,7 @@ namespace SemesterProject
         // todo make balance label red or green based on positive or negative balance
         // todo update listing title + desc to nicer GUI and make uneditable, also move add to cart confirmation to either just visual cue, or to better area
         // todo add grand total of num orders, and sum of all purchases on account > purchases screen
+
         private DataClasses1DataContext db;
         private IEnumerator<STORE_ITEM> allStoreItems;
         private List<STORE_ITEM> cachedStoreItems = new List<STORE_ITEM>();
@@ -100,7 +102,7 @@ namespace SemesterProject
             {
                 StoreItemListing sil = new StoreItemListing(storeItem);
                 Panel listing = pnlAllListings.Controls["pnlListing" + i] as Panel;
-                GetRichTextBoxForListing(i).Text = sil.Title;
+                GetTitleDescriptionTextBoxForListing(i).Text = sil.Title;
                 listing.Controls["rtbPrice" + i].Text = sil.FormattedPrice;
                 PictureBox pbx = (listing.Controls["pbxItemImage" + i] as PictureBox);
                 pbx.Image = new Bitmap(sil.ItemImage, pbx.Size.Width, pbx.Size.Height);
@@ -109,6 +111,18 @@ namespace SemesterProject
                 i = (i + 1) %
                     NUM_LISTINGS_PER_PAGE; // move to next listing to update, reset to the first listing (index 0) if we move past the last listing
             }
+        }
+
+        private RichTextBox GetTitleDescriptionTextBoxForListing(int listingIndex)
+        {
+            return pnlAllListings.Controls["pnlListing" + listingIndex]
+                .Controls["rtbTitleDescription" + listingIndex] as RichTextBox;
+        }
+
+        private Label GetStatusInfoLabelForListing(int listingIndex)
+        {
+            return pnlAllListings.Controls["pnlListing" + listingIndex]
+                .Controls["lblStatusInfo" + listingIndex] as Label;
         }
 
         /// <summary>
@@ -195,12 +209,7 @@ namespace SemesterProject
             lblPageNum.Text = "Page " + currentPageNumDisplay;
         }
 
-        private RichTextBox GetRichTextBoxForListing(int listingIndex)
-        {
-            // todo this can be updated to be a checkbox or something non-text that updates on add to cart
-            return pnlAllListings.Controls["pnlListing" + listingIndex]
-                .Controls["rtbTitleDescription" + listingIndex] as RichTextBox;
-        }
+
 
         private void RefreshQuantityControlLimitsForListing(int listingIndex)
         {
@@ -246,7 +255,43 @@ namespace SemesterProject
             dgvCartItems.Refresh();
         }
 
-        private void AddItemToCart(CartItem cartItem, Control controlToUpdate)
+        private void btnAddToCart0_Click(object sender, EventArgs e)
+        {
+            DisplayAddToCartConfirmation((sender as Button), GetStatusInfoLabelForListing(0));
+
+            CartItem cartItem = GetCartItemForListing(0);
+            AddItemToCart(cartItem);
+            RefreshQuantityControlLimitsForListing(0);
+        }
+
+        private void btnAddToCart1_Click(object sender, EventArgs e)
+        {
+            DisplayAddToCartConfirmation((sender as Button), GetStatusInfoLabelForListing(1));
+
+            CartItem cartItem = GetCartItemForListing(1);
+            AddItemToCart(cartItem);
+            RefreshQuantityControlLimitsForListing(1);
+        }
+
+        private void btnAddToCart2_Click(object sender, EventArgs e)
+        {
+            DisplayAddToCartConfirmation((sender as Button), GetStatusInfoLabelForListing(2));
+
+            CartItem cartItem = GetCartItemForListing(2);
+            AddItemToCart(cartItem);
+            RefreshQuantityControlLimitsForListing(2);
+        }
+
+        private void btnAddToCart3_Click(object sender, EventArgs e)
+        {
+            DisplayAddToCartConfirmation((sender as Button), GetStatusInfoLabelForListing(3));
+
+            CartItem cartItem = GetCartItemForListing(3);
+            AddItemToCart(cartItem);
+            RefreshQuantityControlLimitsForListing(3);
+        }
+
+        private void AddItemToCart(CartItem cartItem)
         {
             if (cartItems.Any(item =>
                     item.GetStoreItem() ==
@@ -259,9 +304,23 @@ namespace SemesterProject
             {
                 cartItems.Add(cartItem);
             }
+        }
 
-            controlToUpdate.Text +=
-                "\nItem added to cart"; // todo this can be updated to be a checkbox or something non-text that updates on add to cart
+        private async void DisplayAddToCartConfirmation(Button btnAddToCart, Label lblStatusInfo)
+        {
+            // clear button after 0.25 second, clear text after 5
+            // todo do gui acknowledgment of add to cart with a timer so it goes back to normal:
+            // todo need to stop anything running here if next page is click in middle
+
+            btnAddToCart.BackColor = Color.Green;
+            btnAddToCart.ForeColor = Color.White;
+            lblStatusInfo.Text =
+                "Item added to cart"; // todo this can be updated to be a checkbox or something non-text that updates on add to cart
+            await Task.Run(() => Thread.Sleep(250));
+            btnAddToCart.BackColor = Color.Transparent;
+            btnAddToCart.ForeColor = Color.Black;
+            await Task.Run(() => Thread.Sleep(4000));
+            lblStatusInfo.Text = "";
         }
 
         private CartItem GetCartItemForListing(int listingIndex)
@@ -273,50 +332,6 @@ namespace SemesterProject
                     .Controls["nudQuantity" + listingIndex] as NumericUpDown).Value);
             STORE_ITEM storeItem = cachedStoreItems[(currentPageIndex * NUM_LISTINGS_PER_PAGE) + listingIndex];
             return new CartItem(storeItem, quantitySelected);
-        }
-
-        private void btnAddToCart0_Click(object sender, EventArgs e)
-        {
-            // todo do gui acknowledgment of add to cart with a timer so it goes back to normal:
-            (sender as Button).BackColor = Color.Green;
-            (sender as Button).ForeColor = Color.White;
-            CartItem cartItem = GetCartItemForListing(0);
-            RichTextBox listingrtb = GetRichTextBoxForListing(0);
-            AddItemToCart(cartItem, listingrtb);
-            RefreshQuantityControlLimitsForListing(0);
-        }
-
-        private void btnAddToCart1_Click(object sender, EventArgs e)
-        {
-            // todo do gui acknowledgment of add to cart with a timer so it goes back to normal:
-            (sender as Button).BackColor = Color.Green;
-            (sender as Button).ForeColor = Color.White;
-            CartItem cartItem = GetCartItemForListing(1);
-            RichTextBox listingrtb = GetRichTextBoxForListing(1);
-            AddItemToCart(cartItem, listingrtb);
-            RefreshQuantityControlLimitsForListing(1);
-        }
-
-        private void btnAddToCart2_Click(object sender, EventArgs e)
-        {
-            // todo do gui acknowledgment of add to cart with a timer so it goes back to normal:
-            (sender as Button).BackColor = Color.Green;
-            (sender as Button).ForeColor = Color.White;
-            CartItem cartItem = GetCartItemForListing(2);
-            RichTextBox listingrtb = GetRichTextBoxForListing(2);
-            AddItemToCart(cartItem, listingrtb);
-            RefreshQuantityControlLimitsForListing(2);
-        }
-
-        private void btnAddToCart3_Click(object sender, EventArgs e)
-        {
-            // todo do gui acknowledgment of add to cart with a timer so it goes back to normal:
-            (sender as Button).BackColor = Color.Green;
-            (sender as Button).ForeColor = Color.White;
-            CartItem cartItem = GetCartItemForListing(3);
-            RichTextBox listingrtb = GetRichTextBoxForListing(3);
-            AddItemToCart(cartItem, listingrtb);
-            RefreshQuantityControlLimitsForListing(3);
         }
 
         // On purchase button click - purchase all items in cart and then empty the cart
