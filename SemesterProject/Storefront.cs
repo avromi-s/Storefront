@@ -14,6 +14,8 @@ namespace SemesterProject
 {
     public partial class Storefront : Form
     {
+        // todo fix issue with loggedInCustomer reference not beign updated after purchase made with sp
+        // - throws exception on attempted change to balance and displayed balance itself is unupdated after the purchase
         // todo fix currency display accross all displays
         // todo separate different sections of the GUI Store into classes within Storefront class for better organization, instead of just regions
         //      Store > Listings, Store > Cart, & Account > Balance, Account > Purchases
@@ -97,9 +99,10 @@ namespace SemesterProject
             {
                 StoreItemListing sil = new StoreItemListing(storeItem);
                 Panel listing = pnlAllListings.Controls["pnlListing" + i] as Panel;
-                // ((PictureBox) listing.Controls["pbxItemImage" + i]) todo set
-                listing.Controls["rtbMainItemInfo" + i].Text = sil.Title;
-                listing.Controls["rtbMinorItemInfo" + i].Text = sil.FormattedPrice;
+                listing.Controls["rtbTitleDescription" + i].Text = sil.Title;
+                listing.Controls["rtbPrice" + i].Text = sil.FormattedPrice;
+                PictureBox pbx = (listing.Controls["pbxItemImage" + i] as PictureBox);
+                pbx.Image = new Bitmap(sil.Image, pbx.Size.Width, pbx.Size.Height);
                 RefreshQuantityControlLimitsForListing(i);
 
                 i = (i + 1) %
@@ -114,11 +117,7 @@ namespace SemesterProject
         /// <returns>An IEnumerable of the store items for the page</returns>
         private IEnumerable<STORE_ITEM> GetStoreItems(int pageNum)
         {
-            if (allStoreItems == null)
-            {
-                RetrieveAllStoreItems();
-                isAnotherItem = allStoreItems.MoveNext();
-            }
+            EnsureStoreItemsRetrieved();
 
             // get any items from cache before retrieving from the db
             int i = 0;
@@ -144,11 +143,22 @@ namespace SemesterProject
             }
         }
 
-        private void RetrieveAllStoreItems()
+        private void EnsureStoreItemsRetrieved()
+        {
+            if (allStoreItems == null)
+            {
+                RefreshAllStoreItems();
+                isAnotherItem = allStoreItems.MoveNext();
+            }
+        }
+
+        private void RefreshAllStoreItems(bool includeOutOfStock = false)
         {
             // The order retrieved here will be the order of the items as displayed to the user
             // todo use a smarter ordering maybe? not just based on quantity
-            allStoreItems = db.STORE_ITEMs.OrderByDescending(item => item.QuantityAvailable).GetEnumerator();
+            allStoreItems = db.STORE_ITEMs.Where(item => includeOutOfStock || item.QuantityAvailable > 0)
+                .OrderByDescending(item => item.QuantityAvailable)
+                .GetEnumerator();
         }
 
         #endregion
@@ -188,7 +198,7 @@ namespace SemesterProject
         {
             // todo this can be updated to be a checkbox or something non-text that updates on add to cart
             return pnlAllListings.Controls["pnlListing" + listingIndex]
-                .Controls["rtbMainItemInfo" + listingIndex] as RichTextBox;
+                .Controls["rtbListingTitleDescription" + listingIndex] as RichTextBox;
         }
 
         private void RefreshQuantityControlLimitsForListing(int listingIndex)

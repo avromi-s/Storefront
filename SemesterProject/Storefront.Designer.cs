@@ -37,32 +37,10 @@ namespace SemesterProject
             this.tc_Listings_Cart = new System.Windows.Forms.TabControl();
             this.tpListings = new System.Windows.Forms.TabPage();
             this.pnlAllListings = new System.Windows.Forms.Panel();
-            this.pnlListing3 = new System.Windows.Forms.Panel();
-            this.label3 = new System.Windows.Forms.Label();
-            this.nudQuantity3 = new System.Windows.Forms.NumericUpDown();
-            this.rtbMinorItemInfo3 = new System.Windows.Forms.RichTextBox();
-            this.rtbMainItemInfo3 = new System.Windows.Forms.RichTextBox();
-            this.pictureBox3 = new System.Windows.Forms.PictureBox();
-            this.btnAddToCart3 = new System.Windows.Forms.Button();
-            this.pnlListing2 = new System.Windows.Forms.Panel();
-            this.label2 = new System.Windows.Forms.Label();
-            this.nudQuantity2 = new System.Windows.Forms.NumericUpDown();
-            this.rtbMinorItemInfo2 = new System.Windows.Forms.RichTextBox();
-            this.rtbMainItemInfo2 = new System.Windows.Forms.RichTextBox();
-            this.pictureBox2 = new System.Windows.Forms.PictureBox();
-            this.btnAddToCart2 = new System.Windows.Forms.Button();
-            this.pnlListing1 = new System.Windows.Forms.Panel();
-            this.label1 = new System.Windows.Forms.Label();
-            this.nudQuantity1 = new System.Windows.Forms.NumericUpDown();
-            this.rtbMinorItemInfo1 = new System.Windows.Forms.RichTextBox();
-            this.rtbMainItemInfo1 = new System.Windows.Forms.RichTextBox();
-            this.pictureBox1 = new System.Windows.Forms.PictureBox();
-            this.btnAddToCart1 = new System.Windows.Forms.Button();
             this.pnlListing0 = new System.Windows.Forms.Panel();
             this.lblSelectQuantity = new System.Windows.Forms.Label();
             this.nudQuantity0 = new System.Windows.Forms.NumericUpDown();
-            this.rtbMinorItemInfo0 = new System.Windows.Forms.RichTextBox();
-            this.rtbMainItemInfo0 = new System.Windows.Forms.RichTextBox();
+            this.rtbTitleDescription0 = new System.Windows.Forms.RichTextBox();
             this.pbxItemImage0 = new System.Windows.Forms.PictureBox();
             this.btnAddToCart0 = new System.Windows.Forms.Button();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
@@ -98,21 +76,34 @@ namespace SemesterProject
             this.label5 = new System.Windows.Forms.Label();
             this.dateTimePicker1 = new System.Windows.Forms.DateTimePicker();
             this.dgvPastPurchases = new System.Windows.Forms.DataGridView();
+            this.rtbPrice0 = new System.Windows.Forms.Label();
+            this.pnlListing1 = new System.Windows.Forms.Panel();
+            this.rtbPrice1 = new System.Windows.Forms.Label();
+            this.label11 = new System.Windows.Forms.Label();
+            this.nudQuantity1 = new System.Windows.Forms.NumericUpDown();
+            this.rtbTitleDescription1 = new System.Windows.Forms.RichTextBox();
+            this.pbxItemImage1 = new System.Windows.Forms.PictureBox();
+            this.btnAddToCart1 = new System.Windows.Forms.Button();
+            this.pnlListing2 = new System.Windows.Forms.Panel();
+            this.rtbPrice2 = new System.Windows.Forms.Label();
+            this.label12 = new System.Windows.Forms.Label();
+            this.nudQuantity2 = new System.Windows.Forms.NumericUpDown();
+            this.rtbTitleDescription2 = new System.Windows.Forms.RichTextBox();
+            this.pbxItemImage2 = new System.Windows.Forms.PictureBox();
+            this.btnAddToCart2 = new System.Windows.Forms.Button();
+            this.pnlListing3 = new System.Windows.Forms.Panel();
+            this.rtbPrice3 = new System.Windows.Forms.Label();
+            this.label13 = new System.Windows.Forms.Label();
+            this.nudQuantity3 = new System.Windows.Forms.NumericUpDown();
+            this.rtbTitleDescription3 = new System.Windows.Forms.RichTextBox();
+            this.pbxItemImage3 = new System.Windows.Forms.PictureBox();
+            this.btnAddToCart3 = new System.Windows.Forms.Button();
             this.storeItemListingBindingSource = new System.Windows.Forms.BindingSource(this.components);
             this.tc_Store_Account.SuspendLayout();
             this.tpStore.SuspendLayout();
             this.tc_Listings_Cart.SuspendLayout();
             this.tpListings.SuspendLayout();
             this.pnlAllListings.SuspendLayout();
-            this.pnlListing3.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.nudQuantity3)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox3)).BeginInit();
-            this.pnlListing2.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.nudQuantity2)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
-            this.pnlListing1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.nudQuantity1)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.pnlListing0.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.nudQuantity0)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pbxItemImage0)).BeginInit();
@@ -129,6 +120,15 @@ namespace SemesterProject
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown3)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dgvPastPurchases)).BeginInit();
+            this.pnlListing1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.nudQuantity1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pbxItemImage1)).BeginInit();
+            this.pnlListing2.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.nudQuantity2)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pbxItemImage2)).BeginInit();
+            this.pnlListing3.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.nudQuantity3)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pbxItemImage3)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.storeItemListingBindingSource)).BeginInit();
             this.SuspendLayout();
             // 
@@ -194,235 +194,13 @@ namespace SemesterProject
             this.pnlAllListings.Size = new System.Drawing.Size(979, 619);
             this.pnlAllListings.TabIndex = 14;
             // 
-            // pnlListing3
-            // 
-            this.pnlListing3.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.pnlListing3.Controls.Add(this.label3);
-            this.pnlListing3.Controls.Add(this.nudQuantity3);
-            this.pnlListing3.Controls.Add(this.rtbMinorItemInfo3);
-            this.pnlListing3.Controls.Add(this.rtbMainItemInfo3);
-            this.pnlListing3.Controls.Add(this.pictureBox3);
-            this.pnlListing3.Controls.Add(this.btnAddToCart3);
-            this.pnlListing3.Location = new System.Drawing.Point(499, 314);
-            this.pnlListing3.Name = "pnlListing3";
-            this.pnlListing3.Size = new System.Drawing.Size(480, 302);
-            this.pnlListing3.TabIndex = 17;
-            // 
-            // label3
-            // 
-            this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(245, 255);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(104, 17);
-            this.label3.TabIndex = 5;
-            this.label3.Text = "Select Quantity";
-            // 
-            // nudQuantity3
-            // 
-            this.nudQuantity3.Location = new System.Drawing.Point(258, 275);
-            this.nudQuantity3.Minimum = new decimal(new int[] {
-            1,
-            0,
-            0,
-            0});
-            this.nudQuantity3.Name = "nudQuantity3";
-            this.nudQuantity3.Size = new System.Drawing.Size(78, 22);
-            this.nudQuantity3.TabIndex = 4;
-            this.nudQuantity3.Value = new decimal(new int[] {
-            1,
-            0,
-            0,
-            0});
-            // 
-            // rtbMinorItemInfo3
-            // 
-            this.rtbMinorItemInfo3.Location = new System.Drawing.Point(225, 204);
-            this.rtbMinorItemInfo3.Name = "rtbMinorItemInfo3";
-            this.rtbMinorItemInfo3.Size = new System.Drawing.Size(251, 45);
-            this.rtbMinorItemInfo3.TabIndex = 3;
-            this.rtbMinorItemInfo3.Text = "";
-            // 
-            // rtbMainItemInfo3
-            // 
-            this.rtbMainItemInfo3.Location = new System.Drawing.Point(225, 3);
-            this.rtbMainItemInfo3.Name = "rtbMainItemInfo3";
-            this.rtbMainItemInfo3.Size = new System.Drawing.Size(251, 194);
-            this.rtbMainItemInfo3.TabIndex = 2;
-            this.rtbMainItemInfo3.Text = "";
-            // 
-            // pictureBox3
-            // 
-            this.pictureBox3.Location = new System.Drawing.Point(3, 3);
-            this.pictureBox3.Name = "pictureBox3";
-            this.pictureBox3.Size = new System.Drawing.Size(216, 296);
-            this.pictureBox3.TabIndex = 1;
-            this.pictureBox3.TabStop = false;
-            // 
-            // btnAddToCart3
-            // 
-            this.btnAddToCart3.Location = new System.Drawing.Point(368, 255);
-            this.btnAddToCart3.Name = "btnAddToCart3";
-            this.btnAddToCart3.Size = new System.Drawing.Size(109, 44);
-            this.btnAddToCart3.TabIndex = 0;
-            this.btnAddToCart3.Text = "Add to Cart";
-            this.btnAddToCart3.UseVisualStyleBackColor = true;
-            this.btnAddToCart3.Click += new System.EventHandler(this.btnAddToCart3_Click);
-            // 
-            // pnlListing2
-            // 
-            this.pnlListing2.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.pnlListing2.Controls.Add(this.label2);
-            this.pnlListing2.Controls.Add(this.nudQuantity2);
-            this.pnlListing2.Controls.Add(this.rtbMinorItemInfo2);
-            this.pnlListing2.Controls.Add(this.rtbMainItemInfo2);
-            this.pnlListing2.Controls.Add(this.pictureBox2);
-            this.pnlListing2.Controls.Add(this.btnAddToCart2);
-            this.pnlListing2.Location = new System.Drawing.Point(3, 314);
-            this.pnlListing2.Name = "pnlListing2";
-            this.pnlListing2.Size = new System.Drawing.Size(480, 302);
-            this.pnlListing2.TabIndex = 16;
-            // 
-            // label2
-            // 
-            this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(245, 255);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(104, 17);
-            this.label2.TabIndex = 5;
-            this.label2.Text = "Select Quantity";
-            // 
-            // nudQuantity2
-            // 
-            this.nudQuantity2.Location = new System.Drawing.Point(258, 275);
-            this.nudQuantity2.Minimum = new decimal(new int[] {
-            1,
-            0,
-            0,
-            0});
-            this.nudQuantity2.Name = "nudQuantity2";
-            this.nudQuantity2.Size = new System.Drawing.Size(78, 22);
-            this.nudQuantity2.TabIndex = 4;
-            this.nudQuantity2.Value = new decimal(new int[] {
-            1,
-            0,
-            0,
-            0});
-            // 
-            // rtbMinorItemInfo2
-            // 
-            this.rtbMinorItemInfo2.Location = new System.Drawing.Point(225, 204);
-            this.rtbMinorItemInfo2.Name = "rtbMinorItemInfo2";
-            this.rtbMinorItemInfo2.Size = new System.Drawing.Size(251, 45);
-            this.rtbMinorItemInfo2.TabIndex = 3;
-            this.rtbMinorItemInfo2.Text = "";
-            // 
-            // rtbMainItemInfo2
-            // 
-            this.rtbMainItemInfo2.Location = new System.Drawing.Point(225, 3);
-            this.rtbMainItemInfo2.Name = "rtbMainItemInfo2";
-            this.rtbMainItemInfo2.Size = new System.Drawing.Size(251, 194);
-            this.rtbMainItemInfo2.TabIndex = 2;
-            this.rtbMainItemInfo2.Text = "";
-            // 
-            // pictureBox2
-            // 
-            this.pictureBox2.Location = new System.Drawing.Point(3, 3);
-            this.pictureBox2.Name = "pictureBox2";
-            this.pictureBox2.Size = new System.Drawing.Size(216, 296);
-            this.pictureBox2.TabIndex = 1;
-            this.pictureBox2.TabStop = false;
-            // 
-            // btnAddToCart2
-            // 
-            this.btnAddToCart2.Location = new System.Drawing.Point(368, 255);
-            this.btnAddToCart2.Name = "btnAddToCart2";
-            this.btnAddToCart2.Size = new System.Drawing.Size(109, 44);
-            this.btnAddToCart2.TabIndex = 0;
-            this.btnAddToCart2.Text = "Add to Cart";
-            this.btnAddToCart2.UseVisualStyleBackColor = true;
-            this.btnAddToCart2.Click += new System.EventHandler(this.btnAddToCart2_Click);
-            // 
-            // pnlListing1
-            // 
-            this.pnlListing1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.pnlListing1.Controls.Add(this.label1);
-            this.pnlListing1.Controls.Add(this.nudQuantity1);
-            this.pnlListing1.Controls.Add(this.rtbMinorItemInfo1);
-            this.pnlListing1.Controls.Add(this.rtbMainItemInfo1);
-            this.pnlListing1.Controls.Add(this.pictureBox1);
-            this.pnlListing1.Controls.Add(this.btnAddToCart1);
-            this.pnlListing1.Location = new System.Drawing.Point(499, 3);
-            this.pnlListing1.Name = "pnlListing1";
-            this.pnlListing1.Size = new System.Drawing.Size(480, 302);
-            this.pnlListing1.TabIndex = 15;
-            // 
-            // label1
-            // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(245, 255);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(104, 17);
-            this.label1.TabIndex = 5;
-            this.label1.Text = "Select Quantity";
-            // 
-            // nudQuantity1
-            // 
-            this.nudQuantity1.Location = new System.Drawing.Point(258, 275);
-            this.nudQuantity1.Minimum = new decimal(new int[] {
-            1,
-            0,
-            0,
-            0});
-            this.nudQuantity1.Name = "nudQuantity1";
-            this.nudQuantity1.Size = new System.Drawing.Size(78, 22);
-            this.nudQuantity1.TabIndex = 4;
-            this.nudQuantity1.Value = new decimal(new int[] {
-            1,
-            0,
-            0,
-            0});
-            // 
-            // rtbMinorItemInfo1
-            // 
-            this.rtbMinorItemInfo1.Location = new System.Drawing.Point(225, 204);
-            this.rtbMinorItemInfo1.Name = "rtbMinorItemInfo1";
-            this.rtbMinorItemInfo1.Size = new System.Drawing.Size(251, 45);
-            this.rtbMinorItemInfo1.TabIndex = 3;
-            this.rtbMinorItemInfo1.Text = "";
-            // 
-            // rtbMainItemInfo1
-            // 
-            this.rtbMainItemInfo1.Location = new System.Drawing.Point(225, 3);
-            this.rtbMainItemInfo1.Name = "rtbMainItemInfo1";
-            this.rtbMainItemInfo1.Size = new System.Drawing.Size(251, 194);
-            this.rtbMainItemInfo1.TabIndex = 2;
-            this.rtbMainItemInfo1.Text = "";
-            // 
-            // pictureBox1
-            // 
-            this.pictureBox1.Location = new System.Drawing.Point(3, 3);
-            this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(216, 296);
-            this.pictureBox1.TabIndex = 1;
-            this.pictureBox1.TabStop = false;
-            // 
-            // btnAddToCart1
-            // 
-            this.btnAddToCart1.Location = new System.Drawing.Point(368, 255);
-            this.btnAddToCart1.Name = "btnAddToCart1";
-            this.btnAddToCart1.Size = new System.Drawing.Size(109, 44);
-            this.btnAddToCart1.TabIndex = 0;
-            this.btnAddToCart1.Text = "Add to Cart";
-            this.btnAddToCart1.UseVisualStyleBackColor = true;
-            this.btnAddToCart1.Click += new System.EventHandler(this.btnAddToCart1_Click);
-            // 
             // pnlListing0
             // 
             this.pnlListing0.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.pnlListing0.Controls.Add(this.rtbPrice0);
             this.pnlListing0.Controls.Add(this.lblSelectQuantity);
             this.pnlListing0.Controls.Add(this.nudQuantity0);
-            this.pnlListing0.Controls.Add(this.rtbMinorItemInfo0);
-            this.pnlListing0.Controls.Add(this.rtbMainItemInfo0);
+            this.pnlListing0.Controls.Add(this.rtbTitleDescription0);
             this.pnlListing0.Controls.Add(this.pbxItemImage0);
             this.pnlListing0.Controls.Add(this.btnAddToCart0);
             this.pnlListing0.Location = new System.Drawing.Point(3, 3);
@@ -456,24 +234,21 @@ namespace SemesterProject
             0,
             0});
             // 
-            // rtbMinorItemInfo0
+            // rtbTitleDescription0
             // 
-            this.rtbMinorItemInfo0.Location = new System.Drawing.Point(225, 204);
-            this.rtbMinorItemInfo0.Name = "rtbMinorItemInfo0";
-            this.rtbMinorItemInfo0.Size = new System.Drawing.Size(251, 45);
-            this.rtbMinorItemInfo0.TabIndex = 3;
-            this.rtbMinorItemInfo0.Text = "";
-            // 
-            // rtbMainItemInfo0
-            // 
-            this.rtbMainItemInfo0.Location = new System.Drawing.Point(225, 3);
-            this.rtbMainItemInfo0.Name = "rtbMainItemInfo0";
-            this.rtbMainItemInfo0.Size = new System.Drawing.Size(251, 194);
-            this.rtbMainItemInfo0.TabIndex = 2;
-            this.rtbMainItemInfo0.Text = "";
+            this.rtbTitleDescription0.BackColor = System.Drawing.Color.White;
+            this.rtbTitleDescription0.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.rtbTitleDescription0.Font = new System.Drawing.Font("Microsoft Sans Serif", 15F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.rtbTitleDescription0.Location = new System.Drawing.Point(225, 3);
+            this.rtbTitleDescription0.Name = "rtbTitleDescription0";
+            this.rtbTitleDescription0.ReadOnly = true;
+            this.rtbTitleDescription0.Size = new System.Drawing.Size(250, 194);
+            this.rtbTitleDescription0.TabIndex = 2;
+            this.rtbTitleDescription0.Text = "Listing Title\nListing Description";
             // 
             // pbxItemImage0
             // 
+            this.pbxItemImage0.Image = global::SemesterProject.Properties.Resources.SGS24U_titanium_gray;
             this.pbxItemImage0.Location = new System.Drawing.Point(3, 3);
             this.pbxItemImage0.Name = "pbxItemImage0";
             this.pbxItemImage0.Size = new System.Drawing.Size(216, 296);
@@ -848,6 +623,253 @@ namespace SemesterProject
             this.dgvPastPurchases.Size = new System.Drawing.Size(959, 400);
             this.dgvPastPurchases.TabIndex = 1;
             // 
+            // rtbPrice0
+            // 
+            this.rtbPrice0.AutoSize = true;
+            this.rtbPrice0.Font = new System.Drawing.Font("Microsoft Sans Serif", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.rtbPrice0.Location = new System.Drawing.Point(368, 225);
+            this.rtbPrice0.Name = "rtbPrice0";
+            this.rtbPrice0.Size = new System.Drawing.Size(53, 24);
+            this.rtbPrice0.TabIndex = 6;
+            this.rtbPrice0.Text = "Price";
+            // 
+            // pnlListing1
+            // 
+            this.pnlListing1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.pnlListing1.Controls.Add(this.rtbPrice1);
+            this.pnlListing1.Controls.Add(this.label11);
+            this.pnlListing1.Controls.Add(this.nudQuantity1);
+            this.pnlListing1.Controls.Add(this.rtbTitleDescription1);
+            this.pnlListing1.Controls.Add(this.pbxItemImage1);
+            this.pnlListing1.Controls.Add(this.btnAddToCart1);
+            this.pnlListing1.Location = new System.Drawing.Point(499, 3);
+            this.pnlListing1.Name = "pnlListing1";
+            this.pnlListing1.Size = new System.Drawing.Size(480, 302);
+            this.pnlListing1.TabIndex = 18;
+            // 
+            // rtbPrice1
+            // 
+            this.rtbPrice1.AutoSize = true;
+            this.rtbPrice1.Font = new System.Drawing.Font("Microsoft Sans Serif", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.rtbPrice1.Location = new System.Drawing.Point(368, 225);
+            this.rtbPrice1.Name = "rtbPrice1";
+            this.rtbPrice1.Size = new System.Drawing.Size(53, 24);
+            this.rtbPrice1.TabIndex = 6;
+            this.rtbPrice1.Text = "Price";
+            // 
+            // label11
+            // 
+            this.label11.AutoSize = true;
+            this.label11.Location = new System.Drawing.Point(245, 255);
+            this.label11.Name = "label11";
+            this.label11.Size = new System.Drawing.Size(104, 17);
+            this.label11.TabIndex = 5;
+            this.label11.Text = "Select Quantity";
+            // 
+            // nudQuantity1
+            // 
+            this.nudQuantity1.Location = new System.Drawing.Point(258, 275);
+            this.nudQuantity1.Minimum = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            this.nudQuantity1.Name = "nudQuantity1";
+            this.nudQuantity1.Size = new System.Drawing.Size(78, 22);
+            this.nudQuantity1.TabIndex = 4;
+            this.nudQuantity1.Value = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            // 
+            // rtbTitleDescription1
+            // 
+            this.rtbTitleDescription1.BackColor = System.Drawing.Color.White;
+            this.rtbTitleDescription1.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.rtbTitleDescription1.Font = new System.Drawing.Font("Microsoft Sans Serif", 15F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.rtbTitleDescription1.Location = new System.Drawing.Point(225, 3);
+            this.rtbTitleDescription1.Name = "rtbTitleDescription1";
+            this.rtbTitleDescription1.ReadOnly = true;
+            this.rtbTitleDescription1.Size = new System.Drawing.Size(250, 194);
+            this.rtbTitleDescription1.TabIndex = 2;
+            this.rtbTitleDescription1.Text = "Listing Title\nListing Description";
+            // 
+            // pbxItemImage1
+            // 
+            this.pbxItemImage1.Location = new System.Drawing.Point(3, 3);
+            this.pbxItemImage1.Name = "pbxItemImage1";
+            this.pbxItemImage1.Size = new System.Drawing.Size(216, 296);
+            this.pbxItemImage1.TabIndex = 1;
+            this.pbxItemImage1.TabStop = false;
+            // 
+            // btnAddToCart1
+            // 
+            this.btnAddToCart1.Location = new System.Drawing.Point(368, 255);
+            this.btnAddToCart1.Name = "btnAddToCart1";
+            this.btnAddToCart1.Size = new System.Drawing.Size(109, 44);
+            this.btnAddToCart1.TabIndex = 0;
+            this.btnAddToCart1.Text = "Add to Cart";
+            this.btnAddToCart1.UseVisualStyleBackColor = true;
+            // 
+            // pnlListing2
+            // 
+            this.pnlListing2.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.pnlListing2.Controls.Add(this.rtbPrice2);
+            this.pnlListing2.Controls.Add(this.label12);
+            this.pnlListing2.Controls.Add(this.nudQuantity2);
+            this.pnlListing2.Controls.Add(this.rtbTitleDescription2);
+            this.pnlListing2.Controls.Add(this.pbxItemImage2);
+            this.pnlListing2.Controls.Add(this.btnAddToCart2);
+            this.pnlListing2.Location = new System.Drawing.Point(3, 314);
+            this.pnlListing2.Name = "pnlListing2";
+            this.pnlListing2.Size = new System.Drawing.Size(480, 302);
+            this.pnlListing2.TabIndex = 19;
+            // 
+            // rtbPrice2
+            // 
+            this.rtbPrice2.AutoSize = true;
+            this.rtbPrice2.Font = new System.Drawing.Font("Microsoft Sans Serif", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.rtbPrice2.Location = new System.Drawing.Point(368, 225);
+            this.rtbPrice2.Name = "rtbPrice2";
+            this.rtbPrice2.Size = new System.Drawing.Size(53, 24);
+            this.rtbPrice2.TabIndex = 6;
+            this.rtbPrice2.Text = "Price";
+            // 
+            // label12
+            // 
+            this.label12.AutoSize = true;
+            this.label12.Location = new System.Drawing.Point(245, 255);
+            this.label12.Name = "label12";
+            this.label12.Size = new System.Drawing.Size(104, 17);
+            this.label12.TabIndex = 5;
+            this.label12.Text = "Select Quantity";
+            // 
+            // nudQuantity2
+            // 
+            this.nudQuantity2.Location = new System.Drawing.Point(258, 275);
+            this.nudQuantity2.Minimum = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            this.nudQuantity2.Name = "nudQuantity2";
+            this.nudQuantity2.Size = new System.Drawing.Size(78, 22);
+            this.nudQuantity2.TabIndex = 4;
+            this.nudQuantity2.Value = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            // 
+            // rtbTitleDescription2
+            // 
+            this.rtbTitleDescription2.BackColor = System.Drawing.Color.White;
+            this.rtbTitleDescription2.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.rtbTitleDescription2.Font = new System.Drawing.Font("Microsoft Sans Serif", 15F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.rtbTitleDescription2.Location = new System.Drawing.Point(225, 3);
+            this.rtbTitleDescription2.Name = "rtbTitleDescription2";
+            this.rtbTitleDescription2.ReadOnly = true;
+            this.rtbTitleDescription2.Size = new System.Drawing.Size(250, 194);
+            this.rtbTitleDescription2.TabIndex = 2;
+            this.rtbTitleDescription2.Text = "Listing Title\nListing Description";
+            // 
+            // pbxItemImage2
+            // 
+            this.pbxItemImage2.Location = new System.Drawing.Point(3, 3);
+            this.pbxItemImage2.Name = "pbxItemImage2";
+            this.pbxItemImage2.Size = new System.Drawing.Size(216, 296);
+            this.pbxItemImage2.TabIndex = 1;
+            this.pbxItemImage2.TabStop = false;
+            // 
+            // btnAddToCart2
+            // 
+            this.btnAddToCart2.Location = new System.Drawing.Point(368, 255);
+            this.btnAddToCart2.Name = "btnAddToCart2";
+            this.btnAddToCart2.Size = new System.Drawing.Size(109, 44);
+            this.btnAddToCart2.TabIndex = 0;
+            this.btnAddToCart2.Text = "Add to Cart";
+            this.btnAddToCart2.UseVisualStyleBackColor = true;
+            // 
+            // pnlListing3
+            // 
+            this.pnlListing3.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.pnlListing3.Controls.Add(this.rtbPrice3);
+            this.pnlListing3.Controls.Add(this.label13);
+            this.pnlListing3.Controls.Add(this.nudQuantity3);
+            this.pnlListing3.Controls.Add(this.rtbTitleDescription3);
+            this.pnlListing3.Controls.Add(this.pbxItemImage3);
+            this.pnlListing3.Controls.Add(this.btnAddToCart3);
+            this.pnlListing3.Location = new System.Drawing.Point(499, 314);
+            this.pnlListing3.Name = "pnlListing3";
+            this.pnlListing3.Size = new System.Drawing.Size(480, 302);
+            this.pnlListing3.TabIndex = 15;
+            // 
+            // rtbPrice3
+            // 
+            this.rtbPrice3.AutoSize = true;
+            this.rtbPrice3.Font = new System.Drawing.Font("Microsoft Sans Serif", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.rtbPrice3.Location = new System.Drawing.Point(368, 225);
+            this.rtbPrice3.Name = "rtbPrice3";
+            this.rtbPrice3.Size = new System.Drawing.Size(53, 24);
+            this.rtbPrice3.TabIndex = 6;
+            this.rtbPrice3.Text = "Price";
+            // 
+            // label13
+            // 
+            this.label13.AutoSize = true;
+            this.label13.Location = new System.Drawing.Point(245, 255);
+            this.label13.Name = "label13";
+            this.label13.Size = new System.Drawing.Size(104, 17);
+            this.label13.TabIndex = 5;
+            this.label13.Text = "Select Quantity";
+            // 
+            // nudQuantity3
+            // 
+            this.nudQuantity3.Location = new System.Drawing.Point(258, 275);
+            this.nudQuantity3.Minimum = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            this.nudQuantity3.Name = "nudQuantity3";
+            this.nudQuantity3.Size = new System.Drawing.Size(78, 22);
+            this.nudQuantity3.TabIndex = 4;
+            this.nudQuantity3.Value = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            // 
+            // rtbTitleDescription3
+            // 
+            this.rtbTitleDescription3.BackColor = System.Drawing.Color.White;
+            this.rtbTitleDescription3.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.rtbTitleDescription3.Font = new System.Drawing.Font("Microsoft Sans Serif", 15F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.rtbTitleDescription3.Location = new System.Drawing.Point(225, 3);
+            this.rtbTitleDescription3.Name = "rtbTitleDescription3";
+            this.rtbTitleDescription3.ReadOnly = true;
+            this.rtbTitleDescription3.Size = new System.Drawing.Size(250, 194);
+            this.rtbTitleDescription3.TabIndex = 2;
+            this.rtbTitleDescription3.Text = "Listing Title\nListing Description";
+            // 
+            // pbxItemImage3
+            // 
+            this.pbxItemImage3.Location = new System.Drawing.Point(3, 3);
+            this.pbxItemImage3.Name = "pbxItemImage3";
+            this.pbxItemImage3.Size = new System.Drawing.Size(216, 296);
+            this.pbxItemImage3.TabIndex = 1;
+            this.pbxItemImage3.TabStop = false;
+            // 
+            // btnAddToCart3
+            // 
+            this.btnAddToCart3.Location = new System.Drawing.Point(368, 255);
+            this.btnAddToCart3.Name = "btnAddToCart3";
+            this.btnAddToCart3.Size = new System.Drawing.Size(109, 44);
+            this.btnAddToCart3.TabIndex = 0;
+            this.btnAddToCart3.Text = "Add to Cart";
+            this.btnAddToCart3.UseVisualStyleBackColor = true;
+            // 
             // storeItemListingBindingSource
             // 
             this.storeItemListingBindingSource.DataSource = typeof(SemesterProject.StoreItemListing);
@@ -865,18 +887,6 @@ namespace SemesterProject
             this.tc_Listings_Cart.ResumeLayout(false);
             this.tpListings.ResumeLayout(false);
             this.pnlAllListings.ResumeLayout(false);
-            this.pnlListing3.ResumeLayout(false);
-            this.pnlListing3.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.nudQuantity3)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox3)).EndInit();
-            this.pnlListing2.ResumeLayout(false);
-            this.pnlListing2.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.nudQuantity2)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).EndInit();
-            this.pnlListing1.ResumeLayout(false);
-            this.pnlListing1.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.nudQuantity1)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.pnlListing0.ResumeLayout(false);
             this.pnlListing0.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.nudQuantity0)).EndInit();
@@ -898,6 +908,18 @@ namespace SemesterProject
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown3)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown2)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dgvPastPurchases)).EndInit();
+            this.pnlListing1.ResumeLayout(false);
+            this.pnlListing1.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.nudQuantity1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pbxItemImage1)).EndInit();
+            this.pnlListing2.ResumeLayout(false);
+            this.pnlListing2.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.nudQuantity2)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pbxItemImage2)).EndInit();
+            this.pnlListing3.ResumeLayout(false);
+            this.pnlListing3.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.nudQuantity3)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pbxItemImage3)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.storeItemListingBindingSource)).EndInit();
             this.ResumeLayout(false);
 
@@ -914,32 +936,10 @@ namespace SemesterProject
         private System.Windows.Forms.TabControl tc_Listings_Cart;
         private System.Windows.Forms.TabPage tpListings;
         private System.Windows.Forms.Panel pnlAllListings;
-        private System.Windows.Forms.Panel pnlListing3;
-        private System.Windows.Forms.Label label3;
-        private System.Windows.Forms.NumericUpDown nudQuantity3;
-        private System.Windows.Forms.RichTextBox rtbMinorItemInfo3;
-        private System.Windows.Forms.RichTextBox rtbMainItemInfo3;
-        private System.Windows.Forms.PictureBox pictureBox3;
-        private System.Windows.Forms.Button btnAddToCart3;
-        private System.Windows.Forms.Panel pnlListing2;
-        private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.NumericUpDown nudQuantity2;
-        private System.Windows.Forms.RichTextBox rtbMinorItemInfo2;
-        private System.Windows.Forms.RichTextBox rtbMainItemInfo2;
-        private System.Windows.Forms.PictureBox pictureBox2;
-        private System.Windows.Forms.Button btnAddToCart2;
-        private System.Windows.Forms.Panel pnlListing1;
-        private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.NumericUpDown nudQuantity1;
-        private System.Windows.Forms.RichTextBox rtbMinorItemInfo1;
-        private System.Windows.Forms.RichTextBox rtbMainItemInfo1;
-        private System.Windows.Forms.PictureBox pictureBox1;
-        private System.Windows.Forms.Button btnAddToCart1;
         private System.Windows.Forms.Panel pnlListing0;
         private System.Windows.Forms.Label lblSelectQuantity;
         private System.Windows.Forms.NumericUpDown nudQuantity0;
-        private System.Windows.Forms.RichTextBox rtbMinorItemInfo0;
-        private System.Windows.Forms.RichTextBox rtbMainItemInfo0;
+        private System.Windows.Forms.RichTextBox rtbTitleDescription0;
         private System.Windows.Forms.PictureBox pbxItemImage0;
         private System.Windows.Forms.Button btnAddToCart0;
         private System.Windows.Forms.GroupBox groupBox1;
@@ -972,5 +972,27 @@ namespace SemesterProject
         private System.Windows.Forms.DateTimePicker dateTimePicker2;
         private System.Windows.Forms.Label label9;
         private System.Windows.Forms.Label lblAccountBalanceResults;
+        private System.Windows.Forms.Label rtbPrice0;
+        private System.Windows.Forms.Panel pnlListing3;
+        private System.Windows.Forms.Label rtbPrice3;
+        private System.Windows.Forms.Label label13;
+        private System.Windows.Forms.NumericUpDown nudQuantity3;
+        private System.Windows.Forms.RichTextBox rtbTitleDescription3;
+        private System.Windows.Forms.PictureBox pbxItemImage3;
+        private System.Windows.Forms.Button btnAddToCart3;
+        private System.Windows.Forms.Panel pnlListing2;
+        private System.Windows.Forms.Label rtbPrice2;
+        private System.Windows.Forms.Label label12;
+        private System.Windows.Forms.NumericUpDown nudQuantity2;
+        private System.Windows.Forms.RichTextBox rtbTitleDescription2;
+        private System.Windows.Forms.PictureBox pbxItemImage2;
+        private System.Windows.Forms.Button btnAddToCart2;
+        private System.Windows.Forms.Panel pnlListing1;
+        private System.Windows.Forms.Label rtbPrice1;
+        private System.Windows.Forms.Label label11;
+        private System.Windows.Forms.NumericUpDown nudQuantity1;
+        private System.Windows.Forms.RichTextBox rtbTitleDescription1;
+        private System.Windows.Forms.PictureBox pbxItemImage1;
+        private System.Windows.Forms.Button btnAddToCart1;
     }
 }
