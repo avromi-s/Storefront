@@ -36,7 +36,6 @@ namespace SemesterProject
             FormattedPrice = "$" + Convert.ToString(this.StoreItem.Price); // todo
             try
             {
-                //ItemImage = ItemImage.FromFile(StoreItem.ImagePath);
                 ItemImage = Image.FromFile(STORE_ITEM_IMAGES_PATH + storeItem.ImagePath);
             }
 

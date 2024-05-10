@@ -32,9 +32,9 @@ namespace SemesterProject
         private bool isAnotherItem { get; set; } // todo naming
 
         private readonly int NUM_LISTINGS_PER_PAGE = 4; // todo maybe derive from gui
-        private int currentPageNum = 0; // 0-indexed for easy use with collections
+        private int currentPageIndex = 0; // 0-indexed for easy use with collections
 
-        private int currentPageNumDisplay => currentPageNum + 1; // 1-indexed for user display
+        private int currentPageNumDisplay => currentPageIndex + 1; // 1-indexed for user display
 
         public Storefront(DataClasses1DataContext db, CUSTOMER loggedInCustomer)
         {
@@ -78,7 +78,7 @@ namespace SemesterProject
 
         private void RefreshListingsTab()
         {
-            LoadStoreItemsIntoGui(GetStoreItems(currentPageNum));
+            LoadStoreItemsIntoGui(GetStoreItems(currentPageIndex));
             RefreshLblPageNum();
             if (isAnotherItem)
             {
@@ -166,12 +166,12 @@ namespace SemesterProject
 
         private void btnNextPage_Click(object sender, EventArgs e)
         {
-            currentPageNum++;
+            currentPageIndex++;
             RefreshListingsTab();
 
             btnPreviousPage.Enabled = true;
             bool IsNoMoreCachedItems =
-                currentPageNum * NUM_LISTINGS_PER_PAGE >= cachedStoreItems.Count / NUM_LISTINGS_PER_PAGE;
+                (currentPageIndex + 1) * NUM_LISTINGS_PER_PAGE >= cachedStoreItems.Count;
             if (IsNoMoreCachedItems && !isAnotherItem)
             {
                 btnNextPage.Enabled = false;
@@ -180,11 +180,11 @@ namespace SemesterProject
 
         private void btnPreviousPage_Click(object sender, EventArgs e)
         {
-            currentPageNum--;
+            currentPageIndex--;
             RefreshListingsTab();
 
             btnNextPage.Enabled = true;
-            if (currentPageNum == 0)
+            if (currentPageIndex == 0)
             {
                 btnPreviousPage.Enabled = false;
             }
@@ -204,7 +204,7 @@ namespace SemesterProject
 
         private void RefreshQuantityControlLimitsForListing(int listingIndex)
         {
-            STORE_ITEM storeItem = cachedStoreItems[(currentPageNum * NUM_LISTINGS_PER_PAGE) + listingIndex];
+            STORE_ITEM storeItem = cachedStoreItems[(currentPageIndex * NUM_LISTINGS_PER_PAGE) + listingIndex];
             int totalQtyAvail = storeItem.QuantityAvailable;
             int qtyInCart;
             if (cartItems.Any(item => item.GetStoreItem() == storeItem))
@@ -271,7 +271,7 @@ namespace SemesterProject
             int quantitySelected =
                 Convert.ToInt32((pnlAllListings.Controls["pnlListing" + listingIndex]
                     .Controls["nudQuantity" + listingIndex] as NumericUpDown).Value);
-            STORE_ITEM storeItem = cachedStoreItems[(currentPageNum * NUM_LISTINGS_PER_PAGE) + listingIndex];
+            STORE_ITEM storeItem = cachedStoreItems[(currentPageIndex * NUM_LISTINGS_PER_PAGE) + listingIndex];
             return new CartItem(storeItem, quantitySelected);
         }
 
