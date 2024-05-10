@@ -37,7 +37,7 @@ CREATE TABLE [dbo].[STORE_ITEM](
 	[ProductName] [nvarchar](100) NOT NULL,
 	[QuantityAvailable] [int] NOT NULL,
 	[Price] [money] NOT NULL,
-	[ImageUrl] [nvarchar](MAX),
+	[ImagePath] [nvarchar](MAX),
 	CONSTRAINT Unique_StoreItem UNIQUE(Manufacturer, ProductName),
  CONSTRAINT [PK_STORE_ITEM] PRIMARY KEY CLUSTERED 
 (

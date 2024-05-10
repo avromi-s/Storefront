@@ -59,15 +59,5 @@ namespace SemesterProject.Properties {
                 resourceCulture = value;
             }
         }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap SGS24U_titanium_gray {
-            get {
-                object obj = ResourceManager.GetObject("SGS24U_titanium_gray", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
     }
 }

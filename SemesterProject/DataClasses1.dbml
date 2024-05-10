@@ -9,17 +9,6 @@
       <Association Name="CUSTOMER_PURCHASE" Member="PURCHASEs" ThisKey="CustomerId" OtherKey="CustomerId" Type="PURCHASE" />
     </Type>
   </Table>
-  <Table Name="dbo.STORE_ITEM" Member="STORE_ITEMs">
-    <Type Name="STORE_ITEM">
-      <Column Name="StoreItemId" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
-      <Column Name="Manufacturer" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
-      <Column Name="ProductName" Type="System.String" DbType="NVarChar(100) NOT NULL" CanBeNull="false" />
-      <Column Name="QuantityAvailable" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
-      <Column Name="Price" Type="System.Decimal" DbType="Money NOT NULL" CanBeNull="false" />
-      <Column Name="ImageUrl" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" />
-      <Association Name="STORE_ITEM_PURCHASE_STORE_ITEM" Member="PURCHASE_STORE_ITEMs" ThisKey="StoreItemId" OtherKey="StoreItemId" Type="PURCHASE_STORE_ITEM" />
-    </Type>
-  </Table>
   <Table Name="dbo.PURCHASE" Member="PURCHASEs">
     <Type Name="PURCHASE" Id="ID1">
       <Column Name="PurchaseId" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
@@ -39,6 +28,17 @@
       <Column Name="UnitPrice" Type="System.Decimal" DbType="Money NOT NULL" CanBeNull="false" />
       <Association Name="PURCHASE_PURCHASE_STORE_ITEM" Member="PURCHASE" ThisKey="PurchaseId" OtherKey="PurchaseId" Type="PURCHASE" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
       <Association Name="STORE_ITEM_PURCHASE_STORE_ITEM" Member="STORE_ITEM" ThisKey="StoreItemId" OtherKey="StoreItemId" Type="STORE_ITEM" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.STORE_ITEM" Member="STORE_ITEMs">
+    <Type Name="STORE_ITEM">
+      <Column Name="StoreItemId" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="Manufacturer" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="ProductName" Type="System.String" DbType="NVarChar(100) NOT NULL" CanBeNull="false" />
+      <Column Name="QuantityAvailable" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="Price" Type="System.Decimal" DbType="Money NOT NULL" CanBeNull="false" />
+      <Column Name="ImagePath" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" />
+      <Association Name="STORE_ITEM_PURCHASE_STORE_ITEM" Member="PURCHASE_STORE_ITEMs" ThisKey="StoreItemId" OtherKey="StoreItemId" Type="PURCHASE_STORE_ITEM" />
     </Type>
   </Table>
   <Function Name="dbo.CREATE_NEW_PURCHASE" Method="CREATE_NEW_PURCHASE">

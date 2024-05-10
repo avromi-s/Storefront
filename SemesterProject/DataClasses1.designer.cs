@@ -33,15 +33,15 @@ namespace SemesterProject
     partial void InsertCUSTOMER(CUSTOMER instance);
     partial void UpdateCUSTOMER(CUSTOMER instance);
     partial void DeleteCUSTOMER(CUSTOMER instance);
-    partial void InsertSTORE_ITEM(STORE_ITEM instance);
-    partial void UpdateSTORE_ITEM(STORE_ITEM instance);
-    partial void DeleteSTORE_ITEM(STORE_ITEM instance);
     partial void InsertPURCHASE(PURCHASE instance);
     partial void UpdatePURCHASE(PURCHASE instance);
     partial void DeletePURCHASE(PURCHASE instance);
     partial void InsertPURCHASE_STORE_ITEM(PURCHASE_STORE_ITEM instance);
     partial void UpdatePURCHASE_STORE_ITEM(PURCHASE_STORE_ITEM instance);
     partial void DeletePURCHASE_STORE_ITEM(PURCHASE_STORE_ITEM instance);
+    partial void InsertSTORE_ITEM(STORE_ITEM instance);
+    partial void UpdateSTORE_ITEM(STORE_ITEM instance);
+    partial void DeleteSTORE_ITEM(STORE_ITEM instance);
     #endregion
 		
 		public DataClasses1DataContext() : 
@@ -82,14 +82,6 @@ namespace SemesterProject
 			}
 		}
 		
-		public System.Data.Linq.Table<STORE_ITEM> STORE_ITEMs
-		{
-			get
-			{
-				return this.GetTable<STORE_ITEM>();
-			}
-		}
-		
 		public System.Data.Linq.Table<PURCHASE> PURCHASEs
 		{
 			get
@@ -103,6 +95,14 @@ namespace SemesterProject
 			get
 			{
 				return this.GetTable<PURCHASE_STORE_ITEM>();
+			}
+		}
+		
+		public System.Data.Linq.Table<STORE_ITEM> STORE_ITEMs
+		{
+			get
+			{
+				return this.GetTable<STORE_ITEM>();
 			}
 		}
 		
@@ -273,216 +273,6 @@ namespace SemesterProject
 		{
 			this.SendPropertyChanging();
 			entity.CUSTOMER = null;
-		}
-	}
-	
-	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.STORE_ITEM")]
-	public partial class STORE_ITEM : INotifyPropertyChanging, INotifyPropertyChanged
-	{
-		
-		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
-		
-		private int _StoreItemId;
-		
-		private string _Manufacturer;
-		
-		private string _ProductName;
-		
-		private int _QuantityAvailable;
-		
-		private decimal _Price;
-		
-		private string _ImageUrl;
-		
-		private EntitySet<PURCHASE_STORE_ITEM> _PURCHASE_STORE_ITEMs;
-		
-    #region Extensibility Method Definitions
-    partial void OnLoaded();
-    partial void OnValidate(System.Data.Linq.ChangeAction action);
-    partial void OnCreated();
-    partial void OnStoreItemIdChanging(int value);
-    partial void OnStoreItemIdChanged();
-    partial void OnManufacturerChanging(string value);
-    partial void OnManufacturerChanged();
-    partial void OnProductNameChanging(string value);
-    partial void OnProductNameChanged();
-    partial void OnQuantityAvailableChanging(int value);
-    partial void OnQuantityAvailableChanged();
-    partial void OnPriceChanging(decimal value);
-    partial void OnPriceChanged();
-    partial void OnImageUrlChanging(string value);
-    partial void OnImageUrlChanged();
-    #endregion
-		
-		public STORE_ITEM()
-		{
-			this._PURCHASE_STORE_ITEMs = new EntitySet<PURCHASE_STORE_ITEM>(new Action<PURCHASE_STORE_ITEM>(this.attach_PURCHASE_STORE_ITEMs), new Action<PURCHASE_STORE_ITEM>(this.detach_PURCHASE_STORE_ITEMs));
-			OnCreated();
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_StoreItemId", AutoSync=AutoSync.OnInsert, DbType="Int NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
-		public int StoreItemId
-		{
-			get
-			{
-				return this._StoreItemId;
-			}
-			set
-			{
-				if ((this._StoreItemId != value))
-				{
-					this.OnStoreItemIdChanging(value);
-					this.SendPropertyChanging();
-					this._StoreItemId = value;
-					this.SendPropertyChanged("StoreItemId");
-					this.OnStoreItemIdChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Manufacturer", DbType="NVarChar(50) NOT NULL", CanBeNull=false)]
-		public string Manufacturer
-		{
-			get
-			{
-				return this._Manufacturer;
-			}
-			set
-			{
-				if ((this._Manufacturer != value))
-				{
-					this.OnManufacturerChanging(value);
-					this.SendPropertyChanging();
-					this._Manufacturer = value;
-					this.SendPropertyChanged("Manufacturer");
-					this.OnManufacturerChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ProductName", DbType="NVarChar(100) NOT NULL", CanBeNull=false)]
-		public string ProductName
-		{
-			get
-			{
-				return this._ProductName;
-			}
-			set
-			{
-				if ((this._ProductName != value))
-				{
-					this.OnProductNameChanging(value);
-					this.SendPropertyChanging();
-					this._ProductName = value;
-					this.SendPropertyChanged("ProductName");
-					this.OnProductNameChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_QuantityAvailable", DbType="Int NOT NULL")]
-		public int QuantityAvailable
-		{
-			get
-			{
-				return this._QuantityAvailable;
-			}
-			set
-			{
-				if ((this._QuantityAvailable != value))
-				{
-					this.OnQuantityAvailableChanging(value);
-					this.SendPropertyChanging();
-					this._QuantityAvailable = value;
-					this.SendPropertyChanged("QuantityAvailable");
-					this.OnQuantityAvailableChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Price", DbType="Money NOT NULL")]
-		public decimal Price
-		{
-			get
-			{
-				return this._Price;
-			}
-			set
-			{
-				if ((this._Price != value))
-				{
-					this.OnPriceChanging(value);
-					this.SendPropertyChanging();
-					this._Price = value;
-					this.SendPropertyChanged("Price");
-					this.OnPriceChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ImageUrl", DbType="NVarChar(MAX)")]
-		public string ImageUrl
-		{
-			get
-			{
-				return this._ImageUrl;
-			}
-			set
-			{
-				if ((this._ImageUrl != value))
-				{
-					this.OnImageUrlChanging(value);
-					this.SendPropertyChanging();
-					this._ImageUrl = value;
-					this.SendPropertyChanged("ImageUrl");
-					this.OnImageUrlChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="STORE_ITEM_PURCHASE_STORE_ITEM", Storage="_PURCHASE_STORE_ITEMs", ThisKey="StoreItemId", OtherKey="StoreItemId")]
-		public EntitySet<PURCHASE_STORE_ITEM> PURCHASE_STORE_ITEMs
-		{
-			get
-			{
-				return this._PURCHASE_STORE_ITEMs;
-			}
-			set
-			{
-				this._PURCHASE_STORE_ITEMs.Assign(value);
-			}
-		}
-		
-		public event PropertyChangingEventHandler PropertyChanging;
-		
-		public event PropertyChangedEventHandler PropertyChanged;
-		
-		protected virtual void SendPropertyChanging()
-		{
-			if ((this.PropertyChanging != null))
-			{
-				this.PropertyChanging(this, emptyChangingEventArgs);
-			}
-		}
-		
-		protected virtual void SendPropertyChanged(String propertyName)
-		{
-			if ((this.PropertyChanged != null))
-			{
-				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
-			}
-		}
-		
-		private void attach_PURCHASE_STORE_ITEMs(PURCHASE_STORE_ITEM entity)
-		{
-			this.SendPropertyChanging();
-			entity.STORE_ITEM = this;
-		}
-		
-		private void detach_PURCHASE_STORE_ITEMs(PURCHASE_STORE_ITEM entity)
-		{
-			this.SendPropertyChanging();
-			entity.STORE_ITEM = null;
 		}
 	}
 	
@@ -926,6 +716,216 @@ namespace SemesterProject
 			{
 				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
 			}
+		}
+	}
+	
+	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.STORE_ITEM")]
+	public partial class STORE_ITEM : INotifyPropertyChanging, INotifyPropertyChanged
+	{
+		
+		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
+		
+		private int _StoreItemId;
+		
+		private string _Manufacturer;
+		
+		private string _ProductName;
+		
+		private int _QuantityAvailable;
+		
+		private decimal _Price;
+		
+		private string _ImagePath;
+		
+		private EntitySet<PURCHASE_STORE_ITEM> _PURCHASE_STORE_ITEMs;
+		
+    #region Extensibility Method Definitions
+    partial void OnLoaded();
+    partial void OnValidate(System.Data.Linq.ChangeAction action);
+    partial void OnCreated();
+    partial void OnStoreItemIdChanging(int value);
+    partial void OnStoreItemIdChanged();
+    partial void OnManufacturerChanging(string value);
+    partial void OnManufacturerChanged();
+    partial void OnProductNameChanging(string value);
+    partial void OnProductNameChanged();
+    partial void OnQuantityAvailableChanging(int value);
+    partial void OnQuantityAvailableChanged();
+    partial void OnPriceChanging(decimal value);
+    partial void OnPriceChanged();
+    partial void OnImagePathChanging(string value);
+    partial void OnImagePathChanged();
+    #endregion
+		
+		public STORE_ITEM()
+		{
+			this._PURCHASE_STORE_ITEMs = new EntitySet<PURCHASE_STORE_ITEM>(new Action<PURCHASE_STORE_ITEM>(this.attach_PURCHASE_STORE_ITEMs), new Action<PURCHASE_STORE_ITEM>(this.detach_PURCHASE_STORE_ITEMs));
+			OnCreated();
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_StoreItemId", AutoSync=AutoSync.OnInsert, DbType="Int NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
+		public int StoreItemId
+		{
+			get
+			{
+				return this._StoreItemId;
+			}
+			set
+			{
+				if ((this._StoreItemId != value))
+				{
+					this.OnStoreItemIdChanging(value);
+					this.SendPropertyChanging();
+					this._StoreItemId = value;
+					this.SendPropertyChanged("StoreItemId");
+					this.OnStoreItemIdChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Manufacturer", DbType="NVarChar(50) NOT NULL", CanBeNull=false)]
+		public string Manufacturer
+		{
+			get
+			{
+				return this._Manufacturer;
+			}
+			set
+			{
+				if ((this._Manufacturer != value))
+				{
+					this.OnManufacturerChanging(value);
+					this.SendPropertyChanging();
+					this._Manufacturer = value;
+					this.SendPropertyChanged("Manufacturer");
+					this.OnManufacturerChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ProductName", DbType="NVarChar(100) NOT NULL", CanBeNull=false)]
+		public string ProductName
+		{
+			get
+			{
+				return this._ProductName;
+			}
+			set
+			{
+				if ((this._ProductName != value))
+				{
+					this.OnProductNameChanging(value);
+					this.SendPropertyChanging();
+					this._ProductName = value;
+					this.SendPropertyChanged("ProductName");
+					this.OnProductNameChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_QuantityAvailable", DbType="Int NOT NULL")]
+		public int QuantityAvailable
+		{
+			get
+			{
+				return this._QuantityAvailable;
+			}
+			set
+			{
+				if ((this._QuantityAvailable != value))
+				{
+					this.OnQuantityAvailableChanging(value);
+					this.SendPropertyChanging();
+					this._QuantityAvailable = value;
+					this.SendPropertyChanged("QuantityAvailable");
+					this.OnQuantityAvailableChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Price", DbType="Money NOT NULL")]
+		public decimal Price
+		{
+			get
+			{
+				return this._Price;
+			}
+			set
+			{
+				if ((this._Price != value))
+				{
+					this.OnPriceChanging(value);
+					this.SendPropertyChanging();
+					this._Price = value;
+					this.SendPropertyChanged("Price");
+					this.OnPriceChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ImagePath", DbType="NVarChar(MAX)")]
+		public string ImagePath
+		{
+			get
+			{
+				return this._ImagePath;
+			}
+			set
+			{
+				if ((this._ImagePath != value))
+				{
+					this.OnImagePathChanging(value);
+					this.SendPropertyChanging();
+					this._ImagePath = value;
+					this.SendPropertyChanged("ImagePath");
+					this.OnImagePathChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="STORE_ITEM_PURCHASE_STORE_ITEM", Storage="_PURCHASE_STORE_ITEMs", ThisKey="StoreItemId", OtherKey="StoreItemId")]
+		public EntitySet<PURCHASE_STORE_ITEM> PURCHASE_STORE_ITEMs
+		{
+			get
+			{
+				return this._PURCHASE_STORE_ITEMs;
+			}
+			set
+			{
+				this._PURCHASE_STORE_ITEMs.Assign(value);
+			}
+		}
+		
+		public event PropertyChangingEventHandler PropertyChanging;
+		
+		public event PropertyChangedEventHandler PropertyChanged;
+		
+		protected virtual void SendPropertyChanging()
+		{
+			if ((this.PropertyChanging != null))
+			{
+				this.PropertyChanging(this, emptyChangingEventArgs);
+			}
+		}
+		
+		protected virtual void SendPropertyChanged(String propertyName)
+		{
+			if ((this.PropertyChanged != null))
+			{
+				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+			}
+		}
+		
+		private void attach_PURCHASE_STORE_ITEMs(PURCHASE_STORE_ITEM entity)
+		{
+			this.SendPropertyChanging();
+			entity.STORE_ITEM = this;
+		}
+		
+		private void detach_PURCHASE_STORE_ITEMs(PURCHASE_STORE_ITEM entity)
+		{
+			this.SendPropertyChanging();
+			entity.STORE_ITEM = null;
 		}
 	}
 }

@@ -6,7 +6,7 @@ INSERT INTO [dbo].[STORE_ITEM]
            ,[ProductName]
            ,[QuantityAvailable]
            ,[Price]
-           ,[ImageUrl])
+           ,[ImagePath])
      VALUES
 			('Samsung', 'Galaxy S24 Ultra', 10, 1299.99, NULL),
 			('Samsung', 'Galaxy S24 Plus', 25, 1099.99, NULL),

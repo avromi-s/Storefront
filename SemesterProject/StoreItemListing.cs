@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
+using System.Security.Policy;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -25,13 +26,12 @@ namespace SemesterProject
                 ProductName = storeItem.ProductName,
                 QuantityAvailable = storeItem.QuantityAvailable,
                 Price = storeItem.Price,
-                ImageUrl = storeItem.ImageUrl
+                ImagePath = storeItem.ImagePath
             };
             Title = this.StoreItem.Manufacturer + "\n" + this.StoreItem.ProductName;
             SubTitle = "Other details - store in db... todo"; // todo
             FormattedPrice = "$" + Convert.ToString(this.StoreItem.Price);  // todo
-            Image = Image.FromFile(
-                "C:\\Users\\jackt\\OneDrive\\Programs\\C#\\Advanced Topics OOP\\SemesterProject - Copy\\SemesterProject\\resources\\StoreItemImages\\SGS24U_titanium_gray.jpg");
+            Image = Image.FromFile(StoreItem.ImagePath);
         }
     }
 }

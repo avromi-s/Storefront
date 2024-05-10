@@ -248,7 +248,6 @@ namespace SemesterProject
             // 
             // pbxItemImage0
             // 
-            this.pbxItemImage0.Image = global::SemesterProject.Properties.Resources.SGS24U_titanium_gray;
             this.pbxItemImage0.Location = new System.Drawing.Point(3, 3);
             this.pbxItemImage0.Name = "pbxItemImage0";
             this.pbxItemImage0.Size = new System.Drawing.Size(216, 296);
