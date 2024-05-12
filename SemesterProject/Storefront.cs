@@ -10,6 +10,8 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Text.Json;
 using System.Threading;
+using System.Windows.Forms.VisualStyles;
+using SemesterProject.Properties;
 
 namespace SemesterProject
 {
@@ -27,16 +29,15 @@ namespace SemesterProject
         // todo add grand total of num orders, and sum of all purchases on account > purchases screen
 
         private DataClasses1DataContext db;
-        private IEnumerator<STORE_ITEM> allStoreItems;
-        private List<STORE_ITEM> cachedStoreItems = new List<STORE_ITEM>();
         private readonly CUSTOMER loggedInCustomer;
         private BindingList<CartItem> cartItems = new BindingList<CartItem>();
-        private bool isAnotherItem { get; set; } // todo naming
-
-        private readonly int NUM_LISTINGS_PER_PAGE = 4; // todo maybe derive from gui
+        private const int NUM_LISTINGS_PER_PAGE = 4; // todo maybe derive from gui
         private int currentPageIndex = 0; // 0-indexed for easy use with collections
-
         private int currentPageNumDisplay => currentPageIndex + 1; // 1-indexed for user display
+        private int highestPageIndexRetrieved = 0;
+        private Listings listingsData;
+        private ListingGui[] listingsGui = new ListingGui[NUM_LISTINGS_PER_PAGE];
+
 
         public Storefront(DataClasses1DataContext db, CUSTOMER loggedInCustomer)
         {
@@ -44,6 +45,7 @@ namespace SemesterProject
 
             this.db = db;
             this.loggedInCustomer = loggedInCustomer;
+            this.listingsData = new Listings(db, loggedInCustomer, NUM_LISTINGS_PER_PAGE);
         }
 
         #region Store
@@ -76,107 +78,133 @@ namespace SemesterProject
 
         #region Listings
 
+        #region classes
+
+        // This class is for providing a convenient wrapper around the listing GUI controls for easy retrieval of a listing's controls
+        private class ListingGui
+        {
+            // todo names below - remove control type from variable name?
+            public Panel ListingPanel { get; private set; }
+            public PictureBox ItemImagePictureBox { get; private set; }
+            public RichTextBox TitleDescriptionRichTextBox { get; private set; }
+            public Label PriceLabel { get; private set; }
+            public Button AddToCartButton { get; private set; }
+            public NumericUpDown QuantityNumericUpDown { get; private set; }
+            public Label StatusInfoLabel { get; private set; }
+            public Label SelectQuantityLabel { get; private set; }
+            public ListingData ListingData { get; private set; }
+
+            public ListingGui(Panel AllListingsPanel, int listingIndex, ListingData listingData, bool disableListing = false)
+            {
+                ListingPanel = AllListingsPanel.Controls["pnlListing" + listingIndex] as Panel;
+                ItemImagePictureBox = ListingPanel.Controls["pbxItemImage" + listingIndex] as PictureBox;
+                TitleDescriptionRichTextBox =
+                    ListingPanel.Controls["rtbTitleDescription" + listingIndex] as RichTextBox;
+                PriceLabel = ListingPanel.Controls["lblPrice" + listingIndex] as Label;
+                AddToCartButton = ListingPanel.Controls["btnAddToCart" + listingIndex] as Button;
+                QuantityNumericUpDown = ListingPanel.Controls["nudQuantity" + listingIndex] as NumericUpDown;
+                StatusInfoLabel = ListingPanel.Controls["lblStatusInfo" + listingIndex] as Label;
+                SelectQuantityLabel = ListingPanel.Controls["lblSelectQuantity" + listingIndex] as Label;
+                this.ListingData = listingData;
+
+                if (disableListing)
+                {
+                    DisableListing();
+                }
+                else
+                {
+                    EnableListing();  // enable in case this listing was previously disabled on a previous page
+                }
+            }
+
+            // Enable the current listing. 
+            public void EnableListing()
+            {
+                ItemImagePictureBox.Image = null;
+                ListingPanel.Enabled = true;
+            }
+
+            // Disable the current listing, such as when no item is being displayed in it 
+            public void DisableListing()
+            {
+                ItemImagePictureBox.Image = new Bitmap(Resources.ImageNotFound, ItemImagePictureBox.Size.Width, ItemImagePictureBox.Size.Height);
+                ListingPanel.Enabled = false;
+                TitleDescriptionRichTextBox.Text = "";
+                PriceLabel.Text = "";
+            }
+
+            public async void DisplayAddToCartConfirmation(int displayTimeLengthMs = 5000)
+            {
+                // todo need to stop anything running here if next page is click in middle
+                // todo also, if add to cart is clicked, multiple times, need to update timer so that the 5 seconds starts from the latest one
+
+                StatusInfoLabel.ForeColor = Color.Green;
+                StatusInfoLabel.Text = "Item added to cart";
+                await Task.Run(() => Thread.Sleep(displayTimeLengthMs)); // clear text after 5 seconds
+                StatusInfoLabel.Text = "";
+                StatusInfoLabel.ForeColor = Color.Black;
+            }
+
+            public void RefreshQuantityControlLimits(BindingList<CartItem> cartItems)
+            {
+                // todo this should use listinggui objects
+                int qtyInCart = 0;
+                if (cartItems.Any(item => item.GetStoreItem() == ListingData.StoreItem))
+                {
+                    qtyInCart = cartItems.First(item => item.GetStoreItem() == ListingData.StoreItem).Quantity;
+                }
+
+                int totalQtyAvail = ListingData.StoreItem.QuantityAvailable;
+                int remainingQty = totalQtyAvail - qtyInCart;
+
+                QuantityNumericUpDown.Maximum = remainingQty;
+                QuantityNumericUpDown.Value = remainingQty > 0 ? 1 : 0;
+                // todo if remainingQty <= 0 disable listing or at least add to cart button?
+            }
+        }
+
+        #endregion
+
         #region ListingLoading
 
         private void RefreshListingsTab()
         {
-            //RefreshAllStoreItems();
-            LoadStoreItemsIntoGui(GetStoreItems(currentPageIndex));
+            LoadStoreItemsIntoGui(listingsData.GetListingsData(currentPageIndex));
             RefreshLblPageNum();
-            if (isAnotherItem)
+            if (listingsData.IsAnotherItem)
             {
                 btnNextPage.Enabled = true;
             }
         }
 
         /// <summary>
-        /// Go through each of the storeItems and populate each GUI listing with the item's details.
+        /// Go through each of the items and populate each GUI listing with the item's details.
         /// </summary>
-        /// <param name="storeItems">The items to populate the GUI listings with</param>
-        private void LoadStoreItemsIntoGui(IEnumerable<STORE_ITEM> storeItems)
+        /// <param name="items">The items to populate the GUI listings with</param>
+        private void LoadStoreItemsIntoGui(IEnumerable<ListingData> items)
         {
-            // current implementation of this method circles around and overwrites listings if more storeItems contains more than NUM_LISTINGS_PER_PAGE
+            // current implementation of this method circles around and overwrites listings if more items contains more than NUM_LISTINGS_PER_PAGE
             // todo should we circle around though?
             // also, at the very least, just put in the last 4 items, no need to overwrite the listings - it is wasted work
             // todo, just make this iterate NumItemsPerPage times, write those first amount of items, ignore others, or maybe throw exception?
-            int i = 0;
-            foreach (STORE_ITEM storeItem in storeItems)
+
+            IEnumerator<ListingData> itemsEnumerator = items.GetEnumerator();
+            for (int i = 0; i < NUM_LISTINGS_PER_PAGE; i++)
             {
-                StoreItemListing sil = new StoreItemListing(storeItem);
-                Panel listing = pnlAllListings.Controls["pnlListing" + i] as Panel;
-                GetTitleDescriptionTextBoxForListing(i).Text = sil.Title;
-                listing.Controls["rtbPrice" + i].Text = sil.FormattedPrice;
-                PictureBox pbx = (listing.Controls["pbxItemImage" + i] as PictureBox);
-                pbx.Image = new Bitmap(sil.ItemImage, pbx.Size.Width, pbx.Size.Height);
-                RefreshQuantityControlLimitsForListing(i);
-
-                i = (i + 1) %
-                    NUM_LISTINGS_PER_PAGE; // move to next listing to update, reset to the first listing (index 0) if we move past the last listing
+                if (itemsEnumerator.MoveNext())
+                {
+                    listingsGui[i] = new ListingGui(pnlAllListings, i, itemsEnumerator.Current);
+                    listingsGui[i].TitleDescriptionRichTextBox.Text = itemsEnumerator.Current.Title;
+                    listingsGui[i].PriceLabel.Text = itemsEnumerator.Current.FormattedPrice;
+                    listingsGui[i].ItemImagePictureBox.Image = new Bitmap(itemsEnumerator.Current.ItemImage,
+                        listingsGui[i].ItemImagePictureBox.Size.Width, listingsGui[i].ItemImagePictureBox.Size.Height);
+                    listingsGui[i].RefreshQuantityControlLimits(cartItems);
+                }
+                else
+                {
+                    listingsGui[i] = new ListingGui(pnlAllListings, i, null, true);
+                }
             }
-        }
-
-        private RichTextBox GetTitleDescriptionTextBoxForListing(int listingIndex)
-        {
-            return pnlAllListings.Controls["pnlListing" + listingIndex]
-                .Controls["rtbTitleDescription" + listingIndex] as RichTextBox;
-        }
-
-        private Label GetStatusInfoLabelForListing(int listingIndex)
-        {
-            return pnlAllListings.Controls["pnlListing" + listingIndex]
-                .Controls["lblStatusInfo" + listingIndex] as Label;
-        }
-
-        /// <summary>
-        /// Get the store items for the given page number. 
-        /// </summary>
-        /// <param name="pageNum">The page number to retrieve items for</param>
-        /// <returns>An IEnumerable of the store items for the page</returns>
-        private IEnumerable<STORE_ITEM> GetStoreItems(int pageNum)
-        {
-            EnsureStoreItemsRetrieved();
-
-            // get any items from cache before retrieving from the db
-            int i = 0;
-            bool desiredItemIsCached = (pageNum * NUM_LISTINGS_PER_PAGE + i) < cachedStoreItems.Count;
-            while (desiredItemIsCached && i < NUM_LISTINGS_PER_PAGE)
-            {
-                yield return cachedStoreItems[pageNum * NUM_LISTINGS_PER_PAGE + i];
-                i++;
-                desiredItemIsCached = (pageNum * NUM_LISTINGS_PER_PAGE + i) < cachedStoreItems.Count;
-            }
-
-            // retrieve the rest of the items from the db (unless we already retrieved all items
-            // (i.e., i == NUM_LISTINGS_PER_PAGE), and/or until there are no more items left)
-            for (; i < NUM_LISTINGS_PER_PAGE && isAnotherItem; i++)
-            {
-                STORE_ITEM storeItem = allStoreItems.Current;
-                cachedStoreItems
-                    .Add(storeItem); // cache item before returning in case another method tries to retrieve it already
-                isAnotherItem =
-                    allStoreItems
-                        .MoveNext(); // also, update isAnotherItem before return so that it is accurate regardless of if this loop finishes (which is dependent on how much the calling method iterates)
-                yield return storeItem;
-            }
-        }
-
-        private void EnsureStoreItemsRetrieved()
-        {
-            if (allStoreItems == null)
-            {
-                RefreshAllStoreItems();
-                isAnotherItem = allStoreItems.MoveNext();
-            }
-        }
-
-        private void RefreshAllStoreItems(bool includeOutOfStock = false)
-        {
-            // The order of the store items retrieved here will be the order of the listings as displayed to the user
-            // todo use a smarter ordering maybe? not just based on quantity
-            allStoreItems = db.STORE_ITEMs.Where(item => includeOutOfStock || item.QuantityAvailable > 0)
-                .OrderByDescending(item => item.QuantityAvailable)
-                .GetEnumerator();
-            // todo check if this is a safe use of enumerator - do we need to dispose of it manually?
         }
 
         #endregion
@@ -184,12 +212,15 @@ namespace SemesterProject
         private void btnNextPage_Click(object sender, EventArgs e)
         {
             currentPageIndex++;
+            highestPageIndexRetrieved = currentPageIndex > highestPageIndexRetrieved
+                ? currentPageIndex
+                : highestPageIndexRetrieved;
+            
             RefreshListingsTab();
 
             btnPreviousPage.Enabled = true;
-            bool IsNoMoreCachedItems =
-                (currentPageIndex + 1) * NUM_LISTINGS_PER_PAGE >= cachedStoreItems.Count;
-            if (IsNoMoreCachedItems && !isAnotherItem)
+            bool isOnLastPage = currentPageIndex >= highestPageIndexRetrieved;
+            if (isOnLastPage && !listingsData.IsAnotherItem)
             {
                 btnNextPage.Enabled = false;
             }
@@ -210,30 +241,6 @@ namespace SemesterProject
         private void RefreshLblPageNum()
         {
             lblPageNum.Text = "Page " + currentPageNumDisplay;
-        }
-
-        private void RefreshQuantityControlLimitsForListing(int listingIndex)
-        {
-            STORE_ITEM storeItem = cachedStoreItems[(currentPageIndex * NUM_LISTINGS_PER_PAGE) + listingIndex];
-            int totalQtyAvail = storeItem.QuantityAvailable;
-            int qtyInCart;
-            if (cartItems.Any(item => item.GetStoreItem() == storeItem))
-            {
-                qtyInCart = cartItems.Where(item => item.GetStoreItem() == storeItem).First().Quantity;
-            }
-            else
-            {
-                qtyInCart = 0;
-            }
-
-            int remainingQty = totalQtyAvail - qtyInCart;
-
-            NumericUpDown nudControl =
-                (pnlAllListings.Controls["pnlListing" + listingIndex].Controls["nudQuantity" + listingIndex] as
-                    NumericUpDown);
-            nudControl.Maximum = remainingQty;
-            nudControl.Value = remainingQty > 0 ? 1 : 0;
-            // todo if remainingQty <= 0 disable listing or at least add to cart button?
         }
 
         #endregion
@@ -258,38 +265,34 @@ namespace SemesterProject
 
         private void btnAddToCart0_Click(object sender, EventArgs e)
         {
-            DisplayAddToCartConfirmation((sender as Button), GetStatusInfoLabelForListing(0));
-
-            CartItem cartItem = GetCartItemForListing(0);
+            CartItem cartItem = CreateCartItemForListing(0);
             AddItemToCart(cartItem);
-            RefreshQuantityControlLimitsForListing(0);
+            listingsGui[0].RefreshQuantityControlLimits(cartItems);
+            listingsGui[0].DisplayAddToCartConfirmation();
         }
 
         private void btnAddToCart1_Click(object sender, EventArgs e)
         {
-            DisplayAddToCartConfirmation((sender as Button), GetStatusInfoLabelForListing(1));
-
-            CartItem cartItem = GetCartItemForListing(1);
+            CartItem cartItem = CreateCartItemForListing(1);
             AddItemToCart(cartItem);
-            RefreshQuantityControlLimitsForListing(1);
+            listingsGui[1].RefreshQuantityControlLimits(cartItems);
+            listingsGui[1].DisplayAddToCartConfirmation();
         }
 
         private void btnAddToCart2_Click(object sender, EventArgs e)
         {
-            DisplayAddToCartConfirmation((sender as Button), GetStatusInfoLabelForListing(2));
-
-            CartItem cartItem = GetCartItemForListing(2);
+            CartItem cartItem = CreateCartItemForListing(2);
             AddItemToCart(cartItem);
-            RefreshQuantityControlLimitsForListing(2);
+            listingsGui[2].RefreshQuantityControlLimits(cartItems);
+            listingsGui[2].DisplayAddToCartConfirmation();
         }
 
         private void btnAddToCart3_Click(object sender, EventArgs e)
         {
-            DisplayAddToCartConfirmation((sender as Button), GetStatusInfoLabelForListing(3));
-
-            CartItem cartItem = GetCartItemForListing(3);
+            CartItem cartItem = CreateCartItemForListing(3);
             AddItemToCart(cartItem);
-            RefreshQuantityControlLimitsForListing(3);
+            listingsGui[3].RefreshQuantityControlLimits(cartItems);
+            listingsGui[3].DisplayAddToCartConfirmation();
         }
 
         private void AddItemToCart(CartItem cartItem)
@@ -298,8 +301,7 @@ namespace SemesterProject
                     item.GetStoreItem() ==
                     cartItem.GetStoreItem())) // todo use hashmap from StoreItemId -> CartItem for cartItems for faster lookup? now it is n for each search
             {
-                cartItems.Where(item => item.GetStoreItem() == cartItem.GetStoreItem()).First().Quantity +=
-                    cartItem.Quantity;
+                cartItems.First(item => item.GetStoreItem() == cartItem.GetStoreItem()).Quantity += cartItem.Quantity;
             }
             else
             {
@@ -307,26 +309,14 @@ namespace SemesterProject
             }
         }
 
-        private async void DisplayAddToCartConfirmation(Button btnAddToCart, Label lblStatusInfo)
-        {
-            // todo need to stop anything running here if next page is click in middle
-            // todo also, if add to cart is clicked, multiple times, need to update timer so that the 5 seconds starts from the latest one
 
-            lblStatusInfo.ForeColor = Color.Green;
-            lblStatusInfo.Text = "Item added to cart";
-            await Task.Run(() => Thread.Sleep(5000)); // clear text after 5 seconds
-            lblStatusInfo.Text = "";
-            lblStatusInfo.ForeColor = Color.Black;
-        }
-
-        private CartItem GetCartItemForListing(int listingIndex)
+        private CartItem CreateCartItemForListing(int listingIndex)
         {
             // todo this extracted to a separate method so that we can replace when we use a custom user control for each listing
             // instead of accessing everything based on their names and index like here
-            int quantitySelected =
-                Convert.ToInt32((pnlAllListings.Controls["pnlListing" + listingIndex]
-                    .Controls["nudQuantity" + listingIndex] as NumericUpDown).Value);
-            STORE_ITEM storeItem = cachedStoreItems[(currentPageIndex * NUM_LISTINGS_PER_PAGE) + listingIndex];
+            int quantitySelected = Convert.ToInt32(listingsGui[listingIndex].QuantityNumericUpDown.Value);
+            STORE_ITEM storeItem = listingsData
+                .GetListingData((currentPageIndex * NUM_LISTINGS_PER_PAGE) + listingIndex).StoreItem;
             return new CartItem(storeItem, quantitySelected);
         }
 
@@ -398,7 +388,7 @@ namespace SemesterProject
                     // todo this is a bit wasteful because we really only need to update the listing for the items that were removed, not all items. 
                     // move this into the foreach loop maybe and refresh the listings based on the items being removed
                     // OR, maybe only refresh listing qty limits on Listings tab enter?
-                    RefreshQuantityControlLimitsForListing(i);
+                    listingsGui[i].RefreshQuantityControlLimits(cartItems);
                 }
             }
         }

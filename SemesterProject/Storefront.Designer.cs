@@ -38,29 +38,33 @@ namespace SemesterProject
             this.tpListings = new System.Windows.Forms.TabPage();
             this.pnlAllListings = new System.Windows.Forms.Panel();
             this.pnlListing3 = new System.Windows.Forms.Panel();
-            this.rtbPrice3 = new System.Windows.Forms.Label();
-            this.label13 = new System.Windows.Forms.Label();
+            this.lblStatusInfo3 = new System.Windows.Forms.Label();
+            this.lblPrice3 = new System.Windows.Forms.Label();
+            this.lblSelectQuantity3 = new System.Windows.Forms.Label();
             this.nudQuantity3 = new System.Windows.Forms.NumericUpDown();
             this.rtbTitleDescription3 = new System.Windows.Forms.RichTextBox();
             this.pbxItemImage3 = new System.Windows.Forms.PictureBox();
             this.btnAddToCart3 = new System.Windows.Forms.Button();
             this.pnlListing2 = new System.Windows.Forms.Panel();
-            this.rtbPrice2 = new System.Windows.Forms.Label();
-            this.label12 = new System.Windows.Forms.Label();
+            this.lblStatusInfo2 = new System.Windows.Forms.Label();
+            this.lblPrice2 = new System.Windows.Forms.Label();
+            this.lblSelectQuantit2 = new System.Windows.Forms.Label();
             this.nudQuantity2 = new System.Windows.Forms.NumericUpDown();
             this.rtbTitleDescription2 = new System.Windows.Forms.RichTextBox();
             this.pbxItemImage2 = new System.Windows.Forms.PictureBox();
             this.btnAddToCart2 = new System.Windows.Forms.Button();
             this.pnlListing1 = new System.Windows.Forms.Panel();
-            this.rtbPrice1 = new System.Windows.Forms.Label();
-            this.label11 = new System.Windows.Forms.Label();
+            this.lblStatusInfo1 = new System.Windows.Forms.Label();
+            this.lblPrice1 = new System.Windows.Forms.Label();
+            this.lblSelectQuantity1 = new System.Windows.Forms.Label();
             this.nudQuantity1 = new System.Windows.Forms.NumericUpDown();
             this.rtbTitleDescription1 = new System.Windows.Forms.RichTextBox();
             this.pbxItemImage1 = new System.Windows.Forms.PictureBox();
             this.btnAddToCart1 = new System.Windows.Forms.Button();
             this.pnlListing0 = new System.Windows.Forms.Panel();
-            this.rtbPrice0 = new System.Windows.Forms.Label();
-            this.lblSelectQuantity = new System.Windows.Forms.Label();
+            this.lblStatusInfo0 = new System.Windows.Forms.Label();
+            this.lblPrice0 = new System.Windows.Forms.Label();
+            this.lblSelectQuantity0 = new System.Windows.Forms.Label();
             this.nudQuantity0 = new System.Windows.Forms.NumericUpDown();
             this.rtbTitleDescription0 = new System.Windows.Forms.RichTextBox();
             this.pbxItemImage0 = new System.Windows.Forms.PictureBox();
@@ -98,10 +102,6 @@ namespace SemesterProject
             this.label5 = new System.Windows.Forms.Label();
             this.dateTimePicker1 = new System.Windows.Forms.DateTimePicker();
             this.dgvPastPurchases = new System.Windows.Forms.DataGridView();
-            this.lblStatusInfo0 = new System.Windows.Forms.Label();
-            this.lblStatusInfo1 = new System.Windows.Forms.Label();
-            this.lblStatusInfo2 = new System.Windows.Forms.Label();
-            this.lblStatusInfo3 = new System.Windows.Forms.Label();
             this.storeItemListingBindingSource = new System.Windows.Forms.BindingSource(this.components);
             this.tc_Store_Account.SuspendLayout();
             this.tpStore.SuspendLayout();
@@ -202,8 +202,8 @@ namespace SemesterProject
             // 
             this.pnlListing3.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.pnlListing3.Controls.Add(this.lblStatusInfo3);
-            this.pnlListing3.Controls.Add(this.rtbPrice3);
-            this.pnlListing3.Controls.Add(this.label13);
+            this.pnlListing3.Controls.Add(this.lblPrice3);
+            this.pnlListing3.Controls.Add(this.lblSelectQuantity3);
             this.pnlListing3.Controls.Add(this.nudQuantity3);
             this.pnlListing3.Controls.Add(this.rtbTitleDescription3);
             this.pnlListing3.Controls.Add(this.pbxItemImage3);
@@ -213,24 +213,32 @@ namespace SemesterProject
             this.pnlListing3.Size = new System.Drawing.Size(480, 302);
             this.pnlListing3.TabIndex = 15;
             // 
-            // rtbPrice3
+            // lblStatusInfo3
             // 
-            this.rtbPrice3.AutoSize = true;
-            this.rtbPrice3.Font = new System.Drawing.Font("Microsoft Sans Serif", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.rtbPrice3.Location = new System.Drawing.Point(368, 225);
-            this.rtbPrice3.Name = "rtbPrice3";
-            this.rtbPrice3.Size = new System.Drawing.Size(53, 24);
-            this.rtbPrice3.TabIndex = 6;
-            this.rtbPrice3.Text = "Price";
+            this.lblStatusInfo3.AutoSize = true;
+            this.lblStatusInfo3.Location = new System.Drawing.Point(222, 225);
+            this.lblStatusInfo3.Name = "lblStatusInfo3";
+            this.lblStatusInfo3.Size = new System.Drawing.Size(0, 17);
+            this.lblStatusInfo3.TabIndex = 8;
             // 
-            // label13
+            // lblPrice3
             // 
-            this.label13.AutoSize = true;
-            this.label13.Location = new System.Drawing.Point(245, 255);
-            this.label13.Name = "label13";
-            this.label13.Size = new System.Drawing.Size(104, 17);
-            this.label13.TabIndex = 5;
-            this.label13.Text = "Select Quantity";
+            this.lblPrice3.AutoSize = true;
+            this.lblPrice3.Font = new System.Drawing.Font("Microsoft Sans Serif", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblPrice3.Location = new System.Drawing.Point(368, 225);
+            this.lblPrice3.Name = "lblPrice3";
+            this.lblPrice3.Size = new System.Drawing.Size(53, 24);
+            this.lblPrice3.TabIndex = 6;
+            this.lblPrice3.Text = "Price";
+            // 
+            // lblSelectQuantity3
+            // 
+            this.lblSelectQuantity3.AutoSize = true;
+            this.lblSelectQuantity3.Location = new System.Drawing.Point(245, 255);
+            this.lblSelectQuantity3.Name = "lblSelectQuantity3";
+            this.lblSelectQuantity3.Size = new System.Drawing.Size(104, 17);
+            this.lblSelectQuantity3.TabIndex = 5;
+            this.lblSelectQuantity3.Text = "Select Quantity";
             // 
             // nudQuantity3
             // 
@@ -283,8 +291,8 @@ namespace SemesterProject
             // 
             this.pnlListing2.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.pnlListing2.Controls.Add(this.lblStatusInfo2);
-            this.pnlListing2.Controls.Add(this.rtbPrice2);
-            this.pnlListing2.Controls.Add(this.label12);
+            this.pnlListing2.Controls.Add(this.lblPrice2);
+            this.pnlListing2.Controls.Add(this.lblSelectQuantit2);
             this.pnlListing2.Controls.Add(this.nudQuantity2);
             this.pnlListing2.Controls.Add(this.rtbTitleDescription2);
             this.pnlListing2.Controls.Add(this.pbxItemImage2);
@@ -294,24 +302,32 @@ namespace SemesterProject
             this.pnlListing2.Size = new System.Drawing.Size(480, 302);
             this.pnlListing2.TabIndex = 19;
             // 
-            // rtbPrice2
+            // lblStatusInfo2
             // 
-            this.rtbPrice2.AutoSize = true;
-            this.rtbPrice2.Font = new System.Drawing.Font("Microsoft Sans Serif", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.rtbPrice2.Location = new System.Drawing.Point(368, 225);
-            this.rtbPrice2.Name = "rtbPrice2";
-            this.rtbPrice2.Size = new System.Drawing.Size(53, 24);
-            this.rtbPrice2.TabIndex = 6;
-            this.rtbPrice2.Text = "Price";
+            this.lblStatusInfo2.AutoSize = true;
+            this.lblStatusInfo2.Location = new System.Drawing.Point(222, 225);
+            this.lblStatusInfo2.Name = "lblStatusInfo2";
+            this.lblStatusInfo2.Size = new System.Drawing.Size(0, 17);
+            this.lblStatusInfo2.TabIndex = 8;
             // 
-            // label12
+            // lblPrice2
             // 
-            this.label12.AutoSize = true;
-            this.label12.Location = new System.Drawing.Point(245, 255);
-            this.label12.Name = "label12";
-            this.label12.Size = new System.Drawing.Size(104, 17);
-            this.label12.TabIndex = 5;
-            this.label12.Text = "Select Quantity";
+            this.lblPrice2.AutoSize = true;
+            this.lblPrice2.Font = new System.Drawing.Font("Microsoft Sans Serif", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblPrice2.Location = new System.Drawing.Point(368, 225);
+            this.lblPrice2.Name = "lblPrice2";
+            this.lblPrice2.Size = new System.Drawing.Size(53, 24);
+            this.lblPrice2.TabIndex = 6;
+            this.lblPrice2.Text = "Price";
+            // 
+            // lblSelectQuantit2
+            // 
+            this.lblSelectQuantit2.AutoSize = true;
+            this.lblSelectQuantit2.Location = new System.Drawing.Point(245, 255);
+            this.lblSelectQuantit2.Name = "lblSelectQuantit2";
+            this.lblSelectQuantit2.Size = new System.Drawing.Size(104, 17);
+            this.lblSelectQuantit2.TabIndex = 5;
+            this.lblSelectQuantit2.Text = "Select Quantity";
             // 
             // nudQuantity2
             // 
@@ -364,8 +380,8 @@ namespace SemesterProject
             // 
             this.pnlListing1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.pnlListing1.Controls.Add(this.lblStatusInfo1);
-            this.pnlListing1.Controls.Add(this.rtbPrice1);
-            this.pnlListing1.Controls.Add(this.label11);
+            this.pnlListing1.Controls.Add(this.lblPrice1);
+            this.pnlListing1.Controls.Add(this.lblSelectQuantity1);
             this.pnlListing1.Controls.Add(this.nudQuantity1);
             this.pnlListing1.Controls.Add(this.rtbTitleDescription1);
             this.pnlListing1.Controls.Add(this.pbxItemImage1);
@@ -375,24 +391,32 @@ namespace SemesterProject
             this.pnlListing1.Size = new System.Drawing.Size(480, 302);
             this.pnlListing1.TabIndex = 18;
             // 
-            // rtbPrice1
+            // lblStatusInfo1
             // 
-            this.rtbPrice1.AutoSize = true;
-            this.rtbPrice1.Font = new System.Drawing.Font("Microsoft Sans Serif", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.rtbPrice1.Location = new System.Drawing.Point(368, 225);
-            this.rtbPrice1.Name = "rtbPrice1";
-            this.rtbPrice1.Size = new System.Drawing.Size(53, 24);
-            this.rtbPrice1.TabIndex = 6;
-            this.rtbPrice1.Text = "Price";
+            this.lblStatusInfo1.AutoSize = true;
+            this.lblStatusInfo1.Location = new System.Drawing.Point(222, 230);
+            this.lblStatusInfo1.Name = "lblStatusInfo1";
+            this.lblStatusInfo1.Size = new System.Drawing.Size(0, 17);
+            this.lblStatusInfo1.TabIndex = 8;
             // 
-            // label11
+            // lblPrice1
             // 
-            this.label11.AutoSize = true;
-            this.label11.Location = new System.Drawing.Point(245, 255);
-            this.label11.Name = "label11";
-            this.label11.Size = new System.Drawing.Size(104, 17);
-            this.label11.TabIndex = 5;
-            this.label11.Text = "Select Quantity";
+            this.lblPrice1.AutoSize = true;
+            this.lblPrice1.Font = new System.Drawing.Font("Microsoft Sans Serif", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblPrice1.Location = new System.Drawing.Point(368, 225);
+            this.lblPrice1.Name = "lblPrice1";
+            this.lblPrice1.Size = new System.Drawing.Size(53, 24);
+            this.lblPrice1.TabIndex = 6;
+            this.lblPrice1.Text = "Price";
+            // 
+            // lblSelectQuantity1
+            // 
+            this.lblSelectQuantity1.AutoSize = true;
+            this.lblSelectQuantity1.Location = new System.Drawing.Point(245, 255);
+            this.lblSelectQuantity1.Name = "lblSelectQuantity1";
+            this.lblSelectQuantity1.Size = new System.Drawing.Size(104, 17);
+            this.lblSelectQuantity1.TabIndex = 5;
+            this.lblSelectQuantity1.Text = "Select Quantity";
             // 
             // nudQuantity1
             // 
@@ -445,8 +469,8 @@ namespace SemesterProject
             // 
             this.pnlListing0.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.pnlListing0.Controls.Add(this.lblStatusInfo0);
-            this.pnlListing0.Controls.Add(this.rtbPrice0);
-            this.pnlListing0.Controls.Add(this.lblSelectQuantity);
+            this.pnlListing0.Controls.Add(this.lblPrice0);
+            this.pnlListing0.Controls.Add(this.lblSelectQuantity0);
             this.pnlListing0.Controls.Add(this.nudQuantity0);
             this.pnlListing0.Controls.Add(this.rtbTitleDescription0);
             this.pnlListing0.Controls.Add(this.pbxItemImage0);
@@ -456,24 +480,32 @@ namespace SemesterProject
             this.pnlListing0.Size = new System.Drawing.Size(480, 302);
             this.pnlListing0.TabIndex = 14;
             // 
-            // rtbPrice0
+            // lblStatusInfo0
             // 
-            this.rtbPrice0.AutoSize = true;
-            this.rtbPrice0.Font = new System.Drawing.Font("Microsoft Sans Serif", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.rtbPrice0.Location = new System.Drawing.Point(368, 225);
-            this.rtbPrice0.Name = "rtbPrice0";
-            this.rtbPrice0.Size = new System.Drawing.Size(53, 24);
-            this.rtbPrice0.TabIndex = 6;
-            this.rtbPrice0.Text = "Price";
+            this.lblStatusInfo0.AutoSize = true;
+            this.lblStatusInfo0.Location = new System.Drawing.Point(222, 230);
+            this.lblStatusInfo0.Name = "lblStatusInfo0";
+            this.lblStatusInfo0.Size = new System.Drawing.Size(0, 17);
+            this.lblStatusInfo0.TabIndex = 7;
             // 
-            // lblSelectQuantity
+            // lblPrice0
             // 
-            this.lblSelectQuantity.AutoSize = true;
-            this.lblSelectQuantity.Location = new System.Drawing.Point(245, 255);
-            this.lblSelectQuantity.Name = "lblSelectQuantity";
-            this.lblSelectQuantity.Size = new System.Drawing.Size(104, 17);
-            this.lblSelectQuantity.TabIndex = 5;
-            this.lblSelectQuantity.Text = "Select Quantity";
+            this.lblPrice0.AutoSize = true;
+            this.lblPrice0.Font = new System.Drawing.Font("Microsoft Sans Serif", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblPrice0.Location = new System.Drawing.Point(368, 225);
+            this.lblPrice0.Name = "lblPrice0";
+            this.lblPrice0.Size = new System.Drawing.Size(53, 24);
+            this.lblPrice0.TabIndex = 6;
+            this.lblPrice0.Text = "Price";
+            // 
+            // lblSelectQuantity0
+            // 
+            this.lblSelectQuantity0.AutoSize = true;
+            this.lblSelectQuantity0.Location = new System.Drawing.Point(245, 255);
+            this.lblSelectQuantity0.Name = "lblSelectQuantity0";
+            this.lblSelectQuantity0.Size = new System.Drawing.Size(104, 17);
+            this.lblSelectQuantity0.TabIndex = 5;
+            this.lblSelectQuantity0.Text = "Select Quantity";
             // 
             // nudQuantity0
             // 
@@ -880,41 +912,9 @@ namespace SemesterProject
             this.dgvPastPurchases.Size = new System.Drawing.Size(959, 400);
             this.dgvPastPurchases.TabIndex = 1;
             // 
-            // lblStatusInfo0
-            // 
-            this.lblStatusInfo0.AutoSize = true;
-            this.lblStatusInfo0.Location = new System.Drawing.Point(222, 230);
-            this.lblStatusInfo0.Name = "lblStatusInfo0";
-            this.lblStatusInfo0.Size = new System.Drawing.Size(0, 17);
-            this.lblStatusInfo0.TabIndex = 7;
-            // 
-            // lblStatusInfo1
-            // 
-            this.lblStatusInfo1.AutoSize = true;
-            this.lblStatusInfo1.Location = new System.Drawing.Point(222, 230);
-            this.lblStatusInfo1.Name = "lblStatusInfo1";
-            this.lblStatusInfo1.Size = new System.Drawing.Size(0, 17);
-            this.lblStatusInfo1.TabIndex = 8;
-            // 
-            // lblStatusInfo2
-            // 
-            this.lblStatusInfo2.AutoSize = true;
-            this.lblStatusInfo2.Location = new System.Drawing.Point(222, 225);
-            this.lblStatusInfo2.Name = "lblStatusInfo2";
-            this.lblStatusInfo2.Size = new System.Drawing.Size(0, 17);
-            this.lblStatusInfo2.TabIndex = 8;
-            // 
-            // lblStatusInfo3
-            // 
-            this.lblStatusInfo3.AutoSize = true;
-            this.lblStatusInfo3.Location = new System.Drawing.Point(222, 225);
-            this.lblStatusInfo3.Name = "lblStatusInfo3";
-            this.lblStatusInfo3.Size = new System.Drawing.Size(0, 17);
-            this.lblStatusInfo3.TabIndex = 8;
-            // 
             // storeItemListingBindingSource
             // 
-            this.storeItemListingBindingSource.DataSource = typeof(SemesterProject.StoreItemListing);
+            this.storeItemListingBindingSource.DataSource = typeof(SemesterProject.ListingData);
             // 
             // Storefront
             // 
@@ -979,7 +979,7 @@ namespace SemesterProject
         private System.Windows.Forms.TabPage tpListings;
         private System.Windows.Forms.Panel pnlAllListings;
         private System.Windows.Forms.Panel pnlListing0;
-        private System.Windows.Forms.Label lblSelectQuantity;
+        private System.Windows.Forms.Label lblSelectQuantity0;
         private System.Windows.Forms.NumericUpDown nudQuantity0;
         private System.Windows.Forms.RichTextBox rtbTitleDescription0;
         private System.Windows.Forms.PictureBox pbxItemImage0;
@@ -1014,24 +1014,24 @@ namespace SemesterProject
         private System.Windows.Forms.DateTimePicker dateTimePicker2;
         private System.Windows.Forms.Label label9;
         private System.Windows.Forms.Label lblAccountBalanceResults;
-        private System.Windows.Forms.Label rtbPrice0;
+        private System.Windows.Forms.Label lblPrice0;
         private System.Windows.Forms.Panel pnlListing3;
-        private System.Windows.Forms.Label rtbPrice3;
-        private System.Windows.Forms.Label label13;
+        private System.Windows.Forms.Label lblPrice3;
+        private System.Windows.Forms.Label lblSelectQuantity3;
         private System.Windows.Forms.NumericUpDown nudQuantity3;
         private System.Windows.Forms.RichTextBox rtbTitleDescription3;
         private System.Windows.Forms.PictureBox pbxItemImage3;
         private System.Windows.Forms.Button btnAddToCart3;
         private System.Windows.Forms.Panel pnlListing2;
-        private System.Windows.Forms.Label rtbPrice2;
-        private System.Windows.Forms.Label label12;
+        private System.Windows.Forms.Label lblPrice2;
+        private System.Windows.Forms.Label lblSelectQuantit2;
         private System.Windows.Forms.NumericUpDown nudQuantity2;
         private System.Windows.Forms.RichTextBox rtbTitleDescription2;
         private System.Windows.Forms.PictureBox pbxItemImage2;
         private System.Windows.Forms.Button btnAddToCart2;
         private System.Windows.Forms.Panel pnlListing1;
-        private System.Windows.Forms.Label rtbPrice1;
-        private System.Windows.Forms.Label label11;
+        private System.Windows.Forms.Label lblPrice1;
+        private System.Windows.Forms.Label lblSelectQuantity1;
         private System.Windows.Forms.NumericUpDown nudQuantity1;
         private System.Windows.Forms.RichTextBox rtbTitleDescription1;
         private System.Windows.Forms.PictureBox pbxItemImage1;
