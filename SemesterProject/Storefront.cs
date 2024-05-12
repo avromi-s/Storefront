@@ -176,8 +176,8 @@ namespace SemesterProject
         {
             LoadStoreItemsIntoGui(listingsData.GetListingDataForPage(currentPageIndex));
             RefreshLblPageNum();
-            RefreshNextPageButton();
-            RefreshPreviousPageButton();
+            RefreshBtnPreviousPage();
+            RefreshBtnNextPage();
         }
 
         /// <summary>
@@ -221,12 +221,12 @@ namespace SemesterProject
             RefreshListingsTab();
         }
 
-        private void RefreshNextPageButton()
+        private void RefreshBtnPreviousPage()
         {
             btnPreviousPage.Enabled = currentPageIndex > 0;
         }
 
-        private void RefreshPreviousPageButton()
+        private void RefreshBtnNextPage()
         {
             btnNextPage.Enabled =
                 currentPageIndex < listingsData.HighestPageIndexRetrieved || listingsData.IsAnotherItem;
@@ -243,7 +243,8 @@ namespace SemesterProject
 
         private void RefreshCartTab()
         {
-            RefreshCartButtonsEnabledStatus();
+            RefreshBtnPurchaseCartItems();
+            RefreshBtnRemoveItemFromCart();
             RefreshCartSummary();
             RefreshCartItemsViewControl();
         }
@@ -306,11 +307,8 @@ namespace SemesterProject
 
         private CartItem CreateCartItemForListing(int listingIndex)
         {
-            // todo this extracted to a separate method so that we can replace when we use a custom user control for each listing
-            // instead of accessing everything based on their names and index like here
             int quantitySelected = Convert.ToInt32(listingsGui[listingIndex].QuantityNumericUpDown.Value);
-            STORE_ITEM storeItem = listingsData
-                .GetListingData((currentPageIndex * NUM_LISTINGS_PER_PAGE) + listingIndex).StoreItem;
+            STORE_ITEM storeItem = listingsGui[listingIndex].ListingData.StoreItem;  //listingsData.GetListingData((currentPageIndex * NUM_LISTINGS_PER_PAGE) + listingIndex).StoreItem;
             return new CartItem(storeItem, quantitySelected);
         }
 
@@ -328,7 +326,8 @@ namespace SemesterProject
 
             lblCartSummary.Text = "Purchase completed";
             RefreshCartItemsViewControl();
-            RefreshCartButtonsEnabledStatus();
+            RefreshBtnPurchaseCartItems();
+            RefreshBtnRemoveItemFromCart();
             //RefreshAllStoreItems();
         }
 
@@ -351,19 +350,14 @@ namespace SemesterProject
             RefreshCartTab();
         }
 
-        private void RefreshCartButtonsEnabledStatus()
+        private void RefreshBtnPurchaseCartItems()
         {
-            // todo this should really be two separate methods maybe because doing 2 separate things (2 buttons)
-            if (cartItems.Count > 0)
-            {
-                btnRemoveItemFromCart.Enabled = true;
-                btnPurchaseCartItems.Enabled = true;
-            }
-            else
-            {
-                btnRemoveItemFromCart.Enabled = false;
-                btnPurchaseCartItems.Enabled = false;
-            }
+            btnPurchaseCartItems.Enabled = cartItems.Count > 0;
+        }
+
+        private void RefreshBtnRemoveItemFromCart()
+        {
+            btnRemoveItemFromCart.Enabled = cartItems.Count > 0;
         }
 
         private void RemoveSelectedItemsFromCart()
