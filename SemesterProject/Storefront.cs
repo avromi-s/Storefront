@@ -22,10 +22,8 @@ namespace SemesterProject
         // todo fix currency display accross all displays
         // todo separate different sections of the GUI Store into classes within Storefront class for better organization, instead of just regions
         //      Store > Listings, Store > Cart, & Account > Balance, Account > Purchases
-        // todo manage when less than 4 items in store > remove item triggers exception because iterating over all 4 listings, also, other 3 items should be disabled
         // todo username & likely also password not case sensitive
         // todo make balance label red or green based on positive or negative balance
-        // todo update listing title + desc to nicer GUI and make uneditable, also move add to cart confirmation to either just visual cue, or to better area
         // todo add grand total of num orders, and sum of all purchases on account > purchases screen
 
         private DataClasses1DataContext db;
@@ -92,6 +90,7 @@ namespace SemesterProject
             public Label StatusInfoLabel { get; private set; }
             public Label SelectQuantityLabel { get; private set; }
             public ListingData ListingData { get; private set; }
+            private bool listingEnabled;
 
             public ListingGui(Panel AllListingsPanel, int listingIndex, ListingData listingData,
                 bool disableListing = false)
@@ -120,6 +119,7 @@ namespace SemesterProject
             // Enable the current listing. 
             private void EnableListing()
             {
+                this.listingEnabled = true;
                 ItemImagePictureBox.Image = null;
                 ListingPanel.Enabled = true;
             }
@@ -127,6 +127,7 @@ namespace SemesterProject
             // Disable the current listing, such as when no item is being displayed in it 
             private void DisableListing()
             {
+                this.listingEnabled = false;
                 ItemImagePictureBox.Image = new Bitmap(Resources.ImageNotFound, ItemImagePictureBox.Size.Width,
                     ItemImagePictureBox.Size.Height);
                 ListingPanel.Enabled = false;
@@ -150,17 +151,20 @@ namespace SemesterProject
             // this item is presently in the cart
             public void RefreshQuantityControlLimits(BindingList<CartItem> cartItems)
             {
-                int qtyInCart = 0;
-                if (cartItems.Any(item => item.GetStoreItem() == ListingData.StoreItem))
+                if (listingEnabled)
                 {
-                    qtyInCart = cartItems.First(item => item.GetStoreItem() == ListingData.StoreItem).Quantity;
+                    int qtyInCart = 0;
+                    if (cartItems.Any(item => item.GetStoreItem() == ListingData.StoreItem))
+                    {
+                        qtyInCart = cartItems.First(item => item.GetStoreItem() == ListingData.StoreItem).Quantity;
+                    }
+
+                    int remainingQty = ListingData.StoreItem.QuantityAvailable - qtyInCart;
+
+                    QuantityNumericUpDown.Maximum = remainingQty;
+                    QuantityNumericUpDown.Value = remainingQty > 0 ? 1 : 0;
+                    // todo if remainingQty <= 0 disable listing or at least add to cart button?
                 }
-
-                int remainingQty = ListingData.StoreItem.QuantityAvailable - qtyInCart;
-
-                QuantityNumericUpDown.Maximum = remainingQty;
-                QuantityNumericUpDown.Value = remainingQty > 0 ? 1 : 0;
-                // todo if remainingQty <= 0 disable listing or at least add to cart button?
             }
         }
 
@@ -343,9 +347,7 @@ namespace SemesterProject
 
         private void btnRemoveItemFromCart_Click(object sender, EventArgs e)
         {
-            // todo also allow update quantity?
-            RemoveSelectedItemsFromCart(refreshQtyLimits: true);
-
+            RemoveSelectedItemsFromCart();
             RefreshCartTab();
         }
 
@@ -364,22 +366,11 @@ namespace SemesterProject
             }
         }
 
-        private void RemoveSelectedItemsFromCart(bool refreshQtyLimits = true)
+        private void RemoveSelectedItemsFromCart()
         {
             foreach (DataGridViewRow selectedItem in dgvCartItems.SelectedRows)
             {
                 cartItems.Remove(selectedItem.DataBoundItem as CartItem);
-            }
-
-            if (refreshQtyLimits)
-            {
-                for (int i = 0; i < NUM_LISTINGS_PER_PAGE; i++)
-                {
-                    // todo this is a bit wasteful because we really only need to update the listing for the items that were removed, not all items. 
-                    // move this into the foreach loop maybe and refresh the listings based on the items being removed
-                    // OR, maybe only refresh listing qty limits on Listings tab enter?
-                    listingsGui[i].RefreshQuantityControlLimits(cartItems);
-                }
             }
         }
 
