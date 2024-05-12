@@ -93,7 +93,8 @@ namespace SemesterProject
             public Label SelectQuantityLabel { get; private set; }
             public ListingData ListingData { get; private set; }
 
-            public ListingGui(Panel AllListingsPanel, int listingIndex, ListingData listingData, bool disableListing = false)
+            public ListingGui(Panel AllListingsPanel, int listingIndex, ListingData listingData,
+                bool disableListing = false)
             {
                 ListingPanel = AllListingsPanel.Controls["pnlListing" + listingIndex] as Panel;
                 ItemImagePictureBox = ListingPanel.Controls["pbxItemImage" + listingIndex] as PictureBox;
@@ -112,21 +113,22 @@ namespace SemesterProject
                 }
                 else
                 {
-                    EnableListing();  // enable in case this listing was previously disabled on a previous page
+                    EnableListing(); // enable in case this listing was previously disabled on a previous page
                 }
             }
 
             // Enable the current listing. 
-            public void EnableListing()
+            private void EnableListing()
             {
                 ItemImagePictureBox.Image = null;
                 ListingPanel.Enabled = true;
             }
 
             // Disable the current listing, such as when no item is being displayed in it 
-            public void DisableListing()
+            private void DisableListing()
             {
-                ItemImagePictureBox.Image = new Bitmap(Resources.ImageNotFound, ItemImagePictureBox.Size.Width, ItemImagePictureBox.Size.Height);
+                ItemImagePictureBox.Image = new Bitmap(Resources.ImageNotFound, ItemImagePictureBox.Size.Width,
+                    ItemImagePictureBox.Size.Height);
                 ListingPanel.Enabled = false;
                 TitleDescriptionRichTextBox.Text = "";
                 PriceLabel.Text = "";
@@ -144,17 +146,17 @@ namespace SemesterProject
                 StatusInfoLabel.ForeColor = Color.Black;
             }
 
+            // Refresh/update the numeric limits for the quantity NumericUpDown control based on how many of
+            // this item is presently in the cart
             public void RefreshQuantityControlLimits(BindingList<CartItem> cartItems)
             {
-                // todo this should use listinggui objects
                 int qtyInCart = 0;
                 if (cartItems.Any(item => item.GetStoreItem() == ListingData.StoreItem))
                 {
                     qtyInCart = cartItems.First(item => item.GetStoreItem() == ListingData.StoreItem).Quantity;
                 }
 
-                int totalQtyAvail = ListingData.StoreItem.QuantityAvailable;
-                int remainingQty = totalQtyAvail - qtyInCart;
+                int remainingQty = ListingData.StoreItem.QuantityAvailable - qtyInCart;
 
                 QuantityNumericUpDown.Maximum = remainingQty;
                 QuantityNumericUpDown.Value = remainingQty > 0 ? 1 : 0;
@@ -170,38 +172,33 @@ namespace SemesterProject
         {
             LoadStoreItemsIntoGui(listingsData.GetListingDataForPage(currentPageIndex));
             RefreshLblPageNum();
-            if (listingsData.IsAnotherItem)
-            {
-                btnNextPage.Enabled = true;
-            }
+            RefreshNextPageButton();
+            RefreshPreviousPageButton();
         }
 
         /// <summary>
-        /// Go through each of the items and populate each GUI listing with the item's details.
+        /// Go through each of the listingData and populate each GUI listing with the item's details.
+        /// If less there are less items in listingData than NUM_LISTINGS_PER_PAGE, the remaining listings on the page
+        /// are disabled.
         /// </summary>
-        /// <param name="items">The items to populate the GUI listings with</param>
-        private void LoadStoreItemsIntoGui(IEnumerable<ListingData> items)
+        /// <param name="listingData">The listingData to populate the GUI listings with</param>
+        private void LoadStoreItemsIntoGui(IEnumerable<ListingData> listingData)
         {
-            // current implementation of this method circles around and overwrites listings if more items contains more than NUM_LISTINGS_PER_PAGE
-            // todo should we circle around though?
-            // also, at the very least, just put in the last 4 items, no need to overwrite the listings - it is wasted work
-            // todo, just make this iterate NumItemsPerPage times, write those first amount of items, ignore others, or maybe throw exception?
-
-            IEnumerator<ListingData> itemsEnumerator = items.GetEnumerator();
+            IEnumerator<ListingData> listingDataEnumerator = listingData.GetEnumerator();
             for (int i = 0; i < NUM_LISTINGS_PER_PAGE; i++)
             {
-                if (itemsEnumerator.MoveNext())
+                if (listingDataEnumerator.MoveNext())
                 {
-                    listingsGui[i] = new ListingGui(pnlAllListings, i, itemsEnumerator.Current);
-                    listingsGui[i].TitleDescriptionRichTextBox.Text = itemsEnumerator.Current.Title;
-                    listingsGui[i].PriceLabel.Text = itemsEnumerator.Current.FormattedPrice;
-                    listingsGui[i].ItemImagePictureBox.Image = new Bitmap(itemsEnumerator.Current.ItemImage,
+                    listingsGui[i] = new ListingGui(pnlAllListings, i, listingDataEnumerator.Current);
+                    listingsGui[i].TitleDescriptionRichTextBox.Text = listingDataEnumerator.Current.Title;
+                    listingsGui[i].PriceLabel.Text = listingDataEnumerator.Current.FormattedPrice;
+                    listingsGui[i].ItemImagePictureBox.Image = new Bitmap(listingDataEnumerator.Current.ItemImage,
                         listingsGui[i].ItemImagePictureBox.Size.Width, listingsGui[i].ItemImagePictureBox.Size.Height);
                     listingsGui[i].RefreshQuantityControlLimits(cartItems);
                 }
                 else
                 {
-                    listingsGui[i] = new ListingGui(pnlAllListings, i, null, true);
+                    listingsGui[i] = new ListingGui(pnlAllListings, i, null, disableListing: true);
                 }
             }
         }
@@ -212,25 +209,23 @@ namespace SemesterProject
         {
             currentPageIndex++;
             RefreshListingsTab();
-
-            btnPreviousPage.Enabled = true;
-            bool isOnLastPage = currentPageIndex >= listingsData.HighestPageIndexRetrieved;
-            if (isOnLastPage && !listingsData.IsAnotherItem)
-            {
-                btnNextPage.Enabled = false;
-            }
         }
 
         private void btnPreviousPage_Click(object sender, EventArgs e)
         {
             currentPageIndex--;
             RefreshListingsTab();
+        }
 
-            btnNextPage.Enabled = true;
-            if (currentPageIndex == 0)
-            {
-                btnPreviousPage.Enabled = false;
-            }
+        private void RefreshNextPageButton()
+        {
+            btnPreviousPage.Enabled = currentPageIndex > 0;
+        }
+
+        private void RefreshPreviousPageButton()
+        {
+            btnNextPage.Enabled =
+                currentPageIndex < listingsData.HighestPageIndexRetrieved || listingsData.IsAnotherItem;
         }
 
         private void RefreshLblPageNum()
