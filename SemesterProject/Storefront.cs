@@ -34,7 +34,6 @@ namespace SemesterProject
         private const int NUM_LISTINGS_PER_PAGE = 4; // todo maybe derive from gui
         private int currentPageIndex = 0; // 0-indexed for easy use with collections
         private int currentPageNumDisplay => currentPageIndex + 1; // 1-indexed for user display
-        private int highestPageIndexRetrieved = 0;
         private Listings listingsData;
         private ListingGui[] listingsGui = new ListingGui[NUM_LISTINGS_PER_PAGE];
 
@@ -78,7 +77,7 @@ namespace SemesterProject
 
         #region Listings
 
-        #region classes
+        #region Classes
 
         // This class is for providing a convenient wrapper around the listing GUI controls for easy retrieval of a listing's controls
         private class ListingGui
@@ -169,7 +168,7 @@ namespace SemesterProject
 
         private void RefreshListingsTab()
         {
-            LoadStoreItemsIntoGui(listingsData.GetListingsData(currentPageIndex));
+            LoadStoreItemsIntoGui(listingsData.GetListingDataForPage(currentPageIndex));
             RefreshLblPageNum();
             if (listingsData.IsAnotherItem)
             {
@@ -212,14 +211,10 @@ namespace SemesterProject
         private void btnNextPage_Click(object sender, EventArgs e)
         {
             currentPageIndex++;
-            highestPageIndexRetrieved = currentPageIndex > highestPageIndexRetrieved
-                ? currentPageIndex
-                : highestPageIndexRetrieved;
-            
             RefreshListingsTab();
 
             btnPreviousPage.Enabled = true;
-            bool isOnLastPage = currentPageIndex >= highestPageIndexRetrieved;
+            bool isOnLastPage = currentPageIndex >= listingsData.HighestPageIndexRetrieved;
             if (isOnLastPage && !listingsData.IsAnotherItem)
             {
                 btnNextPage.Enabled = false;

@@ -19,6 +19,8 @@ namespace SemesterProject
             cachedStoreItems = new List<ListingData>(); // todo naming inconsistent with allstoreitems
 
         public bool IsAnotherItem { get; private set; } // todo naming
+        public int HighestPageIndexRetrieved { get; private set; }
+
 
         public Listings(DataClasses1DataContext db, CUSTOMER loggedInCustomer, int numListingsPerPage)
         {
@@ -29,18 +31,28 @@ namespace SemesterProject
         }
 
 
-        // Return StoreItemWrappers around the store_items for the provided page
-        public IEnumerable<ListingData> GetListingsData(int pageIndex) // todo naming confusing with getlistingSdata
+        // Return the ListingData for each listing in the provided pageIndex.
+        // If the provided pageIndex is >= the last page index, this method returns ListingData only
+        // for the listings up until the last one (inclusive).
+        public IEnumerable<ListingData> GetListingDataForPage(int pageIndex)
         {
-            for (int i = 0; IsAnotherItem && i < NUM_LISTINGS_PER_PAGE; i++)
+            HighestPageIndexRetrieved = pageIndex > HighestPageIndexRetrieved ? pageIndex : HighestPageIndexRetrieved;
+
+            int numListingsBeforeThisPage = pageIndex * NUM_LISTINGS_PER_PAGE;
+            for (int i = 0; i < NUM_LISTINGS_PER_PAGE; i++)
             {
-                yield return GetListingData((pageIndex * NUM_LISTINGS_PER_PAGE) + i);
+                int listingIndex = numListingsBeforeThisPage + i;
+                if (listingIndex >= cachedStoreItems.Count && !IsAnotherItem)
+                {
+                    yield break;
+                }
+                yield return GetListingData(listingIndex);
             }
         }
 
         // Retrieve the ListingData for the provided listingIndex.
         // Throws an ArgumentOutOfRangeException if the provided listingIndex is out of range
-        // (i.e., there are not (listingIndex + 1) listings)
+        // (i.e., there are not (listingIndex + 1) listings in allStoreItems)
         public ListingData GetListingData(int listingIndex) // todo naming confusing with getlistingSdata
         {
             EnsureStoreItemsRetrieved();
@@ -65,39 +77,6 @@ namespace SemesterProject
 
             return cachedStoreItems[listingIndex];
         }
-
-        /*/// <summary>
-        /// Get the store items for the given page number.
-        /// </summary>
-        /// <param name="pageIndex">The page number to retrieve items for</param>
-        /// <returns>An IEnumerable of the store items for the page</returns>
-        private IEnumerable<STORE_ITEM> GetStoreItems(int pageIndex)
-        {
-            EnsureStoreItemsRetrieved();
-
-            // get any items from cache before retrieving from the db
-            int i = 0;
-            bool desiredItemIsCached = (pageIndex * NUM_LISTINGS_PER_PAGE + i) < cachedStoreItems.Count;
-            while (desiredItemIsCached && i < NUM_LISTINGS_PER_PAGE)
-            {
-                yield return cachedStoreItems[pageIndex * NUM_LISTINGS_PER_PAGE + i];
-                i++;
-                desiredItemIsCached = (pageIndex * NUM_LISTINGS_PER_PAGE + i) < cachedStoreItems.Count;
-            }
-
-            // retrieve the rest of the items from the db (unless we already retrieved all items
-            // (i.e., i == NUM_LISTINGS_PER_PAGE), and/or until there are no more items left)
-            for (; i < NUM_LISTINGS_PER_PAGE && IsAnotherItem; i++)
-            {
-                STORE_ITEM storeItem = allStoreItems.Current;
-                cachedStoreItems
-                    .Add(storeItem); // cache item before returning in case another method tries to retrieve it already
-                IsAnotherItem =
-                    allStoreItems
-                        .MoveNext(); // also, update IsAnotherItem before return so that it is accurate regardless of if this loop finishes (which is dependent on how much the calling method iterates)
-                yield return storeItem;
-            }
-        }*/
 
         private void EnsureStoreItemsRetrieved()
         {
