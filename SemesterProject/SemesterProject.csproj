@@ -78,7 +78,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Cart.cs" />
     <Compile Include="CartItem.cs" />
+    <Compile Include="ListingPage.cs" />
     <Compile Include="StoreDB_Purchases.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>

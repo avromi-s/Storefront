@@ -80,6 +80,7 @@ namespace SemesterProject
 
         private void RefreshListingsTab()
         {
+            //RefreshAllStoreItems();
             LoadStoreItemsIntoGui(GetStoreItems(currentPageIndex));
             RefreshLblPageNum();
             if (isAnotherItem)
@@ -97,6 +98,7 @@ namespace SemesterProject
             // current implementation of this method circles around and overwrites listings if more storeItems contains more than NUM_LISTINGS_PER_PAGE
             // todo should we circle around though?
             // also, at the very least, just put in the last 4 items, no need to overwrite the listings - it is wasted work
+            // todo, just make this iterate NumItemsPerPage times, write those first amount of items, ignore others, or maybe throw exception?
             int i = 0;
             foreach (STORE_ITEM storeItem in storeItems)
             {
@@ -169,11 +171,12 @@ namespace SemesterProject
 
         private void RefreshAllStoreItems(bool includeOutOfStock = false)
         {
-            // The order retrieved here will be the order of the items as displayed to the user
+            // The order of the store items retrieved here will be the order of the listings as displayed to the user
             // todo use a smarter ordering maybe? not just based on quantity
             allStoreItems = db.STORE_ITEMs.Where(item => includeOutOfStock || item.QuantityAvailable > 0)
                 .OrderByDescending(item => item.QuantityAvailable)
                 .GetEnumerator();
+            // todo check if this is a safe use of enumerator - do we need to dispose of it manually?
         }
 
         #endregion
@@ -208,8 +211,6 @@ namespace SemesterProject
         {
             lblPageNum.Text = "Page " + currentPageNumDisplay;
         }
-
-
 
         private void RefreshQuantityControlLimitsForListing(int listingIndex)
         {
@@ -308,19 +309,14 @@ namespace SemesterProject
 
         private async void DisplayAddToCartConfirmation(Button btnAddToCart, Label lblStatusInfo)
         {
-            // clear button after 0.25 second, clear text after 5
-            // todo do gui acknowledgment of add to cart with a timer so it goes back to normal:
             // todo need to stop anything running here if next page is click in middle
+            // todo also, if add to cart is clicked, multiple times, need to update timer so that the 5 seconds starts from the latest one
 
-            btnAddToCart.BackColor = Color.Green;
-            btnAddToCart.ForeColor = Color.White;
-            lblStatusInfo.Text =
-                "Item added to cart"; // todo this can be updated to be a checkbox or something non-text that updates on add to cart
-            await Task.Run(() => Thread.Sleep(250));
-            btnAddToCart.BackColor = Color.Transparent;
-            btnAddToCart.ForeColor = Color.Black;
-            await Task.Run(() => Thread.Sleep(4000));
+            lblStatusInfo.ForeColor = Color.Green;
+            lblStatusInfo.Text = "Item added to cart";
+            await Task.Run(() => Thread.Sleep(5000)); // clear text after 5 seconds
             lblStatusInfo.Text = "";
+            lblStatusInfo.ForeColor = Color.Black;
         }
 
         private CartItem GetCartItemForListing(int listingIndex)
@@ -349,6 +345,7 @@ namespace SemesterProject
             lblCartSummary.Text = "Purchase completed";
             RefreshCartItemsViewControl();
             RefreshCartButtonsEnabledStatus();
+            //RefreshAllStoreItems();
         }
 
         private void CreatePurchase(CUSTOMER loggedInCustomer, List<CartItem> cartItems)
