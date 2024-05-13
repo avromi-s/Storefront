@@ -18,8 +18,6 @@ namespace SemesterProject
 {
     public partial class Storefront : Form, IDisposable
     {
-        // todo fix issue with loggedInCustomer reference not being updated after purchase made with sp
-        // - throws exception on attempted change to balance and displayed balance itself is unupdated after the purchase
         // todo fix currency display accross all displays
         // todo separate different sections of the GUI Store into classes within Storefront class for better organization, instead of just regions
         //      Store > Cart, & Account > Balance, Account > Purchases
@@ -48,10 +46,10 @@ namespace SemesterProject
 
         #region DB
 
-        /*private void RefreshDbObjects()
+        private void RefreshCustomerObject()
         {
-            db.Refresh(RefreshMode.OverwriteCurrentValues);
-        }*/
+            db.Refresh(RefreshMode.OverwriteCurrentValues, loggedInCustomer);  // note: needed to set 'MultipleActiveResultSets=true' in app.config in order for this to work
+        }
 
         #endregion
 
@@ -351,6 +349,7 @@ namespace SemesterProject
             
             listingsData.RefreshListingsFromDb();
             currentPageIndex = 0;  // reset so that if the last page is now out of range, it isn't potentially revisited
+            RefreshCustomerObject(); // so that balance is updated
         }
 
         private void RemoveSelectedItemsFromCart()
@@ -438,7 +437,6 @@ namespace SemesterProject
         {
             loggedInCustomer.Balance += amount;
             db.SubmitChanges();
-            //db.Refresh(RefreshMode.OverwriteCurrentValues, db.CUSTOMERs);
         }
 
         private void RefreshBalanceTab()
