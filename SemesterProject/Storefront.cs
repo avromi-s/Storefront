@@ -238,8 +238,7 @@ namespace SemesterProject
 
         private void RefreshBtnNextPage()
         {
-            btnNextPage.Enabled =
-                currentPageIndex < listingsData.HighestPageIndexRetrieved || listingsData.IsAnotherItem;
+            btnNextPage.Enabled = currentPageIndex < listingsData.HighestPageIndexRetrieved || listingsData.IsAnotherItem;
         }
 
         private void RefreshLblPageNum()
@@ -316,7 +315,6 @@ namespace SemesterProject
             RefreshCartItemsViewControl();
             RefreshBtnPurchaseCartItems();
             RefreshBtnRemoveItemFromCart();
-            //RefreshAllStoreItems();
         }
 
         private void btnRemoveItemFromCart_Click(object sender, EventArgs e)
@@ -350,7 +348,9 @@ namespace SemesterProject
             }));
             string jsonString = JsonSerializer.Serialize(list);
             db.CREATE_NEW_PURCHASE(loggedInCustomer.CustomerId, jsonString);
+            
             listingsData.RefreshListingsFromDb();
+            currentPageIndex = 0;  // reset so that if the last page is now out of range, it isn't potentially revisited
         }
 
         private void RemoveSelectedItemsFromCart()
@@ -438,6 +438,7 @@ namespace SemesterProject
         {
             loggedInCustomer.Balance += amount;
             db.SubmitChanges();
+            //db.Refresh(RefreshMode.OverwriteCurrentValues, db.CUSTOMERs);
         }
 
         private void RefreshBalanceTab()

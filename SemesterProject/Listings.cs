@@ -63,7 +63,7 @@ namespace SemesterProject
             {
                 if (!IsAnotherItem)
                 {
-                    throw new ArgumentOutOfRangeException(); // todo, or return null?
+                    throw new ArgumentOutOfRangeException(); // todo this is being thrown when purchased all stock of the first and only item on a page
                 }
 
                 STORE_ITEM storeItem = allStoreItems.Current;
@@ -79,8 +79,9 @@ namespace SemesterProject
         private void RefreshAllStoreItems(bool includeOutOfStock = false)
         {
             // The order of the store items retrieved here will be the order of the listings as displayed to the user
-            allStoreItems = db.STORE_ITEMs.Where(item => includeOutOfStock || item.QuantityAvailable > 0).OrderByDescending(item => item.QuantityAvailable).GetEnumerator();
-
+            allStoreItems = db.STORE_ITEMs.Where(item => includeOutOfStock || item.QuantityAvailable > 0)
+                .OrderByDescending(item => item.QuantityAvailable)
+                .GetEnumerator();
             IsAnotherItem = allStoreItems.MoveNext();
         }
 
@@ -89,7 +90,7 @@ namespace SemesterProject
             db.Refresh(RefreshMode.OverwriteCurrentValues, db.STORE_ITEMs);
             RefreshAllStoreItems();
             cachedStoreItems.Clear();
-            HighestPageIndexRetrieved = -1;
+            HighestPageIndexRetrieved = -1;  // reset so that if the last page is now out of range, it isn't potentially revisited
         }
 
         // This class implements IDisposable as the STORE_ITEMs retrieved from the db must be disposed
