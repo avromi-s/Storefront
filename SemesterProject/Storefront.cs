@@ -290,28 +290,6 @@ namespace SemesterProject
             listingsGui[3].DisplayAddToCartConfirmation();
         }
 
-        private void AddItemToCart(CartItem cartItem)
-        {
-            if (cartItems.Any(item =>
-                    item.GetStoreItem() ==
-                    cartItem.GetStoreItem())) // todo use hashmap from StoreItemId -> CartItem for cartItems for faster lookup? now it is n for each search
-            {
-                cartItems.First(item => item.GetStoreItem() == cartItem.GetStoreItem()).Quantity += cartItem.Quantity;
-            }
-            else
-            {
-                cartItems.Add(cartItem);
-            }
-        }
-
-
-        private CartItem CreateCartItemForListing(int listingIndex)
-        {
-            int quantitySelected = Convert.ToInt32(listingsGui[listingIndex].QuantityNumericUpDown.Value);
-            STORE_ITEM storeItem = listingsGui[listingIndex].ListingData.StoreItem;  //listingsData.GetListingData((currentPageIndex * NUM_LISTINGS_PER_PAGE) + listingIndex).StoreItem;
-            return new CartItem(storeItem, quantitySelected);
-        }
-
         // On purchase button click - purchase all items in cart and then empty the cart
         private void btnPurchaseCartItems_Click(object sender, EventArgs e)
         {
@@ -331,6 +309,24 @@ namespace SemesterProject
             //RefreshAllStoreItems();
         }
 
+        private void btnRemoveItemFromCart_Click(object sender, EventArgs e)
+        {
+            RemoveSelectedItemsFromCart();
+            RefreshCartTab();
+        }
+        private void AddItemToCart(CartItem cartItem)
+        {
+            if (cartItems.Any(item =>
+                    item.GetStoreItem() ==
+                    cartItem.GetStoreItem())) // todo use hashmap from StoreItemId -> CartItem for cartItems for faster lookup? now it is n for each search
+            {
+                cartItems.First(item => item.GetStoreItem() == cartItem.GetStoreItem()).Quantity += cartItem.Quantity;
+            }
+            else
+            {
+                cartItems.Add(cartItem);
+            }
+        }
         private void CreatePurchase(CUSTOMER loggedInCustomer, List<CartItem> cartItems)
         {
             var list = new List<object>();
@@ -343,11 +339,19 @@ namespace SemesterProject
             string jsonString = JsonSerializer.Serialize(list);
             db.CREATE_NEW_PURCHASE(loggedInCustomer.CustomerId, jsonString);
         }
-
-        private void btnRemoveItemFromCart_Click(object sender, EventArgs e)
+        private void RemoveSelectedItemsFromCart()
         {
-            RemoveSelectedItemsFromCart();
-            RefreshCartTab();
+            foreach (DataGridViewRow selectedItem in dgvCartItems.SelectedRows)
+            {
+                cartItems.Remove(selectedItem.DataBoundItem as CartItem);
+            }
+        }
+
+        private CartItem CreateCartItemForListing(int listingIndex)
+        {
+            int quantitySelected = Convert.ToInt32(listingsGui[listingIndex].QuantityNumericUpDown.Value);
+            STORE_ITEM storeItem = listingsGui[listingIndex].ListingData.StoreItem;  //listingsData.GetListingData((currentPageIndex * NUM_LISTINGS_PER_PAGE) + listingIndex).StoreItem;
+            return new CartItem(storeItem, quantitySelected);
         }
 
         private void RefreshBtnPurchaseCartItems()
@@ -358,14 +362,6 @@ namespace SemesterProject
         private void RefreshBtnRemoveItemFromCart()
         {
             btnRemoveItemFromCart.Enabled = cartItems.Count > 0;
-        }
-
-        private void RemoveSelectedItemsFromCart()
-        {
-            foreach (DataGridViewRow selectedItem in dgvCartItems.SelectedRows)
-            {
-                cartItems.Remove(selectedItem.DataBoundItem as CartItem);
-            }
         }
 
         private void RefreshCartSummary()
