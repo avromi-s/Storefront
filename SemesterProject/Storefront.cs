@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
+using System.Data.Linq;
 using System.Drawing;
 using System.Linq;
 using System.Text;
@@ -10,33 +11,28 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Text.Json;
 using System.Threading;
+using System.Windows.Forms.VisualStyles;
+using SemesterProject.Properties;
 
 namespace SemesterProject
 {
-    public partial class Storefront : Form
+    public partial class Storefront : Form, IDisposable
     {
-        // todo fix issue with loggedInCustomer reference not beign updated after purchase made with sp
-        // - throws exception on attempted change to balance and displayed balance itself is unupdated after the purchase
         // todo fix currency display accross all displays
         // todo separate different sections of the GUI Store into classes within Storefront class for better organization, instead of just regions
-        //      Store > Listings, Store > Cart, & Account > Balance, Account > Purchases
-        // todo manage when less than 4 items in store > remove item triggers exception because iterating over all 4 listings, also, other 3 items should be disabled
+        //      Store > Cart, & Account > Balance, Account > Purchases
         // todo username & likely also password not case sensitive
         // todo make balance label red or green based on positive or negative balance
-        // todo update listing title + desc to nicer GUI and make uneditable, also move add to cart confirmation to either just visual cue, or to better area
-        // todo add grand total of num orders, and sum of all purchases on account > purchases screen
 
         private DataClasses1DataContext db;
-        private IEnumerator<STORE_ITEM> allStoreItems;
-        private List<STORE_ITEM> cachedStoreItems = new List<STORE_ITEM>();
         private readonly CUSTOMER loggedInCustomer;
         private BindingList<CartItem> cartItems = new BindingList<CartItem>();
-        private bool isAnotherItem { get; set; } // todo naming
-
-        private readonly int NUM_LISTINGS_PER_PAGE = 4; // todo maybe derive from gui
+        private const int NUM_LISTINGS_PER_PAGE = 4; // todo maybe derive from gui
         private int currentPageIndex = 0; // 0-indexed for easy use with collections
-
         private int currentPageNumDisplay => currentPageIndex + 1; // 1-indexed for user display
+        private Listings listingsData;
+        private ListingGui[] listingsGui = new ListingGui[NUM_LISTINGS_PER_PAGE];
+
 
         public Storefront(DataClasses1DataContext db, CUSTOMER loggedInCustomer)
         {
@@ -44,7 +40,17 @@ namespace SemesterProject
 
             this.db = db;
             this.loggedInCustomer = loggedInCustomer;
+            this.listingsData = new Listings(db, loggedInCustomer, NUM_LISTINGS_PER_PAGE);
         }
+
+        #region DB
+
+        private void RefreshCustomerObject()
+        {
+            db.Refresh(RefreshMode.OverwriteCurrentValues, loggedInCustomer); // note: needed to set 'MultipleActiveResultSets=true' in app.config in order for this to work
+        }
+
+        #endregion
 
         #region Store
 
@@ -76,104 +82,136 @@ namespace SemesterProject
 
         #region Listings
 
+        #region Classes
+
+        // This class is for providing a convenient wrapper around the listing GUI controls for easy retrieval of a listing's controls
+        private class ListingGui
+        {
+            // todo names below - remove control type from variable name?
+            public Panel ListingPanel { get; private set; }
+            public PictureBox ItemImagePictureBox { get; private set; }
+            public RichTextBox TitleDescriptionRichTextBox { get; private set; }
+            public Label PriceLabel { get; private set; }
+            public Button AddToCartButton { get; private set; }
+            public NumericUpDown QuantityNumericUpDown { get; private set; }
+            public Label StatusInfoLabel { get; private set; }
+            public Label SelectQuantityLabel { get; private set; }
+            public ListingData ListingData { get; private set; }
+            private bool listingEnabled;
+
+            public ListingGui(Panel AllListingsPanel, int listingIndex, ListingData listingData,
+                bool disableListing = false)
+            {
+                ListingPanel = AllListingsPanel.Controls["pnlListing" + listingIndex] as Panel;
+                ItemImagePictureBox = ListingPanel.Controls["pbxItemImage" + listingIndex] as PictureBox;
+                TitleDescriptionRichTextBox =
+                    ListingPanel.Controls["rtbTitleDescription" + listingIndex] as RichTextBox;
+                PriceLabel = ListingPanel.Controls["lblPrice" + listingIndex] as Label;
+                AddToCartButton = ListingPanel.Controls["btnAddToCart" + listingIndex] as Button;
+                QuantityNumericUpDown = ListingPanel.Controls["nudQuantity" + listingIndex] as NumericUpDown;
+                StatusInfoLabel = ListingPanel.Controls["lblStatusInfo" + listingIndex] as Label;
+                SelectQuantityLabel = ListingPanel.Controls["lblSelectQuantity" + listingIndex] as Label;
+                this.ListingData = listingData;
+
+                if (disableListing)
+                {
+                    DisableListing();
+                }
+                else
+                {
+                    EnableListing(); // enable in case this listing was previously disabled on a previous page
+                }
+            }
+
+            // Enable the current listing. 
+            private void EnableListing()
+            {
+                this.listingEnabled = true;
+                ItemImagePictureBox.Image = null;
+                ListingPanel.Enabled = true;
+            }
+
+            // Disable the current listing, such as when no item is being displayed in it 
+            private void DisableListing()
+            {
+                this.listingEnabled = false;
+                ItemImagePictureBox.Image = new Bitmap(Resources.ImageNotFound, ItemImagePictureBox.Size.Width,
+                    ItemImagePictureBox.Size.Height);
+                ListingPanel.Enabled = false;
+                TitleDescriptionRichTextBox.Text = "";
+                PriceLabel.Text = "";
+            }
+
+            public async void DisplayAddToCartConfirmation(int displayTimeLengthMs = 5000)
+            {
+                // todo need to stop anything running here if next page is click in middle
+                // todo also, if add to cart is clicked, multiple times, need to update timer so that the 5 seconds starts from the latest one
+
+                StatusInfoLabel.ForeColor = Color.Green;
+                StatusInfoLabel.Text = "Item added to cart";
+                await Task.Run(() => Thread.Sleep(displayTimeLengthMs)); // clear text after 5 seconds
+                StatusInfoLabel.Text = "";
+                StatusInfoLabel.ForeColor = Color.Black;
+            }
+
+            // Refresh/update the numeric limits for the quantity NumericUpDown control based on how many of
+            // this item is presently in the cart
+            public void RefreshQuantityControlLimits(BindingList<CartItem> cartItems)
+            {
+                if (listingEnabled)
+                {
+                    int qtyInCart = 0;
+                    if (cartItems.Any(item => item.GetStoreItem() == ListingData.StoreItem))
+                    {
+                        qtyInCart = cartItems.First(item => item.GetStoreItem() == ListingData.StoreItem).Quantity;
+                    }
+
+                    int remainingQty = ListingData.StoreItem.QuantityAvailable - qtyInCart;
+
+                    QuantityNumericUpDown.Maximum = remainingQty;
+                    QuantityNumericUpDown.Value = remainingQty > 0 ? 1 : 0;
+                    // todo if remainingQty <= 0 disable listing or at least add to cart button?
+                }
+            }
+        }
+
+        #endregion
+
         #region ListingLoading
 
         private void RefreshListingsTab()
         {
-            LoadStoreItemsIntoGui(GetStoreItems(currentPageIndex));
+            LoadStoreItemsIntoGui(listingsData.GetListingDataForPage(currentPageIndex));
             RefreshLblPageNum();
-            if (isAnotherItem)
-            {
-                btnNextPage.Enabled = true;
-            }
+            RefreshBtnPreviousPage();
+            RefreshBtnNextPage();
         }
 
         /// <summary>
-        /// Go through each of the storeItems and populate each GUI listing with the item's details.
+        /// Go through each of the listingData and populate each GUI listing with the item's details.
+        /// If less there are less items in listingData than NUM_LISTINGS_PER_PAGE, the remaining listings on the page
+        /// are disabled.
         /// </summary>
-        /// <param name="storeItems">The items to populate the GUI listings with</param>
-        private void LoadStoreItemsIntoGui(IEnumerable<STORE_ITEM> storeItems)
+        /// <param name="listingData">The listingData to populate the GUI listings with</param>
+        private void LoadStoreItemsIntoGui(IEnumerable<ListingData> listingData)
         {
-            // current implementation of this method circles around and overwrites listings if more storeItems contains more than NUM_LISTINGS_PER_PAGE
-            // todo should we circle around though?
-            // also, at the very least, just put in the last 4 items, no need to overwrite the listings - it is wasted work
-            int i = 0;
-            foreach (STORE_ITEM storeItem in storeItems)
+            IEnumerator<ListingData> listingDataEnumerator = listingData.GetEnumerator();
+            for (int i = 0; i < NUM_LISTINGS_PER_PAGE; i++)
             {
-                StoreItemListing sil = new StoreItemListing(storeItem);
-                Panel listing = pnlAllListings.Controls["pnlListing" + i] as Panel;
-                GetTitleDescriptionTextBoxForListing(i).Text = sil.Title;
-                listing.Controls["rtbPrice" + i].Text = sil.FormattedPrice;
-                PictureBox pbx = (listing.Controls["pbxItemImage" + i] as PictureBox);
-                pbx.Image = new Bitmap(sil.ItemImage, pbx.Size.Width, pbx.Size.Height);
-                RefreshQuantityControlLimitsForListing(i);
-
-                i = (i + 1) %
-                    NUM_LISTINGS_PER_PAGE; // move to next listing to update, reset to the first listing (index 0) if we move past the last listing
+                if (listingDataEnumerator.MoveNext())
+                {
+                    listingsGui[i] = new ListingGui(pnlAllListings, i, listingDataEnumerator.Current);
+                    listingsGui[i].TitleDescriptionRichTextBox.Text = listingDataEnumerator.Current.Title;
+                    listingsGui[i].PriceLabel.Text = listingDataEnumerator.Current.FormattedPrice;
+                    listingsGui[i].ItemImagePictureBox.Image = new Bitmap(listingDataEnumerator.Current.ItemImage,
+                        listingsGui[i].ItemImagePictureBox.Size.Width, listingsGui[i].ItemImagePictureBox.Size.Height);
+                    listingsGui[i].RefreshQuantityControlLimits(cartItems);
+                }
+                else
+                {
+                    listingsGui[i] = new ListingGui(pnlAllListings, i, null, disableListing: true);
+                }
             }
-        }
-
-        private RichTextBox GetTitleDescriptionTextBoxForListing(int listingIndex)
-        {
-            return pnlAllListings.Controls["pnlListing" + listingIndex]
-                .Controls["rtbTitleDescription" + listingIndex] as RichTextBox;
-        }
-
-        private Label GetStatusInfoLabelForListing(int listingIndex)
-        {
-            return pnlAllListings.Controls["pnlListing" + listingIndex]
-                .Controls["lblStatusInfo" + listingIndex] as Label;
-        }
-
-        /// <summary>
-        /// Get the store items for the given page number. 
-        /// </summary>
-        /// <param name="pageNum">The page number to retrieve items for</param>
-        /// <returns>An IEnumerable of the store items for the page</returns>
-        private IEnumerable<STORE_ITEM> GetStoreItems(int pageNum)
-        {
-            EnsureStoreItemsRetrieved();
-
-            // get any items from cache before retrieving from the db
-            int i = 0;
-            bool desiredItemIsCached = (pageNum * NUM_LISTINGS_PER_PAGE + i) < cachedStoreItems.Count;
-            while (desiredItemIsCached && i < NUM_LISTINGS_PER_PAGE)
-            {
-                yield return cachedStoreItems[pageNum * NUM_LISTINGS_PER_PAGE + i];
-                i++;
-                desiredItemIsCached = (pageNum * NUM_LISTINGS_PER_PAGE + i) < cachedStoreItems.Count;
-            }
-
-            // retrieve the rest of the items from the db (unless we already retrieved all items
-            // (i.e., i == NUM_LISTINGS_PER_PAGE), and/or until there are no more items left)
-            for (; i < NUM_LISTINGS_PER_PAGE && isAnotherItem; i++)
-            {
-                STORE_ITEM storeItem = allStoreItems.Current;
-                cachedStoreItems
-                    .Add(storeItem); // cache item before returning in case another method tries to retrieve it already
-                isAnotherItem =
-                    allStoreItems
-                        .MoveNext(); // also, update isAnotherItem before return so that it is accurate regardless of if this loop finishes (which is dependent on how much the calling method iterates)
-                yield return storeItem;
-            }
-        }
-
-        private void EnsureStoreItemsRetrieved()
-        {
-            if (allStoreItems == null)
-            {
-                RefreshAllStoreItems();
-                isAnotherItem = allStoreItems.MoveNext();
-            }
-        }
-
-        private void RefreshAllStoreItems(bool includeOutOfStock = false)
-        {
-            // The order retrieved here will be the order of the items as displayed to the user
-            // todo use a smarter ordering maybe? not just based on quantity
-            allStoreItems = db.STORE_ITEMs.Where(item => includeOutOfStock || item.QuantityAvailable > 0)
-                .OrderByDescending(item => item.QuantityAvailable)
-                .GetEnumerator();
         }
 
         #endregion
@@ -182,57 +220,27 @@ namespace SemesterProject
         {
             currentPageIndex++;
             RefreshListingsTab();
-
-            btnPreviousPage.Enabled = true;
-            bool IsNoMoreCachedItems =
-                (currentPageIndex + 1) * NUM_LISTINGS_PER_PAGE >= cachedStoreItems.Count;
-            if (IsNoMoreCachedItems && !isAnotherItem)
-            {
-                btnNextPage.Enabled = false;
-            }
         }
 
         private void btnPreviousPage_Click(object sender, EventArgs e)
         {
             currentPageIndex--;
             RefreshListingsTab();
+        }
 
-            btnNextPage.Enabled = true;
-            if (currentPageIndex == 0)
-            {
-                btnPreviousPage.Enabled = false;
-            }
+        private void RefreshBtnPreviousPage()
+        {
+            btnPreviousPage.Enabled = currentPageIndex > 0;
+        }
+
+        private void RefreshBtnNextPage()
+        {
+            btnNextPage.Enabled = currentPageIndex < listingsData.HighestPageIndexRetrieved || listingsData.IsAnotherItem;
         }
 
         private void RefreshLblPageNum()
         {
             lblPageNum.Text = "Page " + currentPageNumDisplay;
-        }
-
-
-
-        private void RefreshQuantityControlLimitsForListing(int listingIndex)
-        {
-            STORE_ITEM storeItem = cachedStoreItems[(currentPageIndex * NUM_LISTINGS_PER_PAGE) + listingIndex];
-            int totalQtyAvail = storeItem.QuantityAvailable;
-            int qtyInCart;
-            if (cartItems.Any(item => item.GetStoreItem() == storeItem))
-            {
-                qtyInCart = cartItems.Where(item => item.GetStoreItem() == storeItem).First().Quantity;
-            }
-            else
-            {
-                qtyInCart = 0;
-            }
-
-            int remainingQty = totalQtyAvail - qtyInCart;
-
-            NumericUpDown nudControl =
-                (pnlAllListings.Controls["pnlListing" + listingIndex].Controls["nudQuantity" + listingIndex] as
-                    NumericUpDown);
-            nudControl.Maximum = remainingQty;
-            nudControl.Value = remainingQty > 0 ? 1 : 0;
-            // todo if remainingQty <= 0 disable listing or at least add to cart button?
         }
 
         #endregion
@@ -241,7 +249,8 @@ namespace SemesterProject
 
         private void RefreshCartTab()
         {
-            RefreshCartButtonsEnabledStatus();
+            RefreshBtnPurchaseCartItems();
+            RefreshBtnRemoveItemFromCart();
             RefreshCartSummary();
             RefreshCartItemsViewControl();
         }
@@ -257,81 +266,34 @@ namespace SemesterProject
 
         private void btnAddToCart0_Click(object sender, EventArgs e)
         {
-            DisplayAddToCartConfirmation((sender as Button), GetStatusInfoLabelForListing(0));
-
-            CartItem cartItem = GetCartItemForListing(0);
+            CartItem cartItem = CreateCartItemForListing(0);
             AddItemToCart(cartItem);
-            RefreshQuantityControlLimitsForListing(0);
+            listingsGui[0].RefreshQuantityControlLimits(cartItems);
+            listingsGui[0].DisplayAddToCartConfirmation();
         }
 
         private void btnAddToCart1_Click(object sender, EventArgs e)
         {
-            DisplayAddToCartConfirmation((sender as Button), GetStatusInfoLabelForListing(1));
-
-            CartItem cartItem = GetCartItemForListing(1);
+            CartItem cartItem = CreateCartItemForListing(1);
             AddItemToCart(cartItem);
-            RefreshQuantityControlLimitsForListing(1);
+            listingsGui[1].RefreshQuantityControlLimits(cartItems);
+            listingsGui[1].DisplayAddToCartConfirmation();
         }
 
         private void btnAddToCart2_Click(object sender, EventArgs e)
         {
-            DisplayAddToCartConfirmation((sender as Button), GetStatusInfoLabelForListing(2));
-
-            CartItem cartItem = GetCartItemForListing(2);
+            CartItem cartItem = CreateCartItemForListing(2);
             AddItemToCart(cartItem);
-            RefreshQuantityControlLimitsForListing(2);
+            listingsGui[2].RefreshQuantityControlLimits(cartItems);
+            listingsGui[2].DisplayAddToCartConfirmation();
         }
 
         private void btnAddToCart3_Click(object sender, EventArgs e)
         {
-            DisplayAddToCartConfirmation((sender as Button), GetStatusInfoLabelForListing(3));
-
-            CartItem cartItem = GetCartItemForListing(3);
+            CartItem cartItem = CreateCartItemForListing(3);
             AddItemToCart(cartItem);
-            RefreshQuantityControlLimitsForListing(3);
-        }
-
-        private void AddItemToCart(CartItem cartItem)
-        {
-            if (cartItems.Any(item =>
-                    item.GetStoreItem() ==
-                    cartItem.GetStoreItem())) // todo use hashmap from StoreItemId -> CartItem for cartItems for faster lookup? now it is n for each search
-            {
-                cartItems.Where(item => item.GetStoreItem() == cartItem.GetStoreItem()).First().Quantity +=
-                    cartItem.Quantity;
-            }
-            else
-            {
-                cartItems.Add(cartItem);
-            }
-        }
-
-        private async void DisplayAddToCartConfirmation(Button btnAddToCart, Label lblStatusInfo)
-        {
-            // clear button after 0.25 second, clear text after 5
-            // todo do gui acknowledgment of add to cart with a timer so it goes back to normal:
-            // todo need to stop anything running here if next page is click in middle
-
-            btnAddToCart.BackColor = Color.Green;
-            btnAddToCart.ForeColor = Color.White;
-            lblStatusInfo.Text =
-                "Item added to cart"; // todo this can be updated to be a checkbox or something non-text that updates on add to cart
-            await Task.Run(() => Thread.Sleep(250));
-            btnAddToCart.BackColor = Color.Transparent;
-            btnAddToCart.ForeColor = Color.Black;
-            await Task.Run(() => Thread.Sleep(4000));
-            lblStatusInfo.Text = "";
-        }
-
-        private CartItem GetCartItemForListing(int listingIndex)
-        {
-            // todo this extracted to a separate method so that we can replace when we use a custom user control for each listing
-            // instead of accessing everything based on their names and index like here
-            int quantitySelected =
-                Convert.ToInt32((pnlAllListings.Controls["pnlListing" + listingIndex]
-                    .Controls["nudQuantity" + listingIndex] as NumericUpDown).Value);
-            STORE_ITEM storeItem = cachedStoreItems[(currentPageIndex * NUM_LISTINGS_PER_PAGE) + listingIndex];
-            return new CartItem(storeItem, quantitySelected);
+            listingsGui[3].RefreshQuantityControlLimits(cartItems);
+            listingsGui[3].DisplayAddToCartConfirmation();
         }
 
         // On purchase button click - purchase all items in cart and then empty the cart
@@ -346,9 +308,31 @@ namespace SemesterProject
             CreatePurchase(loggedInCustomer, cartItems.ToList());
             cartItems.Clear();
 
+            lblCartSummary.ForeColor = Color.Green;
             lblCartSummary.Text = "Purchase completed";
             RefreshCartItemsViewControl();
-            RefreshCartButtonsEnabledStatus();
+            RefreshBtnPurchaseCartItems();
+            RefreshBtnRemoveItemFromCart();
+        }
+
+        private void btnRemoveItemFromCart_Click(object sender, EventArgs e)
+        {
+            RemoveSelectedItemsFromCart();
+            RefreshCartTab();
+        }
+
+        private void AddItemToCart(CartItem cartItem)
+        {
+            if (cartItems.Any(item =>
+                    item.GetStoreItem() ==
+                    cartItem.GetStoreItem())) // todo use hashmap from StoreItemId -> CartItem for cartItems for faster lookup? now it is n for each search
+            {
+                cartItems.First(item => item.GetStoreItem() == cartItem.GetStoreItem()).Quantity += cartItem.Quantity;
+            }
+            else
+            {
+                cartItems.Add(cartItem);
+            }
         }
 
         private void CreatePurchase(CUSTOMER loggedInCustomer, List<CartItem> cartItems)
@@ -362,54 +346,41 @@ namespace SemesterProject
             }));
             string jsonString = JsonSerializer.Serialize(list);
             db.CREATE_NEW_PURCHASE(loggedInCustomer.CustomerId, jsonString);
+
+            listingsData.RefreshListingsFromDb();
+            currentPageIndex = 0; // reset so that if the last page is now out of range, it isn't potentially revisited
+            RefreshCustomerObject(); // so that balance is updated
         }
 
-        private void btnRemoveItemFromCart_Click(object sender, EventArgs e)
-        {
-            // todo also allow update quantity?
-            RemoveSelectedItemsFromCart(refreshQtyLimits: true);
-
-            RefreshCartTab();
-        }
-
-        private void RefreshCartButtonsEnabledStatus()
-        {
-            // todo this should really be two separate methods maybe because doing 2 separate things (2 buttons)
-            if (cartItems.Count > 0)
-            {
-                btnRemoveItemFromCart.Enabled = true;
-                btnPurchaseCartItems.Enabled = true;
-            }
-            else
-            {
-                btnRemoveItemFromCart.Enabled = false;
-                btnPurchaseCartItems.Enabled = false;
-            }
-        }
-
-        private void RemoveSelectedItemsFromCart(bool refreshQtyLimits = true)
+        private void RemoveSelectedItemsFromCart()
         {
             foreach (DataGridViewRow selectedItem in dgvCartItems.SelectedRows)
             {
                 cartItems.Remove(selectedItem.DataBoundItem as CartItem);
             }
+        }
 
-            if (refreshQtyLimits)
-            {
-                for (int i = 0; i < NUM_LISTINGS_PER_PAGE; i++)
-                {
-                    // todo this is a bit wasteful because we really only need to update the listing for the items that were removed, not all items. 
-                    // move this into the foreach loop maybe and refresh the listings based on the items being removed
-                    // OR, maybe only refresh listing qty limits on Listings tab enter?
-                    RefreshQuantityControlLimitsForListing(i);
-                }
-            }
+        private CartItem CreateCartItemForListing(int listingIndex)
+        {
+            int quantitySelected = Convert.ToInt32(listingsGui[listingIndex].QuantityNumericUpDown.Value);
+            STORE_ITEM storeItem = listingsGui[listingIndex].ListingData.StoreItem; //listingsData.GetListingData((currentPageIndex * NUM_LISTINGS_PER_PAGE) + listingIndex).StoreItem;
+            return new CartItem(storeItem, quantitySelected);
+        }
+
+        private void RefreshBtnPurchaseCartItems()
+        {
+            btnPurchaseCartItems.Enabled = cartItems.Count > 0;
+        }
+
+        private void RefreshBtnRemoveItemFromCart()
+        {
+            btnRemoveItemFromCart.Enabled = cartItems.Count > 0;
         }
 
         private void RefreshCartSummary()
         {
-            lblCartSummary.Text =
-                $"Total Quantity: {cartItems.Sum(item => item.Quantity)}\nPurchase Total: ${cartItems.Sum(item => item.Quantity * item.UnitPrice)}";
+            lblCartSummary.ForeColor = Color.Black;
+            lblCartSummary.Text = $"Total Quantity: {cartItems.Sum(item => item.Quantity)}\nPurchase Total: ${cartItems.Sum(item => item.Quantity * item.UnitPrice)}";
         }
 
         #endregion
@@ -446,31 +417,31 @@ namespace SemesterProject
 
         #region Balance
 
-        private void RefreshBalanceTab()
-        {
-            RefreshDisplayedBalance();
-            // todo can delete if not being used, just created for symmetry/potential future use
-        }
-
         private void btnPayToBalance_Click(object sender, EventArgs e)
         {
-            // todo round nud value on validate. see: https://stackoverflow.com/questions/21811303/numericupdown-value-not-rounded-to-decimalplaces
-
-            if (nudPayToBalance.Value <=
-                0) // todo shouldn't be possible because button should remain disabled until valid amount entered
+            if (nudPayToBalance.Value <= 0) // this shouldn't really be possible because button should remain disabled until valid amount entered
             {
                 lblAccountBalanceResults.Text = $"Please enter a valid amount";
                 lblAccountBalanceResults.ForeColor = Color.Red;
                 return;
             }
 
-            loggedInCustomer.Balance += nudPayToBalance.Value;
-            db.SubmitChanges();
-
+            PayToCustomerBalance(nudPayToBalance.Value);
             RefreshDisplayedBalance();
             lblAccountBalanceResults.ForeColor = Color.Green;
             lblAccountBalanceResults.Text = $"${nudPayToBalance.Value} successfully paid to balance";
             nudPayToBalance.Value = 0;
+        }
+
+        private void PayToCustomerBalance(decimal amount)
+        {
+            loggedInCustomer.Balance += amount;
+            db.SubmitChanges();
+        }
+
+        private void RefreshBalanceTab()
+        {
+            RefreshDisplayedBalance();
         }
 
         private void RefreshDisplayedBalance()
@@ -484,22 +455,34 @@ namespace SemesterProject
 
         private void RefreshPurchasesTab()
         {
-            RefreshPurchasesViewControl();
+            RefreshPurchasesViewControl(false);
+            RefreshPurchasesFilters();
+            RefreshPurchasesSummary();
         }
 
-        private void RefreshPurchasesViewControl()
+        private void PurchasesFilter_ValueChanged(object sender, EventArgs e)
+        {
+            FilterPurchases();
+        }
+
+        private void FilterPurchases()
+        {
+            RefreshPurchasesViewControl(true);
+            RefreshPurchasesSummary();
+        }
+
+        private void RefreshPurchasesViewControl(bool applyUserFilters = false)
         {
             // todo implement filters
-            dgvPastPurchases.DataSource = db.PURCHASEs.Where(p => p.CUSTOMER == loggedInCustomer)
+            dgvPastPurchases.DataSource = GetPurchasesForCustomer(applyUserFilters)
                 .Select(p => new
                 {
                     Date = p.PurchaseDateTime, // todo format to date
-                    OrderTotal = p.TotalPrice, // todo format as currency (with '$')
+                    OrderTotal = "$" + p.TotalPrice, // todo format as currency (with '$')
                     p.TotalQuantity,
-                    Items = // get summary of items in purchase: // todo extract to method or ToString() method in PURCHASE_STORE_ITEMs class?
-                        string.Join(", ",
-                            p.PURCHASE_STORE_ITEMs.Select(item =>
-                                $"({item.Quantity}) {item.STORE_ITEM.Manufacturer + " " + item.STORE_ITEM.ProductName} - ${item.UnitPrice * item.Quantity}"))
+                    Items = string.Join(", ",
+                        p.PURCHASE_STORE_ITEMs.Select(item =>
+                            $"({item.Quantity}) {item.STORE_ITEM.Manufacturer + " " + item.STORE_ITEM.ProductName} - ${item.UnitPrice * item.Quantity}")) // get summary of items in purchase
                 })
                 .ToList();
             dgvPastPurchases.AutoResizeColumns();
@@ -507,8 +490,62 @@ namespace SemesterProject
             dgvPastPurchases.Refresh();
         }
 
+        private void RefreshPurchasesSummary()
+        {
+            var purchases = GetPurchasesForCustomer();
+            int numPurchases = purchases.Count();
+            int totalUnits = purchases.Sum(p => p.TotalQuantity);
+            decimal purchasesTotal = purchases.Sum(p => p.TotalPrice);
+            lblPurchasesSummary.Text = $"{numPurchases} Purchase{(numPurchases > 1 ? "s" : "")}\n" +
+                                       $"{totalUnits} Unit{(numPurchases > 1 ? "s" : "")}\n" +
+                                       $"${purchasesTotal} Total";
+        }
+
+        // Set the initial values for the filters based on this customer's purchases
+        private void RefreshPurchasesFilters()
+        {
+            var purchases = GetPurchasesForCustomer(false).ToList();
+
+            // date filters:
+            dtpPurchasesFromDate.MinDate = purchases.Min(p => p.PurchaseDateTime);
+            dtpPurchasesFromDate.MaxDate = purchases.Max(p => p.PurchaseDateTime);
+            dtpPurchasesFromDate.Value = dtpPurchasesFromDate.MinDate;
+            dtpPurchasesToDate.MinDate = dtpPurchasesFromDate.MinDate;
+            dtpPurchasesToDate.MaxDate = dtpPurchasesFromDate.MaxDate;
+            dtpPurchasesToDate.Value = dtpPurchasesToDate.MaxDate;
+
+            // total price filters:
+            nudPurchasesPriceFrom.Minimum = purchases.Min(p => p.TotalPrice);
+            nudPurchasesPriceFrom.Maximum = purchases.Max(p => p.TotalPrice);
+            nudPurchasesPriceFrom.Value = nudPurchasesPriceFrom.Minimum;
+            nudPurchasesPriceTo.Minimum = nudPurchasesPriceFrom.Minimum;
+            nudPurchasesPriceTo.Maximum = nudPurchasesPriceFrom.Maximum;
+            nudPurchasesPriceTo.Value = nudPurchasesPriceTo.Maximum;
+        }
+
+        private IEnumerable<PURCHASE> GetPurchasesForCustomer(bool applyUserFilters = false)
+        {
+            var purchases = db.PURCHASEs.Where(p => p.CUSTOMER == loggedInCustomer);
+            if (applyUserFilters)
+            {
+                purchases = purchases.Where(p =>
+                    p.PurchaseDateTime.Date >= dtpPurchasesFromDate.Value.Date &&
+                    p.PurchaseDateTime.Date <= dtpPurchasesToDate.Value.Date &&
+                    p.TotalPrice >= nudPurchasesPriceFrom.Value &&
+                    p.TotalPrice <= nudPurchasesPriceTo.Value);
+            }
+
+            return purchases;
+        }
+
         #endregion
 
         #endregion
+
+        // This class implements IDisposable as the listingsData must be disposed
+        public void Dispose()
+        {
+            listingsData.Dispose();
+        }
     }
 }
