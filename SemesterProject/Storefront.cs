@@ -47,7 +47,7 @@ namespace SemesterProject
 
         private void RefreshCustomerObject()
         {
-            db.Refresh(RefreshMode.OverwriteCurrentValues, loggedInCustomer);  // note: needed to set 'MultipleActiveResultSets=true' in app.config in order for this to work
+            db.Refresh(RefreshMode.OverwriteCurrentValues, loggedInCustomer); // note: needed to set 'MultipleActiveResultSets=true' in app.config in order for this to work
         }
 
         #endregion
@@ -345,9 +345,9 @@ namespace SemesterProject
             }));
             string jsonString = JsonSerializer.Serialize(list);
             db.CREATE_NEW_PURCHASE(loggedInCustomer.CustomerId, jsonString);
-            
+
             listingsData.RefreshListingsFromDb();
-            currentPageIndex = 0;  // reset so that if the last page is now out of range, it isn't potentially revisited
+            currentPageIndex = 0; // reset so that if the last page is now out of range, it isn't potentially revisited
             RefreshCustomerObject(); // so that balance is updated
         }
 
@@ -454,14 +454,26 @@ namespace SemesterProject
 
         private void RefreshPurchasesTab()
         {
-            RefreshPurchasesViewControl();
+            RefreshPurchasesViewControl(false);
+            RefreshPurchasesFilters();
             RefreshPurchasesSummary();
         }
 
-        private void RefreshPurchasesViewControl()
+        private void PurchasesFilter_ValueChanged(object sender, EventArgs e)
+        {
+            FilterPurchases();
+        }
+
+        private void FilterPurchases()
+        {
+            RefreshPurchasesViewControl(true);
+            RefreshPurchasesSummary();
+        }
+
+        private void RefreshPurchasesViewControl(bool applyUserFilters = false)
         {
             // todo implement filters
-            dgvPastPurchases.DataSource = db.PURCHASEs.Where(p => p.CUSTOMER == loggedInCustomer)
+            dgvPastPurchases.DataSource = GetPurchasesForCustomer(applyUserFilters)
                 .Select(p => new
                 {
                     Date = p.PurchaseDateTime, // todo format to date
@@ -479,10 +491,50 @@ namespace SemesterProject
 
         private void RefreshPurchasesSummary()
         {
+            var purchases = GetPurchasesForCustomer();
+            int numPurchases = purchases.Count();
+            int totalUnits = purchases.Sum(p => p.TotalQuantity);
+            decimal purchasesTotal = purchases.Sum(p => p.TotalPrice);
+            lblPurchasesSummary.Text = $"{numPurchases} Purchase{(numPurchases > 1 ? "s" : "")}\n" +
+                                       $"{totalUnits} Unit{(numPurchases > 1 ? "s" : "")}\n" +
+                                       $"${purchasesTotal} Total";
+        }
+
+        // Set the initial values for the filters based on this customer's purchases
+        private void RefreshPurchasesFilters()
+        {
+            var purchases = GetPurchasesForCustomer(false).ToList();
+
+            // date filters:
+            dtpPurchasesFromDate.MinDate = purchases.Min(p => p.PurchaseDateTime);
+            dtpPurchasesFromDate.MaxDate = purchases.Max(p => p.PurchaseDateTime);
+            dtpPurchasesFromDate.Value = dtpPurchasesFromDate.MinDate;
+            dtpPurchasesToDate.MinDate = dtpPurchasesFromDate.MinDate;
+            dtpPurchasesToDate.MaxDate = dtpPurchasesFromDate.MaxDate;
+            dtpPurchasesToDate.Value = dtpPurchasesToDate.MaxDate;
+
+            // total price filters:
+            nudPurchasesPriceFrom.Minimum = purchases.Min(p => p.TotalPrice);
+            nudPurchasesPriceFrom.Maximum = purchases.Max(p => p.TotalPrice);
+            nudPurchasesPriceFrom.Value = nudPurchasesPriceFrom.Minimum;
+            nudPurchasesPriceTo.Minimum = nudPurchasesPriceFrom.Minimum;
+            nudPurchasesPriceTo.Maximum = nudPurchasesPriceFrom.Maximum;
+            nudPurchasesPriceTo.Value = nudPurchasesPriceTo.Maximum;
+        }
+
+        private IEnumerable<PURCHASE> GetPurchasesForCustomer(bool applyUserFilters = false)
+        {
             var purchases = db.PURCHASEs.Where(p => p.CUSTOMER == loggedInCustomer);
-            lblPurchasesSummary.Text = $"{purchases.Count()} Purchases\n" +
-                                       $"{purchases.Sum(p => p.TotalQuantity)} Units\n" +
-                                       $"${purchases.Sum(p => p.TotalPrice)} Total";
+            if (applyUserFilters)
+            {
+                purchases = purchases.Where(p =>
+                    p.PurchaseDateTime.Date >= dtpPurchasesFromDate.Value.Date &&
+                    p.PurchaseDateTime.Date <= dtpPurchasesToDate.Value.Date &&
+                    p.TotalPrice >= nudPurchasesPriceFrom.Value &&
+                    p.TotalPrice <= nudPurchasesPriceTo.Value);
+            }
+
+            return purchases;
         }
 
         #endregion

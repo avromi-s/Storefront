@@ -93,15 +93,15 @@ namespace SemesterProject
             this.lblPurchasesSummary = new System.Windows.Forms.Label();
             this.gbFilters = new System.Windows.Forms.GroupBox();
             this.label10 = new System.Windows.Forms.Label();
-            this.dateTimePicker2 = new System.Windows.Forms.DateTimePicker();
+            this.dtpPurchasesToDate = new System.Windows.Forms.DateTimePicker();
             this.label9 = new System.Windows.Forms.Label();
             this.label8 = new System.Windows.Forms.Label();
             this.label7 = new System.Windows.Forms.Label();
-            this.numericUpDown3 = new System.Windows.Forms.NumericUpDown();
+            this.nudPurchasesPriceTo = new System.Windows.Forms.NumericUpDown();
             this.label6 = new System.Windows.Forms.Label();
-            this.numericUpDown2 = new System.Windows.Forms.NumericUpDown();
+            this.nudPurchasesPriceFrom = new System.Windows.Forms.NumericUpDown();
             this.label5 = new System.Windows.Forms.Label();
-            this.dateTimePicker1 = new System.Windows.Forms.DateTimePicker();
+            this.dtpPurchasesFromDate = new System.Windows.Forms.DateTimePicker();
             this.dgvPastPurchases = new System.Windows.Forms.DataGridView();
             this.storeItemListingBindingSource = new System.Windows.Forms.BindingSource(this.components);
             this.tc_Store_Account.SuspendLayout();
@@ -131,8 +131,8 @@ namespace SemesterProject
             ((System.ComponentModel.ISupportInitialize)(this.nudPayToBalance)).BeginInit();
             this.tpPurchases.SuspendLayout();
             this.gbFilters.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown3)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown2)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.nudPurchasesPriceTo)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.nudPurchasesPriceFrom)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dgvPastPurchases)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.storeItemListingBindingSource)).BeginInit();
             this.SuspendLayout();
@@ -798,15 +798,15 @@ namespace SemesterProject
             // gbFilters
             // 
             this.gbFilters.Controls.Add(this.label10);
-            this.gbFilters.Controls.Add(this.dateTimePicker2);
+            this.gbFilters.Controls.Add(this.dtpPurchasesToDate);
             this.gbFilters.Controls.Add(this.label9);
             this.gbFilters.Controls.Add(this.label8);
             this.gbFilters.Controls.Add(this.label7);
-            this.gbFilters.Controls.Add(this.numericUpDown3);
+            this.gbFilters.Controls.Add(this.nudPurchasesPriceTo);
             this.gbFilters.Controls.Add(this.label6);
-            this.gbFilters.Controls.Add(this.numericUpDown2);
+            this.gbFilters.Controls.Add(this.nudPurchasesPriceFrom);
             this.gbFilters.Controls.Add(this.label5);
-            this.gbFilters.Controls.Add(this.dateTimePicker1);
+            this.gbFilters.Controls.Add(this.dtpPurchasesFromDate);
             this.gbFilters.Location = new System.Drawing.Point(134, 25);
             this.gbFilters.Name = "gbFilters";
             this.gbFilters.Size = new System.Drawing.Size(710, 121);
@@ -823,12 +823,13 @@ namespace SemesterProject
             this.label10.TabIndex = 19;
             this.label10.Text = "To:";
             // 
-            // dateTimePicker2
+            // dtpPurchasesToDate
             // 
-            this.dateTimePicker2.Location = new System.Drawing.Point(59, 79);
-            this.dateTimePicker2.Name = "dateTimePicker2";
-            this.dateTimePicker2.Size = new System.Drawing.Size(227, 22);
-            this.dateTimePicker2.TabIndex = 2;
+            this.dtpPurchasesToDate.Location = new System.Drawing.Point(59, 79);
+            this.dtpPurchasesToDate.Name = "dtpPurchasesToDate";
+            this.dtpPurchasesToDate.Size = new System.Drawing.Size(227, 22);
+            this.dtpPurchasesToDate.TabIndex = 2;
+            this.dtpPurchasesToDate.ValueChanged += new System.EventHandler(this.PurchasesFilter_ValueChanged);
             // 
             // label9
             // 
@@ -857,18 +858,19 @@ namespace SemesterProject
             this.label7.TabIndex = 15;
             this.label7.Text = "-        $";
             // 
-            // numericUpDown3
+            // nudPurchasesPriceTo
             // 
-            this.numericUpDown3.DecimalPlaces = 2;
-            this.numericUpDown3.Location = new System.Drawing.Point(584, 51);
-            this.numericUpDown3.Maximum = new decimal(new int[] {
+            this.nudPurchasesPriceTo.DecimalPlaces = 2;
+            this.nudPurchasesPriceTo.Location = new System.Drawing.Point(584, 51);
+            this.nudPurchasesPriceTo.Maximum = new decimal(new int[] {
             100000,
             0,
             0,
             0});
-            this.numericUpDown3.Name = "numericUpDown3";
-            this.numericUpDown3.Size = new System.Drawing.Size(120, 22);
-            this.numericUpDown3.TabIndex = 3;
+            this.nudPurchasesPriceTo.Name = "nudPurchasesPriceTo";
+            this.nudPurchasesPriceTo.Size = new System.Drawing.Size(120, 22);
+            this.nudPurchasesPriceTo.TabIndex = 3;
+            this.nudPurchasesPriceTo.ValueChanged += new System.EventHandler(this.PurchasesFilter_ValueChanged);
             // 
             // label6
             // 
@@ -879,18 +881,19 @@ namespace SemesterProject
             this.label6.TabIndex = 13;
             this.label6.Text = "$";
             // 
-            // numericUpDown2
+            // nudPurchasesPriceFrom
             // 
-            this.numericUpDown2.DecimalPlaces = 2;
-            this.numericUpDown2.Location = new System.Drawing.Point(384, 51);
-            this.numericUpDown2.Maximum = new decimal(new int[] {
+            this.nudPurchasesPriceFrom.DecimalPlaces = 2;
+            this.nudPurchasesPriceFrom.Location = new System.Drawing.Point(384, 51);
+            this.nudPurchasesPriceFrom.Maximum = new decimal(new int[] {
             100000,
             0,
             0,
             0});
-            this.numericUpDown2.Name = "numericUpDown2";
-            this.numericUpDown2.Size = new System.Drawing.Size(120, 22);
-            this.numericUpDown2.TabIndex = 2;
+            this.nudPurchasesPriceFrom.Name = "nudPurchasesPriceFrom";
+            this.nudPurchasesPriceFrom.Size = new System.Drawing.Size(120, 22);
+            this.nudPurchasesPriceFrom.TabIndex = 2;
+            this.nudPurchasesPriceFrom.ValueChanged += new System.EventHandler(this.PurchasesFilter_ValueChanged);
             // 
             // label5
             // 
@@ -901,12 +904,13 @@ namespace SemesterProject
             this.label5.TabIndex = 11;
             this.label5.Text = "Date Range";
             // 
-            // dateTimePicker1
+            // dtpPurchasesFromDate
             // 
-            this.dateTimePicker1.Location = new System.Drawing.Point(59, 51);
-            this.dateTimePicker1.Name = "dateTimePicker1";
-            this.dateTimePicker1.Size = new System.Drawing.Size(227, 22);
-            this.dateTimePicker1.TabIndex = 1;
+            this.dtpPurchasesFromDate.Location = new System.Drawing.Point(59, 51);
+            this.dtpPurchasesFromDate.Name = "dtpPurchasesFromDate";
+            this.dtpPurchasesFromDate.Size = new System.Drawing.Size(227, 22);
+            this.dtpPurchasesFromDate.TabIndex = 1;
+            this.dtpPurchasesFromDate.ValueChanged += new System.EventHandler(this.PurchasesFilter_ValueChanged);
             // 
             // dgvPastPurchases
             // 
@@ -971,8 +975,8 @@ namespace SemesterProject
             this.tpPurchases.PerformLayout();
             this.gbFilters.ResumeLayout(false);
             this.gbFilters.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown3)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown2)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.nudPurchasesPriceTo)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.nudPurchasesPriceFrom)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dgvPastPurchases)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.storeItemListingBindingSource)).EndInit();
             this.ResumeLayout(false);
@@ -1017,13 +1021,13 @@ namespace SemesterProject
         private System.Windows.Forms.GroupBox gbFilters;
         private System.Windows.Forms.Label label8;
         private System.Windows.Forms.Label label7;
-        private System.Windows.Forms.NumericUpDown numericUpDown3;
+        private System.Windows.Forms.NumericUpDown nudPurchasesPriceTo;
         private System.Windows.Forms.Label label6;
-        private System.Windows.Forms.NumericUpDown numericUpDown2;
+        private System.Windows.Forms.NumericUpDown nudPurchasesPriceFrom;
         private System.Windows.Forms.Label label5;
-        private System.Windows.Forms.DateTimePicker dateTimePicker1;
+        private System.Windows.Forms.DateTimePicker dtpPurchasesFromDate;
         private System.Windows.Forms.Label label10;
-        private System.Windows.Forms.DateTimePicker dateTimePicker2;
+        private System.Windows.Forms.DateTimePicker dtpPurchasesToDate;
         private System.Windows.Forms.Label label9;
         private System.Windows.Forms.Label lblAccountBalanceResults;
         private System.Windows.Forms.Label lblPrice0;
