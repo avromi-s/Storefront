@@ -102,6 +102,7 @@ namespace SemesterProject
             this.label5 = new System.Windows.Forms.Label();
             this.dateTimePicker1 = new System.Windows.Forms.DateTimePicker();
             this.dgvPastPurchases = new System.Windows.Forms.DataGridView();
+            this.lblPurchasesSummary = new System.Windows.Forms.Label();
             this.storeItemListingBindingSource = new System.Windows.Forms.BindingSource(this.components);
             this.tc_Store_Account.SuspendLayout();
             this.tpStore.SuspendLayout();
@@ -774,6 +775,7 @@ namespace SemesterProject
             // 
             // tpPurchases
             // 
+            this.tpPurchases.Controls.Add(this.lblPurchasesSummary);
             this.tpPurchases.Controls.Add(this.gbFilters);
             this.tpPurchases.Controls.Add(this.dgvPastPurchases);
             this.tpPurchases.Location = new System.Drawing.Point(4, 25);
@@ -912,6 +914,15 @@ namespace SemesterProject
             this.dgvPastPurchases.Size = new System.Drawing.Size(959, 400);
             this.dgvPastPurchases.TabIndex = 1;
             // 
+            // lblPurchasesSummary
+            // 
+            this.lblPurchasesSummary.AutoSize = true;
+            this.lblPurchasesSummary.Location = new System.Drawing.Point(441, 579);
+            this.lblPurchasesSummary.Name = "lblPurchasesSummary";
+            this.lblPurchasesSummary.Size = new System.Drawing.Size(88, 51);
+            this.lblPurchasesSummary.TabIndex = 13;
+            this.lblPurchasesSummary.Text = "0 Purchases\r\n0 Units\r\n$00.00 Total";
+            // 
             // storeItemListingBindingSource
             // 
             this.storeItemListingBindingSource.DataSource = typeof(SemesterProject.ListingData);
@@ -957,6 +968,7 @@ namespace SemesterProject
             this.gbAccountBalance.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.nudPayToBalance)).EndInit();
             this.tpPurchases.ResumeLayout(false);
+            this.tpPurchases.PerformLayout();
             this.gbFilters.ResumeLayout(false);
             this.gbFilters.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown3)).EndInit();
@@ -1040,5 +1052,6 @@ namespace SemesterProject
         private System.Windows.Forms.Label lblStatusInfo3;
         private System.Windows.Forms.Label lblStatusInfo2;
         private System.Windows.Forms.Label lblStatusInfo1;
+        private System.Windows.Forms.Label lblPurchasesSummary;
     }
 }

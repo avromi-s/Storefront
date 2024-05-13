@@ -456,6 +456,7 @@ namespace SemesterProject
         private void RefreshPurchasesTab()
         {
             RefreshPurchasesViewControl();
+            RefreshPurchasesSummary();
         }
 
         private void RefreshPurchasesViewControl()
@@ -465,7 +466,7 @@ namespace SemesterProject
                 .Select(p => new
                 {
                     Date = p.PurchaseDateTime, // todo format to date
-                    OrderTotal = p.TotalPrice, // todo format as currency (with '$')
+                    OrderTotal = "$" + p.TotalPrice, // todo format as currency (with '$')
                     p.TotalQuantity,
                     Items = string.Join(", ",
                         p.PURCHASE_STORE_ITEMs.Select(item =>
@@ -475,6 +476,14 @@ namespace SemesterProject
             dgvPastPurchases.AutoResizeColumns();
             dgvPastPurchases.Update();
             dgvPastPurchases.Refresh();
+        }
+
+        private void RefreshPurchasesSummary()
+        {
+            var purchases = db.PURCHASEs.Where(p => p.CUSTOMER == loggedInCustomer);
+            lblPurchasesSummary.Text = $"{purchases.Count()} Purchases\n" +
+                                       $"{purchases.Sum(p => p.TotalQuantity)} Units\n" +
+                                       $"${purchases.Sum(p => p.TotalPrice)} Total";
         }
 
         #endregion
