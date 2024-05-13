@@ -308,6 +308,7 @@ namespace SemesterProject
             CreatePurchase(loggedInCustomer, cartItems.ToList());
             cartItems.Clear();
 
+            lblCartSummary.ForeColor = Color.Green;
             lblCartSummary.Text = "Purchase completed";
             RefreshCartItemsViewControl();
             RefreshBtnPurchaseCartItems();
@@ -378,8 +379,8 @@ namespace SemesterProject
 
         private void RefreshCartSummary()
         {
-            lblCartSummary.Text =
-                $"Total Quantity: {cartItems.Sum(item => item.Quantity)}\nPurchase Total: ${cartItems.Sum(item => item.Quantity * item.UnitPrice)}";
+            lblCartSummary.ForeColor = Color.Black;
+            lblCartSummary.Text = $"Total Quantity: {cartItems.Sum(item => item.Quantity)}\nPurchase Total: ${cartItems.Sum(item => item.Quantity * item.UnitPrice)}";
         }
 
         #endregion
