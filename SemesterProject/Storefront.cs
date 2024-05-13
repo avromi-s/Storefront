@@ -17,11 +17,11 @@ namespace SemesterProject
 {
     public partial class Storefront : Form
     {
-        // todo fix issue with loggedInCustomer reference not beign updated after purchase made with sp
+        // todo fix issue with loggedInCustomer reference not being updated after purchase made with sp
         // - throws exception on attempted change to balance and displayed balance itself is unupdated after the purchase
         // todo fix currency display accross all displays
         // todo separate different sections of the GUI Store into classes within Storefront class for better organization, instead of just regions
-        //      Store > Listings, Store > Cart, & Account > Balance, Account > Purchases
+        //      Store > Cart, & Account > Balance, Account > Purchases
         // todo username & likely also password not case sensitive
         // todo make balance label red or green based on positive or negative balance
         // todo add grand total of num orders, and sum of all purchases on account > purchases screen
@@ -409,23 +409,24 @@ namespace SemesterProject
 
         private void btnPayToBalance_Click(object sender, EventArgs e)
         {
-            // todo round nud value on validate. see: https://stackoverflow.com/questions/21811303/numericupdown-value-not-rounded-to-decimalplaces
-
-            if (nudPayToBalance.Value <=
-                0) // todo shouldn't be possible because button should remain disabled until valid amount entered
+            if (nudPayToBalance.Value <= 0) // this shouldn't really be possible because button should remain disabled until valid amount entered
             {
                 lblAccountBalanceResults.Text = $"Please enter a valid amount";
                 lblAccountBalanceResults.ForeColor = Color.Red;
                 return;
             }
 
-            loggedInCustomer.Balance += nudPayToBalance.Value;
-            db.SubmitChanges();
-
+            PayToCustomerBalance(nudPayToBalance.Value);
             RefreshDisplayedBalance();
             lblAccountBalanceResults.ForeColor = Color.Green;
             lblAccountBalanceResults.Text = $"${nudPayToBalance.Value} successfully paid to balance";
             nudPayToBalance.Value = 0;
+        }
+
+        private void PayToCustomerBalance(decimal amount)
+        {
+            loggedInCustomer.Balance += amount;
+            db.SubmitChanges();
         }
 
         private void RefreshBalanceTab()
@@ -456,10 +457,9 @@ namespace SemesterProject
                     Date = p.PurchaseDateTime, // todo format to date
                     OrderTotal = p.TotalPrice, // todo format as currency (with '$')
                     p.TotalQuantity,
-                    Items = // get summary of items in purchase: // todo extract to method or ToString() method in PURCHASE_STORE_ITEMs class?
-                        string.Join(", ",
-                            p.PURCHASE_STORE_ITEMs.Select(item =>
-                                $"({item.Quantity}) {item.STORE_ITEM.Manufacturer + " " + item.STORE_ITEM.ProductName} - ${item.UnitPrice * item.Quantity}"))
+                    Items = string.Join(", ",
+                        p.PURCHASE_STORE_ITEMs.Select(item =>
+                            $"({item.Quantity}) {item.STORE_ITEM.Manufacturer + " " + item.STORE_ITEM.ProductName} - ${item.UnitPrice * item.Quantity}")) // get summary of items in purchase
                 })
                 .ToList();
             dgvPastPurchases.AutoResizeColumns();
