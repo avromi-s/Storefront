@@ -46,6 +46,7 @@ namespace SemesterProject
                 {
                     yield break;
                 }
+
                 yield return GetListingData(listingIndex);
             }
         }

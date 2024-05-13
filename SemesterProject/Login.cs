@@ -14,19 +14,15 @@ namespace SemesterProject
     {
         public bool Successful { get; private set; } = false;
         private CUSTOMER _customer;
+
         public CUSTOMER Customer
         {
-            get
-            {
-                return _customer;
-            }
-            private set
-            {
-                _customer = value;
-            }
+            get { return _customer; }
+            private set { _customer = value; }
         }
 
         private DataClasses1DataContext db;
+
         public LoginForm(DataClasses1DataContext db)
         {
             InitializeComponent();
@@ -59,7 +55,7 @@ namespace SemesterProject
             bool loginExists = db.CUSTOMERs.Select(row => row.LoginId).Contains(LoginId);
             if (loginExists)
             {
-                CUSTOMER foundCustomer = db.CUSTOMERs.First(row => row.LoginId == LoginId);  // login id is enforced as unique by db index
+                CUSTOMER foundCustomer = db.CUSTOMERs.First(row => row.LoginId == LoginId); // login id is enforced as unique by db index
                 // validate password:
                 if (foundCustomer.Password == Password)
                 {
@@ -76,7 +72,8 @@ namespace SemesterProject
             {
                 lblResult.Text = "Login ID not found";
             }
-            customerLoggedIn = null;  // only return customer on successful login
+
+            customerLoggedIn = null; // only return customer on successful login
             return false;
         }
 
@@ -100,7 +97,7 @@ namespace SemesterProject
             else
             {
                 lblResult.Text = "That login ID is not available. Please try again.";
-                loggedInCustomer = null;  // only return customer on successful login
+                loggedInCustomer = null; // only return customer on successful login
                 return false;
             }
         }

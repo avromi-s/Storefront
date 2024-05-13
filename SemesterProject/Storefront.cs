@@ -314,6 +314,7 @@ namespace SemesterProject
             RemoveSelectedItemsFromCart();
             RefreshCartTab();
         }
+
         private void AddItemToCart(CartItem cartItem)
         {
             if (cartItems.Any(item =>
@@ -327,6 +328,7 @@ namespace SemesterProject
                 cartItems.Add(cartItem);
             }
         }
+
         private void CreatePurchase(CUSTOMER loggedInCustomer, List<CartItem> cartItems)
         {
             var list = new List<object>();
@@ -339,6 +341,7 @@ namespace SemesterProject
             string jsonString = JsonSerializer.Serialize(list);
             db.CREATE_NEW_PURCHASE(loggedInCustomer.CustomerId, jsonString);
         }
+
         private void RemoveSelectedItemsFromCart()
         {
             foreach (DataGridViewRow selectedItem in dgvCartItems.SelectedRows)
@@ -350,7 +353,7 @@ namespace SemesterProject
         private CartItem CreateCartItemForListing(int listingIndex)
         {
             int quantitySelected = Convert.ToInt32(listingsGui[listingIndex].QuantityNumericUpDown.Value);
-            STORE_ITEM storeItem = listingsGui[listingIndex].ListingData.StoreItem;  //listingsData.GetListingData((currentPageIndex * NUM_LISTINGS_PER_PAGE) + listingIndex).StoreItem;
+            STORE_ITEM storeItem = listingsGui[listingIndex].ListingData.StoreItem; //listingsData.GetListingData((currentPageIndex * NUM_LISTINGS_PER_PAGE) + listingIndex).StoreItem;
             return new CartItem(storeItem, quantitySelected);
         }
 
@@ -404,12 +407,6 @@ namespace SemesterProject
 
         #region Balance
 
-        private void RefreshBalanceTab()
-        {
-            RefreshDisplayedBalance();
-            // todo can delete if not being used, just created for symmetry/potential future use
-        }
-
         private void btnPayToBalance_Click(object sender, EventArgs e)
         {
             // todo round nud value on validate. see: https://stackoverflow.com/questions/21811303/numericupdown-value-not-rounded-to-decimalplaces
@@ -429,6 +426,11 @@ namespace SemesterProject
             lblAccountBalanceResults.ForeColor = Color.Green;
             lblAccountBalanceResults.Text = $"${nudPayToBalance.Value} successfully paid to balance";
             nudPayToBalance.Value = 0;
+        }
+
+        private void RefreshBalanceTab()
+        {
+            RefreshDisplayedBalance();
         }
 
         private void RefreshDisplayedBalance()
