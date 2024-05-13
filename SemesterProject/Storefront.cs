@@ -23,7 +23,6 @@ namespace SemesterProject
         //      Store > Cart, & Account > Balance, Account > Purchases
         // todo username & likely also password not case sensitive
         // todo make balance label red or green based on positive or negative balance
-        // todo add grand total of num orders, and sum of all purchases on account > purchases screen
 
         private DataClasses1DataContext db;
         private readonly CUSTOMER loggedInCustomer;

@@ -90,6 +90,7 @@ namespace SemesterProject
             this.btnPayToBalance = new System.Windows.Forms.Button();
             this.lblCurrentBalance = new System.Windows.Forms.Label();
             this.tpPurchases = new System.Windows.Forms.TabPage();
+            this.lblPurchasesSummary = new System.Windows.Forms.Label();
             this.gbFilters = new System.Windows.Forms.GroupBox();
             this.label10 = new System.Windows.Forms.Label();
             this.dateTimePicker2 = new System.Windows.Forms.DateTimePicker();
@@ -102,7 +103,6 @@ namespace SemesterProject
             this.label5 = new System.Windows.Forms.Label();
             this.dateTimePicker1 = new System.Windows.Forms.DateTimePicker();
             this.dgvPastPurchases = new System.Windows.Forms.DataGridView();
-            this.lblPurchasesSummary = new System.Windows.Forms.Label();
             this.storeItemListingBindingSource = new System.Windows.Forms.BindingSource(this.components);
             this.tc_Store_Account.SuspendLayout();
             this.tpStore.SuspendLayout();
@@ -151,7 +151,7 @@ namespace SemesterProject
             this.tc_Store_Account.Name = "tc_Store_Account";
             this.tc_Store_Account.SelectedIndex = 0;
             this.tc_Store_Account.Size = new System.Drawing.Size(1022, 776);
-            this.tc_Store_Account.TabIndex = 11;
+            this.tc_Store_Account.TabIndex = 1;
             // 
             // tpStore
             // 
@@ -212,7 +212,7 @@ namespace SemesterProject
             this.pnlListing3.Location = new System.Drawing.Point(499, 314);
             this.pnlListing3.Name = "pnlListing3";
             this.pnlListing3.Size = new System.Drawing.Size(480, 302);
-            this.pnlListing3.TabIndex = 15;
+            this.pnlListing3.TabIndex = 3;
             // 
             // lblStatusInfo3
             // 
@@ -220,7 +220,7 @@ namespace SemesterProject
             this.lblStatusInfo3.Location = new System.Drawing.Point(222, 225);
             this.lblStatusInfo3.Name = "lblStatusInfo3";
             this.lblStatusInfo3.Size = new System.Drawing.Size(0, 17);
-            this.lblStatusInfo3.TabIndex = 8;
+            this.lblStatusInfo3.TabIndex = 100;
             // 
             // lblPrice3
             // 
@@ -229,7 +229,7 @@ namespace SemesterProject
             this.lblPrice3.Location = new System.Drawing.Point(368, 225);
             this.lblPrice3.Name = "lblPrice3";
             this.lblPrice3.Size = new System.Drawing.Size(53, 24);
-            this.lblPrice3.TabIndex = 6;
+            this.lblPrice3.TabIndex = 100;
             this.lblPrice3.Text = "Price";
             // 
             // lblSelectQuantity3
@@ -238,7 +238,7 @@ namespace SemesterProject
             this.lblSelectQuantity3.Location = new System.Drawing.Point(245, 255);
             this.lblSelectQuantity3.Name = "lblSelectQuantity3";
             this.lblSelectQuantity3.Size = new System.Drawing.Size(104, 17);
-            this.lblSelectQuantity3.TabIndex = 5;
+            this.lblSelectQuantity3.TabIndex = 100;
             this.lblSelectQuantity3.Text = "Select Quantity";
             // 
             // nudQuantity3
@@ -251,7 +251,7 @@ namespace SemesterProject
             0});
             this.nudQuantity3.Name = "nudQuantity3";
             this.nudQuantity3.Size = new System.Drawing.Size(78, 22);
-            this.nudQuantity3.TabIndex = 4;
+            this.nudQuantity3.TabIndex = 7;
             this.nudQuantity3.Value = new decimal(new int[] {
             1,
             0,
@@ -267,7 +267,7 @@ namespace SemesterProject
             this.rtbTitleDescription3.Name = "rtbTitleDescription3";
             this.rtbTitleDescription3.ReadOnly = true;
             this.rtbTitleDescription3.Size = new System.Drawing.Size(250, 194);
-            this.rtbTitleDescription3.TabIndex = 2;
+            this.rtbTitleDescription3.TabIndex = 100;
             this.rtbTitleDescription3.Text = "Listing Title\nListing Description";
             // 
             // pbxItemImage3
@@ -283,7 +283,7 @@ namespace SemesterProject
             this.btnAddToCart3.Location = new System.Drawing.Point(368, 255);
             this.btnAddToCart3.Name = "btnAddToCart3";
             this.btnAddToCart3.Size = new System.Drawing.Size(109, 44);
-            this.btnAddToCart3.TabIndex = 0;
+            this.btnAddToCart3.TabIndex = 8;
             this.btnAddToCart3.Text = "Add to Cart";
             this.btnAddToCart3.UseVisualStyleBackColor = true;
             this.btnAddToCart3.Click += new System.EventHandler(this.btnAddToCart3_Click);
@@ -301,7 +301,7 @@ namespace SemesterProject
             this.pnlListing2.Location = new System.Drawing.Point(3, 314);
             this.pnlListing2.Name = "pnlListing2";
             this.pnlListing2.Size = new System.Drawing.Size(480, 302);
-            this.pnlListing2.TabIndex = 19;
+            this.pnlListing2.TabIndex = 2;
             // 
             // lblStatusInfo2
             // 
@@ -309,7 +309,7 @@ namespace SemesterProject
             this.lblStatusInfo2.Location = new System.Drawing.Point(222, 225);
             this.lblStatusInfo2.Name = "lblStatusInfo2";
             this.lblStatusInfo2.Size = new System.Drawing.Size(0, 17);
-            this.lblStatusInfo2.TabIndex = 8;
+            this.lblStatusInfo2.TabIndex = 100;
             // 
             // lblPrice2
             // 
@@ -318,7 +318,7 @@ namespace SemesterProject
             this.lblPrice2.Location = new System.Drawing.Point(368, 225);
             this.lblPrice2.Name = "lblPrice2";
             this.lblPrice2.Size = new System.Drawing.Size(53, 24);
-            this.lblPrice2.TabIndex = 6;
+            this.lblPrice2.TabIndex = 100;
             this.lblPrice2.Text = "Price";
             // 
             // lblSelectQuantit2
@@ -327,7 +327,7 @@ namespace SemesterProject
             this.lblSelectQuantit2.Location = new System.Drawing.Point(245, 255);
             this.lblSelectQuantit2.Name = "lblSelectQuantit2";
             this.lblSelectQuantit2.Size = new System.Drawing.Size(104, 17);
-            this.lblSelectQuantit2.TabIndex = 5;
+            this.lblSelectQuantit2.TabIndex = 100;
             this.lblSelectQuantit2.Text = "Select Quantity";
             // 
             // nudQuantity2
@@ -340,7 +340,7 @@ namespace SemesterProject
             0});
             this.nudQuantity2.Name = "nudQuantity2";
             this.nudQuantity2.Size = new System.Drawing.Size(78, 22);
-            this.nudQuantity2.TabIndex = 4;
+            this.nudQuantity2.TabIndex = 5;
             this.nudQuantity2.Value = new decimal(new int[] {
             1,
             0,
@@ -356,7 +356,7 @@ namespace SemesterProject
             this.rtbTitleDescription2.Name = "rtbTitleDescription2";
             this.rtbTitleDescription2.ReadOnly = true;
             this.rtbTitleDescription2.Size = new System.Drawing.Size(250, 194);
-            this.rtbTitleDescription2.TabIndex = 2;
+            this.rtbTitleDescription2.TabIndex = 100;
             this.rtbTitleDescription2.Text = "Listing Title\nListing Description";
             // 
             // pbxItemImage2
@@ -372,7 +372,7 @@ namespace SemesterProject
             this.btnAddToCart2.Location = new System.Drawing.Point(368, 255);
             this.btnAddToCart2.Name = "btnAddToCart2";
             this.btnAddToCart2.Size = new System.Drawing.Size(109, 44);
-            this.btnAddToCart2.TabIndex = 0;
+            this.btnAddToCart2.TabIndex = 6;
             this.btnAddToCart2.Text = "Add to Cart";
             this.btnAddToCart2.UseVisualStyleBackColor = true;
             this.btnAddToCart2.Click += new System.EventHandler(this.btnAddToCart2_Click);
@@ -390,7 +390,7 @@ namespace SemesterProject
             this.pnlListing1.Location = new System.Drawing.Point(499, 3);
             this.pnlListing1.Name = "pnlListing1";
             this.pnlListing1.Size = new System.Drawing.Size(480, 302);
-            this.pnlListing1.TabIndex = 18;
+            this.pnlListing1.TabIndex = 1;
             // 
             // lblStatusInfo1
             // 
@@ -398,7 +398,7 @@ namespace SemesterProject
             this.lblStatusInfo1.Location = new System.Drawing.Point(222, 230);
             this.lblStatusInfo1.Name = "lblStatusInfo1";
             this.lblStatusInfo1.Size = new System.Drawing.Size(0, 17);
-            this.lblStatusInfo1.TabIndex = 8;
+            this.lblStatusInfo1.TabIndex = 100;
             // 
             // lblPrice1
             // 
@@ -407,7 +407,7 @@ namespace SemesterProject
             this.lblPrice1.Location = new System.Drawing.Point(368, 225);
             this.lblPrice1.Name = "lblPrice1";
             this.lblPrice1.Size = new System.Drawing.Size(53, 24);
-            this.lblPrice1.TabIndex = 6;
+            this.lblPrice1.TabIndex = 100;
             this.lblPrice1.Text = "Price";
             // 
             // lblSelectQuantity1
@@ -416,7 +416,7 @@ namespace SemesterProject
             this.lblSelectQuantity1.Location = new System.Drawing.Point(245, 255);
             this.lblSelectQuantity1.Name = "lblSelectQuantity1";
             this.lblSelectQuantity1.Size = new System.Drawing.Size(104, 17);
-            this.lblSelectQuantity1.TabIndex = 5;
+            this.lblSelectQuantity1.TabIndex = 100;
             this.lblSelectQuantity1.Text = "Select Quantity";
             // 
             // nudQuantity1
@@ -429,7 +429,7 @@ namespace SemesterProject
             0});
             this.nudQuantity1.Name = "nudQuantity1";
             this.nudQuantity1.Size = new System.Drawing.Size(78, 22);
-            this.nudQuantity1.TabIndex = 4;
+            this.nudQuantity1.TabIndex = 3;
             this.nudQuantity1.Value = new decimal(new int[] {
             1,
             0,
@@ -445,7 +445,7 @@ namespace SemesterProject
             this.rtbTitleDescription1.Name = "rtbTitleDescription1";
             this.rtbTitleDescription1.ReadOnly = true;
             this.rtbTitleDescription1.Size = new System.Drawing.Size(250, 194);
-            this.rtbTitleDescription1.TabIndex = 2;
+            this.rtbTitleDescription1.TabIndex = 100;
             this.rtbTitleDescription1.Text = "Listing Title\nListing Description";
             // 
             // pbxItemImage1
@@ -461,7 +461,7 @@ namespace SemesterProject
             this.btnAddToCart1.Location = new System.Drawing.Point(368, 255);
             this.btnAddToCart1.Name = "btnAddToCart1";
             this.btnAddToCart1.Size = new System.Drawing.Size(109, 44);
-            this.btnAddToCart1.TabIndex = 0;
+            this.btnAddToCart1.TabIndex = 4;
             this.btnAddToCart1.Text = "Add to Cart";
             this.btnAddToCart1.UseVisualStyleBackColor = true;
             this.btnAddToCart1.Click += new System.EventHandler(this.btnAddToCart1_Click);
@@ -479,7 +479,7 @@ namespace SemesterProject
             this.pnlListing0.Location = new System.Drawing.Point(3, 3);
             this.pnlListing0.Name = "pnlListing0";
             this.pnlListing0.Size = new System.Drawing.Size(480, 302);
-            this.pnlListing0.TabIndex = 14;
+            this.pnlListing0.TabIndex = 0;
             // 
             // lblStatusInfo0
             // 
@@ -487,7 +487,7 @@ namespace SemesterProject
             this.lblStatusInfo0.Location = new System.Drawing.Point(222, 230);
             this.lblStatusInfo0.Name = "lblStatusInfo0";
             this.lblStatusInfo0.Size = new System.Drawing.Size(0, 17);
-            this.lblStatusInfo0.TabIndex = 7;
+            this.lblStatusInfo0.TabIndex = 100;
             // 
             // lblPrice0
             // 
@@ -496,7 +496,7 @@ namespace SemesterProject
             this.lblPrice0.Location = new System.Drawing.Point(368, 225);
             this.lblPrice0.Name = "lblPrice0";
             this.lblPrice0.Size = new System.Drawing.Size(53, 24);
-            this.lblPrice0.TabIndex = 6;
+            this.lblPrice0.TabIndex = 100;
             this.lblPrice0.Text = "Price";
             // 
             // lblSelectQuantity0
@@ -505,7 +505,7 @@ namespace SemesterProject
             this.lblSelectQuantity0.Location = new System.Drawing.Point(245, 255);
             this.lblSelectQuantity0.Name = "lblSelectQuantity0";
             this.lblSelectQuantity0.Size = new System.Drawing.Size(104, 17);
-            this.lblSelectQuantity0.TabIndex = 5;
+            this.lblSelectQuantity0.TabIndex = 100;
             this.lblSelectQuantity0.Text = "Select Quantity";
             // 
             // nudQuantity0
@@ -518,7 +518,7 @@ namespace SemesterProject
             0});
             this.nudQuantity0.Name = "nudQuantity0";
             this.nudQuantity0.Size = new System.Drawing.Size(78, 22);
-            this.nudQuantity0.TabIndex = 4;
+            this.nudQuantity0.TabIndex = 5;
             this.nudQuantity0.Value = new decimal(new int[] {
             1,
             0,
@@ -534,7 +534,7 @@ namespace SemesterProject
             this.rtbTitleDescription0.Name = "rtbTitleDescription0";
             this.rtbTitleDescription0.ReadOnly = true;
             this.rtbTitleDescription0.Size = new System.Drawing.Size(250, 194);
-            this.rtbTitleDescription0.TabIndex = 2;
+            this.rtbTitleDescription0.TabIndex = 100;
             this.rtbTitleDescription0.Text = "Listing Title\nListing Description";
             // 
             // pbxItemImage0
@@ -550,7 +550,7 @@ namespace SemesterProject
             this.btnAddToCart0.Location = new System.Drawing.Point(368, 255);
             this.btnAddToCart0.Name = "btnAddToCart0";
             this.btnAddToCart0.Size = new System.Drawing.Size(109, 44);
-            this.btnAddToCart0.TabIndex = 0;
+            this.btnAddToCart0.TabIndex = 2;
             this.btnAddToCart0.Text = "Add to Cart";
             this.btnAddToCart0.UseVisualStyleBackColor = true;
             this.btnAddToCart0.Click += new System.EventHandler(this.btnAddToCart0_Click);
@@ -634,7 +634,7 @@ namespace SemesterProject
             this.btnRemoveItemFromCart.Location = new System.Drawing.Point(145, 456);
             this.btnRemoveItemFromCart.Name = "btnRemoveItemFromCart";
             this.btnRemoveItemFromCart.Size = new System.Drawing.Size(110, 45);
-            this.btnRemoveItemFromCart.TabIndex = 2;
+            this.btnRemoveItemFromCart.TabIndex = 1;
             this.btnRemoveItemFromCart.Text = "Remove Item";
             this.btnRemoveItemFromCart.UseVisualStyleBackColor = true;
             this.btnRemoveItemFromCart.Click += new System.EventHandler(this.btnRemoveItemFromCart_Click);
@@ -645,7 +645,7 @@ namespace SemesterProject
             this.btnPurchaseCartItems.Location = new System.Drawing.Point(745, 456);
             this.btnPurchaseCartItems.Name = "btnPurchaseCartItems";
             this.btnPurchaseCartItems.Size = new System.Drawing.Size(110, 45);
-            this.btnPurchaseCartItems.TabIndex = 1;
+            this.btnPurchaseCartItems.TabIndex = 2;
             this.btnPurchaseCartItems.Text = "Purchase";
             this.btnPurchaseCartItems.UseVisualStyleBackColor = true;
             this.btnPurchaseCartItems.Click += new System.EventHandler(this.btnPurchaseCartItems_Click);
@@ -751,14 +751,14 @@ namespace SemesterProject
             0});
             this.nudPayToBalance.Name = "nudPayToBalance";
             this.nudPayToBalance.Size = new System.Drawing.Size(120, 22);
-            this.nudPayToBalance.TabIndex = 2;
+            this.nudPayToBalance.TabIndex = 1;
             // 
             // btnPayToBalance
             // 
             this.btnPayToBalance.Location = new System.Drawing.Point(222, 149);
             this.btnPayToBalance.Name = "btnPayToBalance";
             this.btnPayToBalance.Size = new System.Drawing.Size(110, 45);
-            this.btnPayToBalance.TabIndex = 1;
+            this.btnPayToBalance.TabIndex = 2;
             this.btnPayToBalance.Text = "Pay to Balance";
             this.btnPayToBalance.UseVisualStyleBackColor = true;
             this.btnPayToBalance.Click += new System.EventHandler(this.btnPayToBalance_Click);
@@ -785,6 +785,15 @@ namespace SemesterProject
             this.tpPurchases.TabIndex = 1;
             this.tpPurchases.Text = "Purchases";
             this.tpPurchases.UseVisualStyleBackColor = true;
+            // 
+            // lblPurchasesSummary
+            // 
+            this.lblPurchasesSummary.AutoSize = true;
+            this.lblPurchasesSummary.Location = new System.Drawing.Point(441, 579);
+            this.lblPurchasesSummary.Name = "lblPurchasesSummary";
+            this.lblPurchasesSummary.Size = new System.Drawing.Size(88, 51);
+            this.lblPurchasesSummary.TabIndex = 13;
+            this.lblPurchasesSummary.Text = "0 Purchases\r\n0 Units\r\n$00.00 Total";
             // 
             // gbFilters
             // 
@@ -819,7 +828,7 @@ namespace SemesterProject
             this.dateTimePicker2.Location = new System.Drawing.Point(59, 79);
             this.dateTimePicker2.Name = "dateTimePicker2";
             this.dateTimePicker2.Size = new System.Drawing.Size(227, 22);
-            this.dateTimePicker2.TabIndex = 18;
+            this.dateTimePicker2.TabIndex = 2;
             // 
             // label9
             // 
@@ -859,7 +868,7 @@ namespace SemesterProject
             0});
             this.numericUpDown3.Name = "numericUpDown3";
             this.numericUpDown3.Size = new System.Drawing.Size(120, 22);
-            this.numericUpDown3.TabIndex = 14;
+            this.numericUpDown3.TabIndex = 3;
             // 
             // label6
             // 
@@ -881,7 +890,7 @@ namespace SemesterProject
             0});
             this.numericUpDown2.Name = "numericUpDown2";
             this.numericUpDown2.Size = new System.Drawing.Size(120, 22);
-            this.numericUpDown2.TabIndex = 12;
+            this.numericUpDown2.TabIndex = 2;
             // 
             // label5
             // 
@@ -897,7 +906,7 @@ namespace SemesterProject
             this.dateTimePicker1.Location = new System.Drawing.Point(59, 51);
             this.dateTimePicker1.Name = "dateTimePicker1";
             this.dateTimePicker1.Size = new System.Drawing.Size(227, 22);
-            this.dateTimePicker1.TabIndex = 10;
+            this.dateTimePicker1.TabIndex = 1;
             // 
             // dgvPastPurchases
             // 
@@ -913,15 +922,6 @@ namespace SemesterProject
             this.dgvPastPurchases.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.dgvPastPurchases.Size = new System.Drawing.Size(959, 400);
             this.dgvPastPurchases.TabIndex = 1;
-            // 
-            // lblPurchasesSummary
-            // 
-            this.lblPurchasesSummary.AutoSize = true;
-            this.lblPurchasesSummary.Location = new System.Drawing.Point(441, 579);
-            this.lblPurchasesSummary.Name = "lblPurchasesSummary";
-            this.lblPurchasesSummary.Size = new System.Drawing.Size(88, 51);
-            this.lblPurchasesSummary.TabIndex = 13;
-            this.lblPurchasesSummary.Text = "0 Purchases\r\n0 Units\r\n$00.00 Total";
             // 
             // storeItemListingBindingSource
             // 
