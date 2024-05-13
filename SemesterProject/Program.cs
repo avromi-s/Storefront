@@ -21,7 +21,12 @@ namespace SemesterProject
                 LoginForm login = new LoginForm(db);
                 Application.Run(login);
                 if (login.Successful)
-                    Application.Run(new Storefront(db, login.Customer));
+                {
+                    using (Storefront storefront = new Storefront(db, login.Customer))
+                    {
+                        Application.Run(storefront);
+                    }
+                }
             }
         }
     }

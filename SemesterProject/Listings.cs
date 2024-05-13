@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Linq;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
@@ -8,26 +9,24 @@ using System.Threading.Tasks;
 namespace SemesterProject
 {
     // This class represents a collection of all store-items in use in a user-session
-    class Listings // todo better name
+    class Listings : IDisposable // todo better name
     {
         private DataClasses1DataContext db;
         private CUSTOMER loggedInCustomer;
         private readonly int NUM_LISTINGS_PER_PAGE;
         private IEnumerator<STORE_ITEM> allStoreItems;
 
-        private List<ListingData>
-            cachedStoreItems = new List<ListingData>(); // todo naming inconsistent with allstoreitems
+        private List<ListingData> cachedStoreItems = new List<ListingData>(); // todo naming inconsistent with allstoreitems
 
         public bool IsAnotherItem { get; private set; } // todo naming
         public int HighestPageIndexRetrieved { get; private set; }
-
 
         public Listings(DataClasses1DataContext db, CUSTOMER loggedInCustomer, int numListingsPerPage)
         {
             this.db = db;
             this.loggedInCustomer = loggedInCustomer;
             this.NUM_LISTINGS_PER_PAGE = numListingsPerPage;
-            EnsureStoreItemsRetrieved();
+            RefreshAllStoreItems();
         }
 
 
@@ -56,8 +55,6 @@ namespace SemesterProject
         // (i.e., there are not (listingIndex + 1) listings in allStoreItems)
         public ListingData GetListingData(int listingIndex) // todo naming confusing with getlistingSdata
         {
-            EnsureStoreItemsRetrieved();
-
             // get item from cache before retrieving it from the db
             // if listing isn't already cached, retrieve the listings from the db (via iteration) until 
             // we have retrieved the listing for the provided listingIndex or until there are no more items left
@@ -79,25 +76,26 @@ namespace SemesterProject
             return cachedStoreItems[listingIndex];
         }
 
-        private void EnsureStoreItemsRetrieved()
-        {
-            if (allStoreItems == null)
-            {
-                RefreshAllStoreItems();
-                IsAnotherItem = allStoreItems.MoveNext();
-            }
-        }
-
         private void RefreshAllStoreItems(bool includeOutOfStock = false)
         {
             // The order of the store items retrieved here will be the order of the listings as displayed to the user
-            // todo use a smarter ordering maybe? not just based on quantity
-            allStoreItems = db.STORE_ITEMs.Where(item => includeOutOfStock || item.QuantityAvailable > 0)
-                .OrderByDescending(item => item.QuantityAvailable)
-                .GetEnumerator();
-            // todo check if this is a safe use of enumerator - do we need to dispose of it manually?
+            allStoreItems = db.STORE_ITEMs.Where(item => includeOutOfStock || item.QuantityAvailable > 0).OrderByDescending(item => item.QuantityAvailable).GetEnumerator();
 
-            // IsAnotherItem = allStoreItems.MoveNext(); // todo uncomment?
+            IsAnotherItem = allStoreItems.MoveNext();
+        }
+
+        public void RefreshListingsFromDb()
+        {
+            db.Refresh(RefreshMode.OverwriteCurrentValues, db.STORE_ITEMs);
+            RefreshAllStoreItems();
+            cachedStoreItems.Clear();
+            HighestPageIndexRetrieved = -1;
+        }
+
+        // This class implements IDisposable as the STORE_ITEMs retrieved from the db must be disposed
+        public void Dispose()
+        {
+            allStoreItems?.Dispose();
         }
     }
 }

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
+using System.Data.Linq;
 using System.Drawing;
 using System.Linq;
 using System.Text;
@@ -15,7 +16,7 @@ using SemesterProject.Properties;
 
 namespace SemesterProject
 {
-    public partial class Storefront : Form
+    public partial class Storefront : Form, IDisposable
     {
         // todo fix issue with loggedInCustomer reference not being updated after purchase made with sp
         // - throws exception on attempted change to balance and displayed balance itself is unupdated after the purchase
@@ -44,6 +45,15 @@ namespace SemesterProject
             this.loggedInCustomer = loggedInCustomer;
             this.listingsData = new Listings(db, loggedInCustomer, NUM_LISTINGS_PER_PAGE);
         }
+
+        #region DB
+
+        /*private void RefreshDbObjects()
+        {
+            db.Refresh(RefreshMode.OverwriteCurrentValues);
+        }*/
+
+        #endregion
 
         #region Store
 
@@ -340,6 +350,7 @@ namespace SemesterProject
             }));
             string jsonString = JsonSerializer.Serialize(list);
             db.CREATE_NEW_PURCHASE(loggedInCustomer.CustomerId, jsonString);
+            listingsData.RefreshListingsFromDb();
         }
 
         private void RemoveSelectedItemsFromCart()
@@ -470,5 +481,11 @@ namespace SemesterProject
         #endregion
 
         #endregion
+
+        // This class implements IDisposable as the listingsData must be disposed
+        public void Dispose()
+        {
+            listingsData.Dispose();
+        }
     }
 }
