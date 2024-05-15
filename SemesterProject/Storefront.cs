@@ -124,7 +124,7 @@ namespace SemesterProject
             }
 
             // Enable the current listing. 
-            private void EnableListing()
+            public void EnableListing()
             {
                 this.listingEnabled = true;
                 ItemImagePictureBox.Image = null;
@@ -132,7 +132,7 @@ namespace SemesterProject
             }
 
             // Disable the current listing, such as when no item is being displayed in it 
-            private void DisableListing()
+            public void DisableListing()
             {
                 this.listingEnabled = false;
                 ItemImagePictureBox.Image = new Bitmap(Resources.ImageNotFound, ItemImagePictureBox.Size.Width,
@@ -209,7 +209,8 @@ namespace SemesterProject
                 }
                 else
                 {
-                    listingsGui[i] = new ListingGui(pnlAllListings, i, null, disableListing: true);
+                    listingsGui[i] = new ListingGui(pnlAllListings, i, null);
+                    listingsGui[i].DisableListing();
                 }
             }
             listingDataEnumerator.Dispose();
