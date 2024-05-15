@@ -212,9 +212,8 @@ namespace SemesterProject
                     listingsGui[i] = new ListingGui(pnlAllListings, i, null, disableListing: true);
                 }
             }
+            listingDataEnumerator.Dispose();
         }
-
-        #endregion
 
         private void btnNextPage_Click(object sender, EventArgs e)
         {
@@ -242,6 +241,8 @@ namespace SemesterProject
         {
             lblPageNum.Text = "Page " + currentPageNumDisplay;
         }
+
+        #endregion
 
         #endregion
 

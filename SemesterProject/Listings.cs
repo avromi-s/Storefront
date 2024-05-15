@@ -78,6 +78,7 @@ namespace SemesterProject
 
         private void RefreshAllStoreItems(bool includeOutOfStock = false)
         {
+            allStoreItems?.Dispose();
             // The order of the store items retrieved here will be the order of the listings as displayed to the user
             allStoreItems = db.STORE_ITEMs.Where(item => includeOutOfStock || item.QuantityAvailable > 0)
                 .OrderByDescending(item => item.QuantityAvailable)
