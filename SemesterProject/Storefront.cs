@@ -18,7 +18,7 @@ namespace SemesterProject
 {
     public partial class Storefront : Form, IDisposable
     {
-        // todo fix currency display accross all displays
+        // todo fix currency display across all displays
         // todo separate different sections of the GUI Store into classes within Storefront class for better organization, instead of just regions
         //      Store > Cart, & Account > Balance, Account > Purchases
         // todo username & likely also password not case sensitive
@@ -99,8 +99,7 @@ namespace SemesterProject
             public ListingData ListingData { get; private set; }
             private bool listingEnabled;
 
-            public ListingGui(Panel AllListingsPanel, int listingIndex, ListingData listingData,
-                bool disableListing = false)
+            public ListingGui(Panel AllListingsPanel, int listingIndex, ListingData listingData)
             {
                 ListingPanel = AllListingsPanel.Controls["pnlListing" + listingIndex] as Panel;
                 ItemImagePictureBox = ListingPanel.Controls["pbxItemImage" + listingIndex] as PictureBox;
@@ -112,15 +111,8 @@ namespace SemesterProject
                 StatusInfoLabel = ListingPanel.Controls["lblStatusInfo" + listingIndex] as Label;
                 SelectQuantityLabel = ListingPanel.Controls["lblSelectQuantity" + listingIndex] as Label;
                 this.ListingData = listingData;
-
-                if (disableListing)
-                {
-                    DisableListing();
-                }
-                else
-                {
-                    EnableListing(); // enable in case this listing was previously disabled on a previous page
-                }
+                
+                EnableListing(); // enable in case this listing was previously disabled on a previous page
             }
 
             // Enable the current listing. 
@@ -152,6 +144,11 @@ namespace SemesterProject
                 await Task.Run(() => Thread.Sleep(displayTimeLengthMs)); // clear text after 5 seconds
                 StatusInfoLabel.Text = "";
                 StatusInfoLabel.ForeColor = Color.Black;
+            }
+
+            public void RefreshStatusInfoLabel()
+            {
+                StatusInfoLabel.Text = "";
             }
 
             // Refresh/update the numeric limits for the quantity NumericUpDown control based on how many of
@@ -201,11 +198,13 @@ namespace SemesterProject
                 if (listingDataEnumerator.MoveNext())
                 {
                     listingsGui[i] = new ListingGui(pnlAllListings, i, listingDataEnumerator.Current);
+                    // todo move all below into ListingGui constructor?
                     listingsGui[i].TitleDescriptionRichTextBox.Text = listingDataEnumerator.Current.Title;
                     listingsGui[i].PriceLabel.Text = listingDataEnumerator.Current.FormattedPrice;
                     listingsGui[i].ItemImagePictureBox.Image = new Bitmap(listingDataEnumerator.Current.ItemImage,
                         listingsGui[i].ItemImagePictureBox.Size.Width, listingsGui[i].ItemImagePictureBox.Size.Height);
                     listingsGui[i].RefreshQuantityControlLimits(cartItems);
+                    listingsGui[i].RefreshStatusInfoLabel();
                 }
                 else
                 {
@@ -213,6 +212,7 @@ namespace SemesterProject
                     listingsGui[i].DisableListing();
                 }
             }
+
             listingDataEnumerator.Dispose();
         }
 
@@ -257,7 +257,7 @@ namespace SemesterProject
             RefreshCartItemsViewControl();
         }
 
-        private void RefreshCartItemsViewControl()
+        private void RefreshCartItemsViewControl()  // todo rename this and the equivalent purchases function
         {
             // this method needs to be called whenever the cart tab comes into view and whenever the cart items change while the user is on the cart page
             dgvCartItems.DataSource = cartItems.ToList();
@@ -268,7 +268,7 @@ namespace SemesterProject
 
         private void btnAddToCart0_Click(object sender, EventArgs e)
         {
-            CartItem cartItem = CreateCartItemForListing(0);
+            CartItem cartItem = CreateCartItemForListing(listingsGui[0]);
             AddItemToCart(cartItem);
             listingsGui[0].RefreshQuantityControlLimits(cartItems);
             listingsGui[0].DisplayAddToCartConfirmation();
@@ -276,7 +276,7 @@ namespace SemesterProject
 
         private void btnAddToCart1_Click(object sender, EventArgs e)
         {
-            CartItem cartItem = CreateCartItemForListing(1);
+            CartItem cartItem = CreateCartItemForListing(listingsGui[1]);
             AddItemToCart(cartItem);
             listingsGui[1].RefreshQuantityControlLimits(cartItems);
             listingsGui[1].DisplayAddToCartConfirmation();
@@ -284,7 +284,7 @@ namespace SemesterProject
 
         private void btnAddToCart2_Click(object sender, EventArgs e)
         {
-            CartItem cartItem = CreateCartItemForListing(2);
+            CartItem cartItem = CreateCartItemForListing(listingsGui[2]);
             AddItemToCart(cartItem);
             listingsGui[2].RefreshQuantityControlLimits(cartItems);
             listingsGui[2].DisplayAddToCartConfirmation();
@@ -292,7 +292,7 @@ namespace SemesterProject
 
         private void btnAddToCart3_Click(object sender, EventArgs e)
         {
-            CartItem cartItem = CreateCartItemForListing(3);
+            CartItem cartItem = CreateCartItemForListing(listingsGui[3]);
             AddItemToCart(cartItem);
             listingsGui[3].RefreshQuantityControlLimits(cartItems);
             listingsGui[3].DisplayAddToCartConfirmation();
@@ -344,7 +344,7 @@ namespace SemesterProject
             {
                 StoreItemId = item.GetStoreItem().StoreItemId,
                 Quantity = item.Quantity,
-                UnitPrice = item.UnitPrice
+                UnitPrice = item.GetStoreItem().Price
             }));
             string jsonString = JsonSerializer.Serialize(list);
             db.CREATE_NEW_PURCHASE(loggedInCustomer.CustomerId, jsonString);
@@ -362,10 +362,10 @@ namespace SemesterProject
             }
         }
 
-        private CartItem CreateCartItemForListing(int listingIndex)
+        private CartItem CreateCartItemForListing(ListingGui listingGui)
         {
-            int quantitySelected = Convert.ToInt32(listingsGui[listingIndex].QuantityNumericUpDown.Value);
-            STORE_ITEM storeItem = listingsGui[listingIndex].ListingData.StoreItem; //listingsData.GetListingData((currentPageIndex * NUM_LISTINGS_PER_PAGE) + listingIndex).StoreItem;
+            STORE_ITEM storeItem = listingGui.ListingData.StoreItem;
+            int quantitySelected = Convert.ToInt32(listingGui.QuantityNumericUpDown.Value);
             return new CartItem(storeItem, quantitySelected);
         }
 
@@ -382,7 +382,7 @@ namespace SemesterProject
         private void RefreshCartSummary()
         {
             lblCartSummary.ForeColor = Color.Black;
-            lblCartSummary.Text = $"Total Quantity: {cartItems.Sum(item => item.Quantity)}\nPurchase Total: ${cartItems.Sum(item => item.Quantity * item.UnitPrice)}";
+            lblCartSummary.Text = $"Total Quantity: {cartItems.Sum(item => item.Quantity)}\nPurchase Total: ${cartItems.Sum(item => item.Quantity * item.GetStoreItem().Price).ToString("0.00")}";
         }
 
         #endregion
@@ -448,7 +448,7 @@ namespace SemesterProject
 
         private void RefreshDisplayedBalance()
         {
-            lblCurrentBalance.Text = $"Current Balance: ${loggedInCustomer.Balance}";
+            lblCurrentBalance.Text = $"Current Balance: ${loggedInCustomer.Balance.ToString("0.00")}";
         }
 
         #endregion
@@ -475,12 +475,11 @@ namespace SemesterProject
 
         private void RefreshPurchasesViewControl(bool applyUserFilters = false)
         {
-            // todo implement filters
             dgvPastPurchases.DataSource = GetPurchasesForCustomer(applyUserFilters)
                 .Select(p => new
                 {
                     Date = p.PurchaseDateTime, // todo format to date
-                    OrderTotal = "$" + p.TotalPrice, // todo format as currency (with '$')
+                    OrderTotal = "$" + p.TotalPrice.ToString("0.00"), // todo format as currency (with '$')
                     p.TotalQuantity,
                     Items = string.Join(", ",
                         p.PURCHASE_STORE_ITEMs.Select(item =>
@@ -500,7 +499,7 @@ namespace SemesterProject
             decimal purchasesTotal = purchases.Sum(p => p.TotalPrice);
             lblPurchasesSummary.Text = $"{numPurchases} Purchase{(numPurchases > 1 ? "s" : "")}\n" +
                                        $"{totalUnits} Unit{(numPurchases > 1 ? "s" : "")}\n" +
-                                       $"${purchasesTotal} Total";
+                                       $"${purchasesTotal.ToString("0.00")} Total";
         }
 
         // Set the initial values for the filters based on this customer's purchases

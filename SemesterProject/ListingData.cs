@@ -39,7 +39,7 @@ namespace SemesterProject
             };
             Title = this.StoreItem.Manufacturer + "\n" + this.StoreItem.ProductName;
             Description = "Other details - store in db... todo"; // todo
-            FormattedPrice = "$" + Convert.ToString(this.StoreItem.Price); // todo
+            FormattedPrice = "$" + this.StoreItem.Price.ToString("0.00");
             try
             {
                 ItemImage = Image.FromFile(STORE_ITEM_IMAGES_PATH + storeItem.ImagePath);
