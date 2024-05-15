@@ -18,11 +18,8 @@ namespace SemesterProject
 {
     public partial class Storefront : Form, IDisposable
     {
-        // todo fix currency display across all displays
         // todo separate different sections of the GUI Store into classes within Storefront class for better organization, instead of just regions
         //      Store > Cart, & Account > Balance, Account > Purchases
-        // todo username & likely also password not case sensitive
-        // todo make balance label red or green based on positive or negative balance
 
         private DataClasses1DataContext db;
         private readonly CUSTOMER loggedInCustomer;
@@ -450,7 +447,21 @@ namespace SemesterProject
 
         private void RefreshDisplayedBalance()
         {
-            lblCurrentBalance.Text = $"Current Balance: ${loggedInCustomer.Balance.ToString("0.00")}";
+            decimal balance = loggedInCustomer.Balance;
+            if (balance > 0)
+            {
+                lblCurrentBalance.ForeColor = Color.Green;
+            }
+            else if (balance == 0)
+            {
+                lblCurrentBalance.ForeColor = Color.Black;
+            }
+            else
+            {
+                lblCurrentBalance.ForeColor = Color.Red;
+            }
+
+            lblCurrentBalance.Text = $"Current Balance: ${balance.ToString("0.00")}";
         }
 
         #endregion
