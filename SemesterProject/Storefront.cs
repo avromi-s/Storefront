@@ -111,7 +111,7 @@ namespace SemesterProject
                 StatusInfoLabel = ListingPanel.Controls["lblStatusInfo" + listingIndex] as Label;
                 SelectQuantityLabel = ListingPanel.Controls["lblSelectQuantity" + listingIndex] as Label;
                 this.ListingData = listingData;
-                
+
                 EnableListing(); // enable in case this listing was previously disabled on a previous page
             }
 
@@ -136,12 +136,10 @@ namespace SemesterProject
 
             public async void DisplayAddToCartConfirmation(int displayTimeLengthMs = 5000)
             {
-                // todo need to stop anything running here if next page is click in middle
-                // todo also, if add to cart is clicked, multiple times, need to update timer so that the 5 seconds starts from the latest one
-
                 StatusInfoLabel.ForeColor = Color.Green;
                 StatusInfoLabel.Text = "Item added to cart";
-                await Task.Run(() => Thread.Sleep(displayTimeLengthMs)); // clear text after 5 seconds
+
+                await Task.Delay(displayTimeLengthMs); // clear text after displayTimeLengthMs
                 StatusInfoLabel.Text = "";
                 StatusInfoLabel.ForeColor = Color.Black;
             }
@@ -257,7 +255,7 @@ namespace SemesterProject
             RefreshCartItemsViewControl();
         }
 
-        private void RefreshCartItemsViewControl()  // todo rename this and the equivalent purchases function
+        private void RefreshCartItemsViewControl() // todo rename this and the equivalent purchases function
         {
             // this method needs to be called whenever the cart tab comes into view and whenever the cart items change while the user is on the cart page
             dgvCartItems.DataSource = cartItems.ToList();
@@ -337,7 +335,7 @@ namespace SemesterProject
             }
         }
 
-        private void CreatePurchase(CUSTOMER loggedInCustomer, List<CartItem> cartItems)
+        private async void CreatePurchase(CUSTOMER loggedInCustomer, List<CartItem> cartItems)
         {
             var list = new List<object>();
             cartItems.ForEach(item => list.Add(new
@@ -347,11 +345,15 @@ namespace SemesterProject
                 UnitPrice = item.GetStoreItem().Price
             }));
             string jsonString = JsonSerializer.Serialize(list);
-            db.CREATE_NEW_PURCHASE(loggedInCustomer.CustomerId, jsonString);
+            await Task.Run(() =>
+            {
+                db.CREATE_NEW_PURCHASE(loggedInCustomer.CustomerId, jsonString);
+                // run asynchronously so as not to slow down GUI
+            });
 
             listingsData.RefreshListingsFromDb();
-            currentPageIndex = 0; // reset so that if the last page is now out of range, it isn't potentially revisited
             RefreshCustomerObject(); // so that balance is updated
+            currentPageIndex = 0; // reset so that if the last page is now out of range, it isn't potentially revisited
         }
 
         private void RemoveSelectedItemsFromCart()
