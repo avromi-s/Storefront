@@ -983,10 +983,13 @@ namespace SemesterProject
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1043, 793);
+            this.ClientSize = new System.Drawing.Size(1042, 793);
             this.Controls.Add(this.tc_Store_Account);
             this.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.MaximumSize = new System.Drawing.Size(1125, 870);
+            this.MinimumSize = new System.Drawing.Size(600, 500);
             this.Name = "Storefront";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Storefront";
             this.tc_Store_Account.ResumeLayout(false);
             this.tpStore.ResumeLayout(false);

@@ -109,11 +109,11 @@ namespace SemesterProject
             this.label2.TabIndex = 7;
             this.label2.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
-            // Login
+            // LoginForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(357, 297);
+            this.ClientSize = new System.Drawing.Size(357, 298);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.btnCreateAccount);
@@ -122,7 +122,10 @@ namespace SemesterProject
             this.Controls.Add(this.tbPassword);
             this.Controls.Add(this.tbLoginId);
             this.Controls.Add(this.btnLogin);
-            this.Name = "Login";
+            this.MaximumSize = new System.Drawing.Size(400, 375);
+            this.MinimumSize = new System.Drawing.Size(345, 300);
+            this.Name = "LoginForm";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Login";
             this.ResumeLayout(false);
             this.PerformLayout();
