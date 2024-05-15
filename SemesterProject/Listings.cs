@@ -8,24 +8,28 @@ using System.Threading.Tasks;
 
 namespace SemesterProject
 {
-    // This class represents a collection of all store-items in use in a user-session
-    class Listings : IDisposable // todo better name
+    // This class is used for accessing the ListingData of all listings in a given user-session
+    internal class Listings : IDisposable
     {
         private DataClasses1DataContext db;
         private CUSTOMER loggedInCustomer;
         private readonly int NUM_LISTINGS_PER_PAGE;
+
+        // We iterate through the store items via the allStoreItems iterator, and cache the values
+        // (wrapped in ListingData objects) in cachedListingData as each item is retrieved.
+        // After iterating through all listings, cachedListingData will contain all listings.
         private IEnumerator<STORE_ITEM> allStoreItems;
 
-        private List<ListingData> cachedStoreItems = new List<ListingData>(); // todo naming inconsistent with allstoreitems
+        private List<ListingData> cachedListingData = new List<ListingData>();
 
-        public bool IsAnotherItem { get; private set; } // todo naming
+        public bool AllListingsWereRetrieved { get; private set; }
         public int HighestPageIndexRetrieved { get; private set; }
 
         public Listings(DataClasses1DataContext db, CUSTOMER loggedInCustomer, int numListingsPerPage)
         {
             this.db = db;
             this.loggedInCustomer = loggedInCustomer;
-            this.NUM_LISTINGS_PER_PAGE = numListingsPerPage;
+            NUM_LISTINGS_PER_PAGE = numListingsPerPage;
             RefreshAllStoreItems();
         }
 
@@ -37,14 +41,11 @@ namespace SemesterProject
         {
             HighestPageIndexRetrieved = pageIndex > HighestPageIndexRetrieved ? pageIndex : HighestPageIndexRetrieved;
 
-            int numListingsBeforeThisPage = pageIndex * NUM_LISTINGS_PER_PAGE;
-            for (int i = 0; i < NUM_LISTINGS_PER_PAGE; i++)
+            var numListingsBeforeThisPage = pageIndex * NUM_LISTINGS_PER_PAGE;
+            for (var i = 0; i < NUM_LISTINGS_PER_PAGE; i++)
             {
-                int listingIndex = numListingsBeforeThisPage + i;
-                if (listingIndex >= cachedStoreItems.Count && !IsAnotherItem)
-                {
-                    yield break;
-                }
+                var listingIndex = numListingsBeforeThisPage + i;
+                if (listingIndex >= cachedListingData.Count && AllListingsWereRetrieved) yield break;
 
                 yield return GetListingData(listingIndex);
             }
@@ -52,28 +53,25 @@ namespace SemesterProject
 
         // Retrieve the ListingData for the provided listingIndex.
         // Throws an ArgumentOutOfRangeException if the provided listingIndex is out of range
-        // (i.e., there are not (listingIndex + 1) listings in allStoreItems)
-        public ListingData GetListingData(int listingIndex) // todo naming confusing with getlistingSdata
+        // (i.e., there are not (listingIndex + 1) listings in this user-session)
+        public ListingData GetListingData(int listingIndex)
         {
             // get item from cache before retrieving it from the db
             // if listing isn't already cached, retrieve the listings from the db (via iteration) until 
             // we have retrieved the listing for the provided listingIndex or until there are no more items left
-            bool desiredItemIsCached = listingIndex < cachedStoreItems.Count;
+            var desiredItemIsCached = listingIndex < cachedListingData.Count;
             while (!desiredItemIsCached)
             {
-                if (!IsAnotherItem)
-                {
-                    throw new ArgumentOutOfRangeException(); // todo this is being thrown when purchased all stock of the first and only item on a page
-                }
+                if (AllListingsWereRetrieved) throw new ArgumentOutOfRangeException();
 
-                STORE_ITEM storeItem = allStoreItems.Current;
-                ListingData listingData = new ListingData(storeItem);
-                cachedStoreItems.Add(listingData);
-                IsAnotherItem = allStoreItems.MoveNext();
-                desiredItemIsCached = listingIndex < cachedStoreItems.Count;
+                var storeItem = allStoreItems.Current;
+                var listingData = new ListingData(storeItem);
+                cachedListingData.Add(listingData);
+                AllListingsWereRetrieved = !allStoreItems.MoveNext();
+                desiredItemIsCached = listingIndex < cachedListingData.Count;
             }
 
-            return cachedStoreItems[listingIndex];
+            return cachedListingData[listingIndex];
         }
 
         private void RefreshAllStoreItems(bool includeOutOfStock = false)
@@ -83,15 +81,15 @@ namespace SemesterProject
             allStoreItems = db.STORE_ITEMs.Where(item => includeOutOfStock || item.QuantityAvailable > 0)
                 .OrderByDescending(item => item.QuantityAvailable)
                 .GetEnumerator();
-            IsAnotherItem = allStoreItems.MoveNext();
+            AllListingsWereRetrieved = !allStoreItems.MoveNext();
         }
 
         public void RefreshListingsFromDb()
         {
             db.Refresh(RefreshMode.OverwriteCurrentValues, db.STORE_ITEMs);
             RefreshAllStoreItems();
-            cachedStoreItems.Clear();
-            HighestPageIndexRetrieved = -1;  // reset so that if the last page is now out of range, it isn't potentially revisited
+            cachedListingData.Clear();
+            HighestPageIndexRetrieved = -1; // reset so that if the last page is now out of range, it isn't potentially revisited
         }
 
         // This class implements IDisposable as the STORE_ITEMs retrieved from the db must be disposed

@@ -18,17 +18,14 @@ namespace SemesterProject
 {
     public partial class Storefront : Form, IDisposable
     {
-        // todo separate different sections of the GUI Store into classes within Storefront class for better organization, instead of just regions
-        //      Store > Cart, & Account > Balance, Account > Purchases
-
         private DataClasses1DataContext db;
         private readonly CUSTOMER loggedInCustomer;
         private BindingList<CartItem> cartItems = new BindingList<CartItem>();
-        private const int NUM_LISTINGS_PER_PAGE = 4; // todo maybe derive from gui
+        private readonly int NUM_LISTINGS_PER_PAGE;
         private int currentPageIndex = 0; // 0-indexed for easy use with collections
         private int currentPageNumDisplay => currentPageIndex + 1; // 1-indexed for user display
         private Listings listingsData;
-        private ListingGui[] listingsGui = new ListingGui[NUM_LISTINGS_PER_PAGE];
+        private ListingGui[] listingsGui;
 
 
         public Storefront(DataClasses1DataContext db, CUSTOMER loggedInCustomer)
@@ -37,7 +34,9 @@ namespace SemesterProject
 
             this.db = db;
             this.loggedInCustomer = loggedInCustomer;
+            this.NUM_LISTINGS_PER_PAGE = pnlAllListings.Controls.Count;
             this.listingsData = new Listings(db, loggedInCustomer, NUM_LISTINGS_PER_PAGE);
+            this.listingsGui = new ListingGui[NUM_LISTINGS_PER_PAGE];
         }
 
         #region DB
@@ -84,7 +83,6 @@ namespace SemesterProject
         // This class is for providing a convenient wrapper around the listing GUI controls for easy retrieval of a listing's controls
         private class ListingGui
         {
-            // todo names below - remove control type from variable name?
             public Panel ListingPanel { get; private set; }
             public PictureBox ItemImagePictureBox { get; private set; }
             public RichTextBox TitleDescriptionRichTextBox { get; private set; }
@@ -94,6 +92,7 @@ namespace SemesterProject
             public Label StatusInfoLabel { get; private set; }
             public Label SelectQuantityLabel { get; private set; }
             public ListingData ListingData { get; private set; }
+
             private bool listingEnabled;
 
             public ListingGui(Panel AllListingsPanel, int listingIndex, ListingData listingData)
@@ -147,7 +146,7 @@ namespace SemesterProject
 
             // Refresh/update the numeric limits for the quantity NumericUpDown control based on how many of
             // this item is presently in the cart
-            public void RefreshQuantityControlLimits(BindingList<CartItem> cartItems)
+            public void RefreshUserOptions(BindingList<CartItem> cartItems)
             {
                 if (listingEnabled)
                 {
@@ -161,7 +160,7 @@ namespace SemesterProject
 
                     QuantityNumericUpDown.Maximum = remainingQty;
                     QuantityNumericUpDown.Value = remainingQty > 0 ? 1 : 0;
-                    // todo if remainingQty <= 0 disable listing or at least add to cart button?
+                    AddToCartButton.Enabled = remainingQty > 0;
                 }
             }
         }
@@ -192,12 +191,12 @@ namespace SemesterProject
                 if (listingDataEnumerator.MoveNext())
                 {
                     listingsGui[i] = new ListingGui(pnlAllListings, i, listingDataEnumerator.Current);
-                    // todo move all below into ListingGui constructor?
+                    // todo move all below (or at least the method calls?) into the ListingGui constructor?
                     listingsGui[i].TitleDescriptionRichTextBox.Text = listingDataEnumerator.Current.Title;
                     listingsGui[i].PriceLabel.Text = listingDataEnumerator.Current.FormattedPrice;
                     listingsGui[i].ItemImagePictureBox.Image = new Bitmap(listingDataEnumerator.Current.ItemImage,
                         listingsGui[i].ItemImagePictureBox.Size.Width, listingsGui[i].ItemImagePictureBox.Size.Height);
-                    listingsGui[i].RefreshQuantityControlLimits(cartItems);
+                    listingsGui[i].RefreshUserOptions(cartItems);
                     listingsGui[i].RefreshStatusInfoLabel();
                 }
                 else
@@ -229,7 +228,7 @@ namespace SemesterProject
 
         private void RefreshBtnNextPage()
         {
-            btnNextPage.Enabled = currentPageIndex < listingsData.HighestPageIndexRetrieved || listingsData.IsAnotherItem;
+            btnNextPage.Enabled = currentPageIndex < listingsData.HighestPageIndexRetrieved || !listingsData.AllListingsWereRetrieved;
         }
 
         private void RefreshLblPageNum()
@@ -248,10 +247,10 @@ namespace SemesterProject
             RefreshBtnPurchaseCartItems();
             RefreshBtnRemoveItemFromCart();
             RefreshCartSummary();
-            RefreshCartItemsViewControl();
+            RefreshCartItemsView();
         }
 
-        private void RefreshCartItemsViewControl() // todo rename this and the equivalent purchases function
+        private void RefreshCartItemsView()
         {
             // this method needs to be called whenever the cart tab comes into view and whenever the cart items change while the user is on the cart page
             dgvCartItems.DataSource = cartItems.ToList();
@@ -264,7 +263,7 @@ namespace SemesterProject
         {
             CartItem cartItem = CreateCartItemForListing(listingsGui[0]);
             AddItemToCart(cartItem);
-            listingsGui[0].RefreshQuantityControlLimits(cartItems);
+            listingsGui[0].RefreshUserOptions(cartItems);
             listingsGui[0].DisplayAddToCartConfirmation();
         }
 
@@ -272,7 +271,7 @@ namespace SemesterProject
         {
             CartItem cartItem = CreateCartItemForListing(listingsGui[1]);
             AddItemToCart(cartItem);
-            listingsGui[1].RefreshQuantityControlLimits(cartItems);
+            listingsGui[1].RefreshUserOptions(cartItems);
             listingsGui[1].DisplayAddToCartConfirmation();
         }
 
@@ -280,7 +279,7 @@ namespace SemesterProject
         {
             CartItem cartItem = CreateCartItemForListing(listingsGui[2]);
             AddItemToCart(cartItem);
-            listingsGui[2].RefreshQuantityControlLimits(cartItems);
+            listingsGui[2].RefreshUserOptions(cartItems);
             listingsGui[2].DisplayAddToCartConfirmation();
         }
 
@@ -288,7 +287,7 @@ namespace SemesterProject
         {
             CartItem cartItem = CreateCartItemForListing(listingsGui[3]);
             AddItemToCart(cartItem);
-            listingsGui[3].RefreshQuantityControlLimits(cartItems);
+            listingsGui[3].RefreshUserOptions(cartItems);
             listingsGui[3].DisplayAddToCartConfirmation();
         }
 
@@ -306,7 +305,7 @@ namespace SemesterProject
 
             lblCartSummary.ForeColor = Color.Green;
             lblCartSummary.Text = "Purchase completed";
-            RefreshCartItemsViewControl();
+            RefreshCartItemsView();
             RefreshBtnPurchaseCartItems();
             RefreshBtnRemoveItemFromCart();
         }
@@ -319,9 +318,7 @@ namespace SemesterProject
 
         private void AddItemToCart(CartItem cartItem)
         {
-            if (cartItems.Any(item =>
-                    item.GetStoreItem() ==
-                    cartItem.GetStoreItem())) // todo use hashmap from StoreItemId -> CartItem for cartItems for faster lookup? now it is n for each search
+            if (cartItems.Any(item => item.GetStoreItem() == cartItem.GetStoreItem()))
             {
                 cartItems.First(item => item.GetStoreItem() == cartItem.GetStoreItem()).Quantity += cartItem.Quantity;
             }
@@ -469,7 +466,7 @@ namespace SemesterProject
 
         private void RefreshPurchasesTab()
         {
-            RefreshPurchasesViewControl(false);
+            RefreshPurchasesView(false);
             RefreshPurchasesFilters();
             RefreshPurchasesSummary();
         }
@@ -481,17 +478,17 @@ namespace SemesterProject
 
         private void FilterPurchases()
         {
-            RefreshPurchasesViewControl(true);
+            RefreshPurchasesView(true);
             RefreshPurchasesSummary();
         }
 
-        private void RefreshPurchasesViewControl(bool applyUserFilters = false)
+        private void RefreshPurchasesView(bool applyUserFilters = false)
         {
             dgvPastPurchases.DataSource = GetPurchasesForCustomer(applyUserFilters)
                 .Select(p => new
                 {
-                    Date = p.PurchaseDateTime, // todo format to date
-                    OrderTotal = "$" + p.TotalPrice.ToString("0.00"), // todo format as currency (with '$')
+                    Date = p.PurchaseDateTime.Date,
+                    OrderTotal = "$" + p.TotalPrice.ToString("0.00"),
                     p.TotalQuantity,
                     Items = string.Join(", ",
                         p.PURCHASE_STORE_ITEMs.Select(item =>

@@ -147,21 +147,21 @@ namespace SemesterProject
             // 
             this.tc_Store_Account.Controls.Add(this.tpStore);
             this.tc_Store_Account.Controls.Add(this.tpAccount);
-            this.tc_Store_Account.Location = new System.Drawing.Point(9, 9);
-            this.tc_Store_Account.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.tc_Store_Account.Location = new System.Drawing.Point(12, 11);
+            this.tc_Store_Account.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.tc_Store_Account.Name = "tc_Store_Account";
             this.tc_Store_Account.SelectedIndex = 0;
-            this.tc_Store_Account.Size = new System.Drawing.Size(766, 630);
+            this.tc_Store_Account.Size = new System.Drawing.Size(1021, 775);
             this.tc_Store_Account.TabIndex = 1;
             // 
             // tpStore
             // 
             this.tpStore.Controls.Add(this.tc_Listings_Cart);
-            this.tpStore.Location = new System.Drawing.Point(4, 22);
-            this.tpStore.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.tpStore.Location = new System.Drawing.Point(4, 25);
+            this.tpStore.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.tpStore.Name = "tpStore";
-            this.tpStore.Padding = new System.Windows.Forms.Padding(2, 2, 2, 2);
-            this.tpStore.Size = new System.Drawing.Size(758, 604);
+            this.tpStore.Padding = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.tpStore.Size = new System.Drawing.Size(1013, 746);
             this.tpStore.TabIndex = 0;
             this.tpStore.Text = "Store";
             this.tpStore.UseVisualStyleBackColor = true;
@@ -170,11 +170,11 @@ namespace SemesterProject
             // 
             this.tc_Listings_Cart.Controls.Add(this.tpListings);
             this.tc_Listings_Cart.Controls.Add(this.tpCart);
-            this.tc_Listings_Cart.Location = new System.Drawing.Point(5, 6);
-            this.tc_Listings_Cart.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.tc_Listings_Cart.Location = new System.Drawing.Point(7, 7);
+            this.tc_Listings_Cart.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.tc_Listings_Cart.Name = "tc_Listings_Cart";
             this.tc_Listings_Cart.SelectedIndex = 0;
-            this.tc_Listings_Cart.Size = new System.Drawing.Size(751, 596);
+            this.tc_Listings_Cart.Size = new System.Drawing.Size(1001, 734);
             this.tc_Listings_Cart.TabIndex = 0;
             this.tc_Listings_Cart.Selecting += new System.Windows.Forms.TabControlCancelEventHandler(this.tc_Listings_Cart_Selecting);
             this.tc_Listings_Cart.VisibleChanged += new System.EventHandler(this.tc_Listings_Cart_VisibleChanged);
@@ -183,11 +183,11 @@ namespace SemesterProject
             // 
             this.tpListings.Controls.Add(this.pnlAllListings);
             this.tpListings.Controls.Add(this.groupBox1);
-            this.tpListings.Location = new System.Drawing.Point(4, 22);
-            this.tpListings.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.tpListings.Location = new System.Drawing.Point(4, 25);
+            this.tpListings.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.tpListings.Name = "tpListings";
-            this.tpListings.Padding = new System.Windows.Forms.Padding(2, 2, 2, 2);
-            this.tpListings.Size = new System.Drawing.Size(743, 570);
+            this.tpListings.Padding = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.tpListings.Size = new System.Drawing.Size(993, 705);
             this.tpListings.TabIndex = 0;
             this.tpListings.Text = "Listings";
             this.tpListings.UseVisualStyleBackColor = true;
@@ -198,10 +198,10 @@ namespace SemesterProject
             this.pnlAllListings.Controls.Add(this.pnlListing2);
             this.pnlAllListings.Controls.Add(this.pnlListing1);
             this.pnlAllListings.Controls.Add(this.pnlListing0);
-            this.pnlAllListings.Location = new System.Drawing.Point(4, 5);
-            this.pnlAllListings.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.pnlAllListings.Location = new System.Drawing.Point(5, 6);
+            this.pnlAllListings.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.pnlAllListings.Name = "pnlAllListings";
-            this.pnlAllListings.Size = new System.Drawing.Size(734, 503);
+            this.pnlAllListings.Size = new System.Drawing.Size(979, 619);
             this.pnlAllListings.TabIndex = 14;
             // 
             // pnlListing3
@@ -214,53 +214,50 @@ namespace SemesterProject
             this.pnlListing3.Controls.Add(this.rtbTitleDescription3);
             this.pnlListing3.Controls.Add(this.pbxItemImage3);
             this.pnlListing3.Controls.Add(this.btnAddToCart3);
-            this.pnlListing3.Location = new System.Drawing.Point(374, 255);
-            this.pnlListing3.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.pnlListing3.Location = new System.Drawing.Point(499, 314);
+            this.pnlListing3.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.pnlListing3.Name = "pnlListing3";
-            this.pnlListing3.Size = new System.Drawing.Size(360, 246);
+            this.pnlListing3.Size = new System.Drawing.Size(479, 302);
             this.pnlListing3.TabIndex = 3;
             // 
             // lblStatusInfo3
             // 
             this.lblStatusInfo3.AutoSize = true;
-            this.lblStatusInfo3.Location = new System.Drawing.Point(166, 183);
-            this.lblStatusInfo3.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.lblStatusInfo3.Location = new System.Drawing.Point(221, 225);
             this.lblStatusInfo3.Name = "lblStatusInfo3";
-            this.lblStatusInfo3.Size = new System.Drawing.Size(0, 13);
+            this.lblStatusInfo3.Size = new System.Drawing.Size(0, 17);
             this.lblStatusInfo3.TabIndex = 100;
             // 
             // lblPrice3
             // 
             this.lblPrice3.AutoSize = true;
             this.lblPrice3.Font = new System.Drawing.Font("Microsoft Sans Serif", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblPrice3.Location = new System.Drawing.Point(276, 183);
-            this.lblPrice3.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.lblPrice3.Location = new System.Drawing.Point(368, 225);
             this.lblPrice3.Name = "lblPrice3";
-            this.lblPrice3.Size = new System.Drawing.Size(42, 18);
+            this.lblPrice3.Size = new System.Drawing.Size(53, 24);
             this.lblPrice3.TabIndex = 100;
             this.lblPrice3.Text = "Price";
             // 
             // lblSelectQuantity3
             // 
             this.lblSelectQuantity3.AutoSize = true;
-            this.lblSelectQuantity3.Location = new System.Drawing.Point(184, 207);
-            this.lblSelectQuantity3.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.lblSelectQuantity3.Location = new System.Drawing.Point(245, 255);
             this.lblSelectQuantity3.Name = "lblSelectQuantity3";
-            this.lblSelectQuantity3.Size = new System.Drawing.Size(79, 13);
+            this.lblSelectQuantity3.Size = new System.Drawing.Size(104, 17);
             this.lblSelectQuantity3.TabIndex = 100;
             this.lblSelectQuantity3.Text = "Select Quantity";
             // 
             // nudQuantity3
             // 
-            this.nudQuantity3.Location = new System.Drawing.Point(194, 223);
-            this.nudQuantity3.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.nudQuantity3.Location = new System.Drawing.Point(259, 274);
+            this.nudQuantity3.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.nudQuantity3.Minimum = new decimal(new int[] {
             1,
             0,
             0,
             0});
             this.nudQuantity3.Name = "nudQuantity3";
-            this.nudQuantity3.Size = new System.Drawing.Size(58, 20);
+            this.nudQuantity3.Size = new System.Drawing.Size(77, 22);
             this.nudQuantity3.TabIndex = 7;
             this.nudQuantity3.Value = new decimal(new int[] {
             1,
@@ -273,29 +270,29 @@ namespace SemesterProject
             this.rtbTitleDescription3.BackColor = System.Drawing.Color.White;
             this.rtbTitleDescription3.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.rtbTitleDescription3.Font = new System.Drawing.Font("Microsoft Sans Serif", 15F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.rtbTitleDescription3.Location = new System.Drawing.Point(169, 2);
-            this.rtbTitleDescription3.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.rtbTitleDescription3.Location = new System.Drawing.Point(225, 2);
+            this.rtbTitleDescription3.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.rtbTitleDescription3.Name = "rtbTitleDescription3";
             this.rtbTitleDescription3.ReadOnly = true;
-            this.rtbTitleDescription3.Size = new System.Drawing.Size(188, 158);
+            this.rtbTitleDescription3.Size = new System.Drawing.Size(251, 194);
             this.rtbTitleDescription3.TabIndex = 100;
             this.rtbTitleDescription3.Text = "Listing Title\nListing Description";
             // 
             // pbxItemImage3
             // 
-            this.pbxItemImage3.Location = new System.Drawing.Point(2, 2);
-            this.pbxItemImage3.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.pbxItemImage3.Location = new System.Drawing.Point(3, 2);
+            this.pbxItemImage3.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.pbxItemImage3.Name = "pbxItemImage3";
-            this.pbxItemImage3.Size = new System.Drawing.Size(162, 240);
+            this.pbxItemImage3.Size = new System.Drawing.Size(216, 295);
             this.pbxItemImage3.TabIndex = 1;
             this.pbxItemImage3.TabStop = false;
             // 
             // btnAddToCart3
             // 
-            this.btnAddToCart3.Location = new System.Drawing.Point(276, 207);
-            this.btnAddToCart3.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.btnAddToCart3.Location = new System.Drawing.Point(368, 255);
+            this.btnAddToCart3.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.btnAddToCart3.Name = "btnAddToCart3";
-            this.btnAddToCart3.Size = new System.Drawing.Size(82, 36);
+            this.btnAddToCart3.Size = new System.Drawing.Size(109, 44);
             this.btnAddToCart3.TabIndex = 8;
             this.btnAddToCart3.Text = "Add to Cart";
             this.btnAddToCart3.UseVisualStyleBackColor = true;
@@ -311,53 +308,50 @@ namespace SemesterProject
             this.pnlListing2.Controls.Add(this.rtbTitleDescription2);
             this.pnlListing2.Controls.Add(this.pbxItemImage2);
             this.pnlListing2.Controls.Add(this.btnAddToCart2);
-            this.pnlListing2.Location = new System.Drawing.Point(2, 255);
-            this.pnlListing2.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.pnlListing2.Location = new System.Drawing.Point(3, 314);
+            this.pnlListing2.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.pnlListing2.Name = "pnlListing2";
-            this.pnlListing2.Size = new System.Drawing.Size(360, 246);
+            this.pnlListing2.Size = new System.Drawing.Size(479, 302);
             this.pnlListing2.TabIndex = 2;
             // 
             // lblStatusInfo2
             // 
             this.lblStatusInfo2.AutoSize = true;
-            this.lblStatusInfo2.Location = new System.Drawing.Point(166, 183);
-            this.lblStatusInfo2.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.lblStatusInfo2.Location = new System.Drawing.Point(221, 225);
             this.lblStatusInfo2.Name = "lblStatusInfo2";
-            this.lblStatusInfo2.Size = new System.Drawing.Size(0, 13);
+            this.lblStatusInfo2.Size = new System.Drawing.Size(0, 17);
             this.lblStatusInfo2.TabIndex = 100;
             // 
             // lblPrice2
             // 
             this.lblPrice2.AutoSize = true;
             this.lblPrice2.Font = new System.Drawing.Font("Microsoft Sans Serif", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblPrice2.Location = new System.Drawing.Point(276, 183);
-            this.lblPrice2.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.lblPrice2.Location = new System.Drawing.Point(368, 225);
             this.lblPrice2.Name = "lblPrice2";
-            this.lblPrice2.Size = new System.Drawing.Size(42, 18);
+            this.lblPrice2.Size = new System.Drawing.Size(53, 24);
             this.lblPrice2.TabIndex = 100;
             this.lblPrice2.Text = "Price";
             // 
             // lblSelectQuantit2
             // 
             this.lblSelectQuantit2.AutoSize = true;
-            this.lblSelectQuantit2.Location = new System.Drawing.Point(184, 207);
-            this.lblSelectQuantit2.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.lblSelectQuantit2.Location = new System.Drawing.Point(245, 255);
             this.lblSelectQuantit2.Name = "lblSelectQuantit2";
-            this.lblSelectQuantit2.Size = new System.Drawing.Size(79, 13);
+            this.lblSelectQuantit2.Size = new System.Drawing.Size(104, 17);
             this.lblSelectQuantit2.TabIndex = 100;
             this.lblSelectQuantit2.Text = "Select Quantity";
             // 
             // nudQuantity2
             // 
-            this.nudQuantity2.Location = new System.Drawing.Point(194, 223);
-            this.nudQuantity2.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.nudQuantity2.Location = new System.Drawing.Point(259, 274);
+            this.nudQuantity2.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.nudQuantity2.Minimum = new decimal(new int[] {
             1,
             0,
             0,
             0});
             this.nudQuantity2.Name = "nudQuantity2";
-            this.nudQuantity2.Size = new System.Drawing.Size(58, 20);
+            this.nudQuantity2.Size = new System.Drawing.Size(77, 22);
             this.nudQuantity2.TabIndex = 5;
             this.nudQuantity2.Value = new decimal(new int[] {
             1,
@@ -370,29 +364,29 @@ namespace SemesterProject
             this.rtbTitleDescription2.BackColor = System.Drawing.Color.White;
             this.rtbTitleDescription2.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.rtbTitleDescription2.Font = new System.Drawing.Font("Microsoft Sans Serif", 15F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.rtbTitleDescription2.Location = new System.Drawing.Point(169, 2);
-            this.rtbTitleDescription2.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.rtbTitleDescription2.Location = new System.Drawing.Point(225, 2);
+            this.rtbTitleDescription2.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.rtbTitleDescription2.Name = "rtbTitleDescription2";
             this.rtbTitleDescription2.ReadOnly = true;
-            this.rtbTitleDescription2.Size = new System.Drawing.Size(188, 158);
+            this.rtbTitleDescription2.Size = new System.Drawing.Size(251, 194);
             this.rtbTitleDescription2.TabIndex = 100;
             this.rtbTitleDescription2.Text = "Listing Title\nListing Description";
             // 
             // pbxItemImage2
             // 
-            this.pbxItemImage2.Location = new System.Drawing.Point(2, 2);
-            this.pbxItemImage2.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.pbxItemImage2.Location = new System.Drawing.Point(3, 2);
+            this.pbxItemImage2.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.pbxItemImage2.Name = "pbxItemImage2";
-            this.pbxItemImage2.Size = new System.Drawing.Size(162, 240);
+            this.pbxItemImage2.Size = new System.Drawing.Size(216, 295);
             this.pbxItemImage2.TabIndex = 1;
             this.pbxItemImage2.TabStop = false;
             // 
             // btnAddToCart2
             // 
-            this.btnAddToCart2.Location = new System.Drawing.Point(276, 207);
-            this.btnAddToCart2.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.btnAddToCart2.Location = new System.Drawing.Point(368, 255);
+            this.btnAddToCart2.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.btnAddToCart2.Name = "btnAddToCart2";
-            this.btnAddToCart2.Size = new System.Drawing.Size(82, 36);
+            this.btnAddToCart2.Size = new System.Drawing.Size(109, 44);
             this.btnAddToCart2.TabIndex = 6;
             this.btnAddToCart2.Text = "Add to Cart";
             this.btnAddToCart2.UseVisualStyleBackColor = true;
@@ -408,53 +402,50 @@ namespace SemesterProject
             this.pnlListing1.Controls.Add(this.rtbTitleDescription1);
             this.pnlListing1.Controls.Add(this.pbxItemImage1);
             this.pnlListing1.Controls.Add(this.btnAddToCart1);
-            this.pnlListing1.Location = new System.Drawing.Point(374, 2);
-            this.pnlListing1.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.pnlListing1.Location = new System.Drawing.Point(499, 2);
+            this.pnlListing1.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.pnlListing1.Name = "pnlListing1";
-            this.pnlListing1.Size = new System.Drawing.Size(360, 246);
+            this.pnlListing1.Size = new System.Drawing.Size(479, 302);
             this.pnlListing1.TabIndex = 1;
             // 
             // lblStatusInfo1
             // 
             this.lblStatusInfo1.AutoSize = true;
-            this.lblStatusInfo1.Location = new System.Drawing.Point(166, 187);
-            this.lblStatusInfo1.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.lblStatusInfo1.Location = new System.Drawing.Point(221, 230);
             this.lblStatusInfo1.Name = "lblStatusInfo1";
-            this.lblStatusInfo1.Size = new System.Drawing.Size(0, 13);
+            this.lblStatusInfo1.Size = new System.Drawing.Size(0, 17);
             this.lblStatusInfo1.TabIndex = 100;
             // 
             // lblPrice1
             // 
             this.lblPrice1.AutoSize = true;
             this.lblPrice1.Font = new System.Drawing.Font("Microsoft Sans Serif", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblPrice1.Location = new System.Drawing.Point(276, 183);
-            this.lblPrice1.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.lblPrice1.Location = new System.Drawing.Point(368, 225);
             this.lblPrice1.Name = "lblPrice1";
-            this.lblPrice1.Size = new System.Drawing.Size(42, 18);
+            this.lblPrice1.Size = new System.Drawing.Size(53, 24);
             this.lblPrice1.TabIndex = 100;
             this.lblPrice1.Text = "Price";
             // 
             // lblSelectQuantity1
             // 
             this.lblSelectQuantity1.AutoSize = true;
-            this.lblSelectQuantity1.Location = new System.Drawing.Point(184, 207);
-            this.lblSelectQuantity1.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.lblSelectQuantity1.Location = new System.Drawing.Point(245, 255);
             this.lblSelectQuantity1.Name = "lblSelectQuantity1";
-            this.lblSelectQuantity1.Size = new System.Drawing.Size(79, 13);
+            this.lblSelectQuantity1.Size = new System.Drawing.Size(104, 17);
             this.lblSelectQuantity1.TabIndex = 100;
             this.lblSelectQuantity1.Text = "Select Quantity";
             // 
             // nudQuantity1
             // 
-            this.nudQuantity1.Location = new System.Drawing.Point(194, 223);
-            this.nudQuantity1.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.nudQuantity1.Location = new System.Drawing.Point(259, 274);
+            this.nudQuantity1.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.nudQuantity1.Minimum = new decimal(new int[] {
             1,
             0,
             0,
             0});
             this.nudQuantity1.Name = "nudQuantity1";
-            this.nudQuantity1.Size = new System.Drawing.Size(58, 20);
+            this.nudQuantity1.Size = new System.Drawing.Size(77, 22);
             this.nudQuantity1.TabIndex = 3;
             this.nudQuantity1.Value = new decimal(new int[] {
             1,
@@ -467,29 +458,29 @@ namespace SemesterProject
             this.rtbTitleDescription1.BackColor = System.Drawing.Color.White;
             this.rtbTitleDescription1.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.rtbTitleDescription1.Font = new System.Drawing.Font("Microsoft Sans Serif", 15F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.rtbTitleDescription1.Location = new System.Drawing.Point(169, 2);
-            this.rtbTitleDescription1.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.rtbTitleDescription1.Location = new System.Drawing.Point(225, 2);
+            this.rtbTitleDescription1.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.rtbTitleDescription1.Name = "rtbTitleDescription1";
             this.rtbTitleDescription1.ReadOnly = true;
-            this.rtbTitleDescription1.Size = new System.Drawing.Size(188, 158);
+            this.rtbTitleDescription1.Size = new System.Drawing.Size(251, 194);
             this.rtbTitleDescription1.TabIndex = 100;
             this.rtbTitleDescription1.Text = "Listing Title\nListing Description";
             // 
             // pbxItemImage1
             // 
-            this.pbxItemImage1.Location = new System.Drawing.Point(2, 2);
-            this.pbxItemImage1.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.pbxItemImage1.Location = new System.Drawing.Point(3, 2);
+            this.pbxItemImage1.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.pbxItemImage1.Name = "pbxItemImage1";
-            this.pbxItemImage1.Size = new System.Drawing.Size(162, 240);
+            this.pbxItemImage1.Size = new System.Drawing.Size(216, 295);
             this.pbxItemImage1.TabIndex = 1;
             this.pbxItemImage1.TabStop = false;
             // 
             // btnAddToCart1
             // 
-            this.btnAddToCart1.Location = new System.Drawing.Point(276, 207);
-            this.btnAddToCart1.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.btnAddToCart1.Location = new System.Drawing.Point(368, 255);
+            this.btnAddToCart1.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.btnAddToCart1.Name = "btnAddToCart1";
-            this.btnAddToCart1.Size = new System.Drawing.Size(82, 36);
+            this.btnAddToCart1.Size = new System.Drawing.Size(109, 44);
             this.btnAddToCart1.TabIndex = 4;
             this.btnAddToCart1.Text = "Add to Cart";
             this.btnAddToCart1.UseVisualStyleBackColor = true;
@@ -505,53 +496,50 @@ namespace SemesterProject
             this.pnlListing0.Controls.Add(this.rtbTitleDescription0);
             this.pnlListing0.Controls.Add(this.pbxItemImage0);
             this.pnlListing0.Controls.Add(this.btnAddToCart0);
-            this.pnlListing0.Location = new System.Drawing.Point(2, 2);
-            this.pnlListing0.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.pnlListing0.Location = new System.Drawing.Point(3, 2);
+            this.pnlListing0.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.pnlListing0.Name = "pnlListing0";
-            this.pnlListing0.Size = new System.Drawing.Size(360, 246);
+            this.pnlListing0.Size = new System.Drawing.Size(479, 302);
             this.pnlListing0.TabIndex = 0;
             // 
             // lblStatusInfo0
             // 
             this.lblStatusInfo0.AutoSize = true;
-            this.lblStatusInfo0.Location = new System.Drawing.Point(166, 187);
-            this.lblStatusInfo0.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.lblStatusInfo0.Location = new System.Drawing.Point(221, 230);
             this.lblStatusInfo0.Name = "lblStatusInfo0";
-            this.lblStatusInfo0.Size = new System.Drawing.Size(0, 13);
+            this.lblStatusInfo0.Size = new System.Drawing.Size(0, 17);
             this.lblStatusInfo0.TabIndex = 100;
             // 
             // lblPrice0
             // 
             this.lblPrice0.AutoSize = true;
             this.lblPrice0.Font = new System.Drawing.Font("Microsoft Sans Serif", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblPrice0.Location = new System.Drawing.Point(276, 183);
-            this.lblPrice0.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.lblPrice0.Location = new System.Drawing.Point(368, 225);
             this.lblPrice0.Name = "lblPrice0";
-            this.lblPrice0.Size = new System.Drawing.Size(42, 18);
+            this.lblPrice0.Size = new System.Drawing.Size(53, 24);
             this.lblPrice0.TabIndex = 100;
             this.lblPrice0.Text = "Price";
             // 
             // lblSelectQuantity0
             // 
             this.lblSelectQuantity0.AutoSize = true;
-            this.lblSelectQuantity0.Location = new System.Drawing.Point(184, 207);
-            this.lblSelectQuantity0.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.lblSelectQuantity0.Location = new System.Drawing.Point(245, 255);
             this.lblSelectQuantity0.Name = "lblSelectQuantity0";
-            this.lblSelectQuantity0.Size = new System.Drawing.Size(79, 13);
+            this.lblSelectQuantity0.Size = new System.Drawing.Size(104, 17);
             this.lblSelectQuantity0.TabIndex = 100;
             this.lblSelectQuantity0.Text = "Select Quantity";
             // 
             // nudQuantity0
             // 
-            this.nudQuantity0.Location = new System.Drawing.Point(194, 223);
-            this.nudQuantity0.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.nudQuantity0.Location = new System.Drawing.Point(259, 274);
+            this.nudQuantity0.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.nudQuantity0.Minimum = new decimal(new int[] {
             1,
             0,
             0,
             0});
             this.nudQuantity0.Name = "nudQuantity0";
-            this.nudQuantity0.Size = new System.Drawing.Size(58, 20);
+            this.nudQuantity0.Size = new System.Drawing.Size(77, 22);
             this.nudQuantity0.TabIndex = 5;
             this.nudQuantity0.Value = new decimal(new int[] {
             1,
@@ -564,29 +552,29 @@ namespace SemesterProject
             this.rtbTitleDescription0.BackColor = System.Drawing.Color.White;
             this.rtbTitleDescription0.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.rtbTitleDescription0.Font = new System.Drawing.Font("Microsoft Sans Serif", 15F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.rtbTitleDescription0.Location = new System.Drawing.Point(169, 2);
-            this.rtbTitleDescription0.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.rtbTitleDescription0.Location = new System.Drawing.Point(225, 2);
+            this.rtbTitleDescription0.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.rtbTitleDescription0.Name = "rtbTitleDescription0";
             this.rtbTitleDescription0.ReadOnly = true;
-            this.rtbTitleDescription0.Size = new System.Drawing.Size(188, 158);
+            this.rtbTitleDescription0.Size = new System.Drawing.Size(251, 194);
             this.rtbTitleDescription0.TabIndex = 100;
             this.rtbTitleDescription0.Text = "Listing Title\nListing Description";
             // 
             // pbxItemImage0
             // 
-            this.pbxItemImage0.Location = new System.Drawing.Point(2, 2);
-            this.pbxItemImage0.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.pbxItemImage0.Location = new System.Drawing.Point(3, 2);
+            this.pbxItemImage0.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.pbxItemImage0.Name = "pbxItemImage0";
-            this.pbxItemImage0.Size = new System.Drawing.Size(162, 240);
+            this.pbxItemImage0.Size = new System.Drawing.Size(216, 295);
             this.pbxItemImage0.TabIndex = 1;
             this.pbxItemImage0.TabStop = false;
             // 
             // btnAddToCart0
             // 
-            this.btnAddToCart0.Location = new System.Drawing.Point(276, 207);
-            this.btnAddToCart0.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.btnAddToCart0.Location = new System.Drawing.Point(368, 255);
+            this.btnAddToCart0.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.btnAddToCart0.Name = "btnAddToCart0";
-            this.btnAddToCart0.Size = new System.Drawing.Size(82, 36);
+            this.btnAddToCart0.Size = new System.Drawing.Size(109, 44);
             this.btnAddToCart0.TabIndex = 2;
             this.btnAddToCart0.Text = "Add to Cart";
             this.btnAddToCart0.UseVisualStyleBackColor = true;
@@ -598,40 +586,38 @@ namespace SemesterProject
             this.groupBox1.Controls.Add(this.lblCustomerInfo);
             this.groupBox1.Controls.Add(this.btnNextPage);
             this.groupBox1.Controls.Add(this.btnPreviousPage);
-            this.groupBox1.Location = new System.Drawing.Point(4, 513);
-            this.groupBox1.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.groupBox1.Location = new System.Drawing.Point(5, 631);
+            this.groupBox1.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Padding = new System.Windows.Forms.Padding(2, 2, 2, 2);
-            this.groupBox1.Size = new System.Drawing.Size(734, 53);
+            this.groupBox1.Padding = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.groupBox1.Size = new System.Drawing.Size(979, 65);
             this.groupBox1.TabIndex = 13;
             this.groupBox1.TabStop = false;
             // 
             // lblPageNum
             // 
             this.lblPageNum.AutoSize = true;
-            this.lblPageNum.Location = new System.Drawing.Point(350, 20);
-            this.lblPageNum.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.lblPageNum.Location = new System.Drawing.Point(467, 25);
             this.lblPageNum.Name = "lblPageNum";
-            this.lblPageNum.Size = new System.Drawing.Size(41, 13);
+            this.lblPageNum.Size = new System.Drawing.Size(53, 17);
             this.lblPageNum.TabIndex = 9;
             this.lblPageNum.Text = "Page 1";
             // 
             // lblCustomerInfo
             // 
             this.lblCustomerInfo.AutoSize = true;
-            this.lblCustomerInfo.Location = new System.Drawing.Point(99, 32);
-            this.lblCustomerInfo.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.lblCustomerInfo.Location = new System.Drawing.Point(132, 39);
             this.lblCustomerInfo.Name = "lblCustomerInfo";
-            this.lblCustomerInfo.Size = new System.Drawing.Size(0, 13);
+            this.lblCustomerInfo.Size = new System.Drawing.Size(0, 17);
             this.lblCustomerInfo.TabIndex = 8;
             // 
             // btnNextPage
             // 
             this.btnNextPage.Enabled = false;
-            this.btnNextPage.Location = new System.Drawing.Point(640, 20);
-            this.btnNextPage.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.btnNextPage.Location = new System.Drawing.Point(853, 25);
+            this.btnNextPage.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.btnNextPage.Name = "btnNextPage";
-            this.btnNextPage.Size = new System.Drawing.Size(90, 26);
+            this.btnNextPage.Size = new System.Drawing.Size(120, 32);
             this.btnNextPage.TabIndex = 6;
             this.btnNextPage.Text = "Next Page";
             this.btnNextPage.UseVisualStyleBackColor = true;
@@ -640,10 +626,10 @@ namespace SemesterProject
             // btnPreviousPage
             // 
             this.btnPreviousPage.Enabled = false;
-            this.btnPreviousPage.Location = new System.Drawing.Point(4, 20);
-            this.btnPreviousPage.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.btnPreviousPage.Location = new System.Drawing.Point(5, 25);
+            this.btnPreviousPage.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.btnPreviousPage.Name = "btnPreviousPage";
-            this.btnPreviousPage.Size = new System.Drawing.Size(90, 26);
+            this.btnPreviousPage.Size = new System.Drawing.Size(120, 32);
             this.btnPreviousPage.TabIndex = 7;
             this.btnPreviousPage.Text = "Previous Page";
             this.btnPreviousPage.UseVisualStyleBackColor = true;
@@ -655,11 +641,11 @@ namespace SemesterProject
             this.tpCart.Controls.Add(this.btnRemoveItemFromCart);
             this.tpCart.Controls.Add(this.btnPurchaseCartItems);
             this.tpCart.Controls.Add(this.dgvCartItems);
-            this.tpCart.Location = new System.Drawing.Point(4, 22);
-            this.tpCart.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.tpCart.Location = new System.Drawing.Point(4, 25);
+            this.tpCart.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.tpCart.Name = "tpCart";
-            this.tpCart.Padding = new System.Windows.Forms.Padding(2, 2, 2, 2);
-            this.tpCart.Size = new System.Drawing.Size(743, 570);
+            this.tpCart.Padding = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.tpCart.Size = new System.Drawing.Size(993, 705);
             this.tpCart.TabIndex = 1;
             this.tpCart.Text = "Cart";
             this.tpCart.UseVisualStyleBackColor = true;
@@ -667,19 +653,18 @@ namespace SemesterProject
             // lblCartSummary
             // 
             this.lblCartSummary.AutoSize = true;
-            this.lblCartSummary.Location = new System.Drawing.Point(318, 370);
-            this.lblCartSummary.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.lblCartSummary.Location = new System.Drawing.Point(424, 455);
             this.lblCartSummary.Name = "lblCartSummary";
-            this.lblCartSummary.Size = new System.Drawing.Size(0, 13);
+            this.lblCartSummary.Size = new System.Drawing.Size(0, 17);
             this.lblCartSummary.TabIndex = 3;
             // 
             // btnRemoveItemFromCart
             // 
             this.btnRemoveItemFromCart.Enabled = false;
-            this.btnRemoveItemFromCart.Location = new System.Drawing.Point(109, 370);
-            this.btnRemoveItemFromCart.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.btnRemoveItemFromCart.Location = new System.Drawing.Point(145, 455);
+            this.btnRemoveItemFromCart.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.btnRemoveItemFromCart.Name = "btnRemoveItemFromCart";
-            this.btnRemoveItemFromCart.Size = new System.Drawing.Size(82, 37);
+            this.btnRemoveItemFromCart.Size = new System.Drawing.Size(109, 46);
             this.btnRemoveItemFromCart.TabIndex = 1;
             this.btnRemoveItemFromCart.Text = "Remove Item";
             this.btnRemoveItemFromCart.UseVisualStyleBackColor = true;
@@ -688,10 +673,10 @@ namespace SemesterProject
             // btnPurchaseCartItems
             // 
             this.btnPurchaseCartItems.Enabled = false;
-            this.btnPurchaseCartItems.Location = new System.Drawing.Point(559, 370);
-            this.btnPurchaseCartItems.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.btnPurchaseCartItems.Location = new System.Drawing.Point(745, 455);
+            this.btnPurchaseCartItems.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.btnPurchaseCartItems.Name = "btnPurchaseCartItems";
-            this.btnPurchaseCartItems.Size = new System.Drawing.Size(82, 37);
+            this.btnPurchaseCartItems.Size = new System.Drawing.Size(109, 46);
             this.btnPurchaseCartItems.TabIndex = 2;
             this.btnPurchaseCartItems.Text = "Purchase";
             this.btnPurchaseCartItems.UseVisualStyleBackColor = true;
@@ -703,24 +688,24 @@ namespace SemesterProject
             this.dgvCartItems.AllowUserToDeleteRows = false;
             this.dgvCartItems.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.DisplayedCells;
             this.dgvCartItems.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dgvCartItems.Location = new System.Drawing.Point(109, 20);
-            this.dgvCartItems.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.dgvCartItems.Location = new System.Drawing.Point(145, 25);
+            this.dgvCartItems.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.dgvCartItems.Name = "dgvCartItems";
             this.dgvCartItems.ReadOnly = true;
             this.dgvCartItems.RowHeadersWidth = 51;
             this.dgvCartItems.RowTemplate.Height = 24;
             this.dgvCartItems.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dgvCartItems.Size = new System.Drawing.Size(532, 325);
+            this.dgvCartItems.Size = new System.Drawing.Size(709, 400);
             this.dgvCartItems.TabIndex = 0;
             // 
             // tpAccount
             // 
             this.tpAccount.Controls.Add(this.tc_Balance_Purchases);
-            this.tpAccount.Location = new System.Drawing.Point(4, 22);
-            this.tpAccount.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.tpAccount.Location = new System.Drawing.Point(4, 25);
+            this.tpAccount.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.tpAccount.Name = "tpAccount";
-            this.tpAccount.Padding = new System.Windows.Forms.Padding(2, 2, 2, 2);
-            this.tpAccount.Size = new System.Drawing.Size(758, 604);
+            this.tpAccount.Padding = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.tpAccount.Size = new System.Drawing.Size(1013, 746);
             this.tpAccount.TabIndex = 1;
             this.tpAccount.Text = "Account";
             this.tpAccount.UseVisualStyleBackColor = true;
@@ -729,11 +714,11 @@ namespace SemesterProject
             // 
             this.tc_Balance_Purchases.Controls.Add(this.tpBalance);
             this.tc_Balance_Purchases.Controls.Add(this.tpPurchases);
-            this.tc_Balance_Purchases.Location = new System.Drawing.Point(5, 6);
-            this.tc_Balance_Purchases.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.tc_Balance_Purchases.Location = new System.Drawing.Point(7, 7);
+            this.tc_Balance_Purchases.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.tc_Balance_Purchases.Name = "tc_Balance_Purchases";
             this.tc_Balance_Purchases.SelectedIndex = 0;
-            this.tc_Balance_Purchases.Size = new System.Drawing.Size(734, 559);
+            this.tc_Balance_Purchases.Size = new System.Drawing.Size(979, 688);
             this.tc_Balance_Purchases.TabIndex = 0;
             this.tc_Balance_Purchases.Selecting += new System.Windows.Forms.TabControlCancelEventHandler(this.tc_Balance_Purchases_Selecting);
             this.tc_Balance_Purchases.VisibleChanged += new System.EventHandler(this.tc_Balance_Purchases_VisibleChanged);
@@ -741,11 +726,11 @@ namespace SemesterProject
             // tpBalance
             // 
             this.tpBalance.Controls.Add(this.gbAccountBalance);
-            this.tpBalance.Location = new System.Drawing.Point(4, 22);
-            this.tpBalance.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.tpBalance.Location = new System.Drawing.Point(4, 25);
+            this.tpBalance.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.tpBalance.Name = "tpBalance";
-            this.tpBalance.Padding = new System.Windows.Forms.Padding(2, 2, 2, 2);
-            this.tpBalance.Size = new System.Drawing.Size(726, 533);
+            this.tpBalance.Padding = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.tpBalance.Size = new System.Drawing.Size(971, 659);
             this.tpBalance.TabIndex = 0;
             this.tpBalance.Text = "Balance";
             this.tpBalance.UseVisualStyleBackColor = true;
@@ -758,11 +743,11 @@ namespace SemesterProject
             this.gbAccountBalance.Controls.Add(this.nudPayToBalance);
             this.gbAccountBalance.Controls.Add(this.btnPayToBalance);
             this.gbAccountBalance.Controls.Add(this.lblCurrentBalance);
-            this.gbAccountBalance.Location = new System.Drawing.Point(217, 20);
-            this.gbAccountBalance.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.gbAccountBalance.Location = new System.Drawing.Point(289, 25);
+            this.gbAccountBalance.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.gbAccountBalance.Name = "gbAccountBalance";
-            this.gbAccountBalance.Padding = new System.Windows.Forms.Padding(2, 2, 2, 2);
-            this.gbAccountBalance.Size = new System.Drawing.Size(300, 184);
+            this.gbAccountBalance.Padding = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.gbAccountBalance.Size = new System.Drawing.Size(400, 226);
             this.gbAccountBalance.TabIndex = 2;
             this.gbAccountBalance.TabStop = false;
             this.gbAccountBalance.Text = "Balance";
@@ -770,52 +755,49 @@ namespace SemesterProject
             // lblAccountBalanceResults
             // 
             this.lblAccountBalanceResults.AutoSize = true;
-            this.lblAccountBalanceResults.Location = new System.Drawing.Point(4, 158);
-            this.lblAccountBalanceResults.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.lblAccountBalanceResults.Location = new System.Drawing.Point(5, 194);
             this.lblAccountBalanceResults.Name = "lblAccountBalanceResults";
-            this.lblAccountBalanceResults.Size = new System.Drawing.Size(0, 13);
+            this.lblAccountBalanceResults.Size = new System.Drawing.Size(0, 17);
             this.lblAccountBalanceResults.TabIndex = 5;
             // 
             // lblMoneySign
             // 
             this.lblMoneySign.AutoSize = true;
-            this.lblMoneySign.Location = new System.Drawing.Point(48, 132);
-            this.lblMoneySign.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.lblMoneySign.Location = new System.Drawing.Point(64, 162);
             this.lblMoneySign.Name = "lblMoneySign";
-            this.lblMoneySign.Size = new System.Drawing.Size(13, 13);
+            this.lblMoneySign.Size = new System.Drawing.Size(16, 17);
             this.lblMoneySign.TabIndex = 4;
             this.lblMoneySign.Text = "$";
             // 
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(4, 105);
-            this.label4.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.label4.Location = new System.Drawing.Point(5, 129);
             this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(255, 13);
+            this.label4.Size = new System.Drawing.Size(339, 17);
             this.label4.TabIndex = 3;
             this.label4.Text = "Enter an amount to pay towards your balance below:";
             // 
             // nudPayToBalance
             // 
             this.nudPayToBalance.DecimalPlaces = 2;
-            this.nudPayToBalance.Location = new System.Drawing.Point(64, 131);
-            this.nudPayToBalance.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.nudPayToBalance.Location = new System.Drawing.Point(85, 161);
+            this.nudPayToBalance.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.nudPayToBalance.Maximum = new decimal(new int[] {
             100000,
             0,
             0,
             0});
             this.nudPayToBalance.Name = "nudPayToBalance";
-            this.nudPayToBalance.Size = new System.Drawing.Size(90, 20);
+            this.nudPayToBalance.Size = new System.Drawing.Size(120, 22);
             this.nudPayToBalance.TabIndex = 1;
             // 
             // btnPayToBalance
             // 
-            this.btnPayToBalance.Location = new System.Drawing.Point(166, 121);
-            this.btnPayToBalance.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.btnPayToBalance.Location = new System.Drawing.Point(221, 149);
+            this.btnPayToBalance.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.btnPayToBalance.Name = "btnPayToBalance";
-            this.btnPayToBalance.Size = new System.Drawing.Size(82, 37);
+            this.btnPayToBalance.Size = new System.Drawing.Size(109, 46);
             this.btnPayToBalance.TabIndex = 2;
             this.btnPayToBalance.Text = "Pay to Balance";
             this.btnPayToBalance.UseVisualStyleBackColor = true;
@@ -825,10 +807,9 @@ namespace SemesterProject
             // 
             this.lblCurrentBalance.AutoSize = true;
             this.lblCurrentBalance.Font = new System.Drawing.Font("Microsoft Sans Serif", 15F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblCurrentBalance.Location = new System.Drawing.Point(4, 15);
-            this.lblCurrentBalance.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.lblCurrentBalance.Location = new System.Drawing.Point(5, 18);
             this.lblCurrentBalance.Name = "lblCurrentBalance";
-            this.lblCurrentBalance.Size = new System.Drawing.Size(224, 25);
+            this.lblCurrentBalance.Size = new System.Drawing.Size(286, 29);
             this.lblCurrentBalance.TabIndex = 0;
             this.lblCurrentBalance.Text = "Current Balance: $__.__";
             // 
@@ -837,11 +818,11 @@ namespace SemesterProject
             this.tpPurchases.Controls.Add(this.lblPurchasesSummary);
             this.tpPurchases.Controls.Add(this.gbFilters);
             this.tpPurchases.Controls.Add(this.dgvPastPurchases);
-            this.tpPurchases.Location = new System.Drawing.Point(4, 22);
-            this.tpPurchases.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.tpPurchases.Location = new System.Drawing.Point(4, 25);
+            this.tpPurchases.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.tpPurchases.Name = "tpPurchases";
-            this.tpPurchases.Padding = new System.Windows.Forms.Padding(2, 2, 2, 2);
-            this.tpPurchases.Size = new System.Drawing.Size(726, 533);
+            this.tpPurchases.Padding = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.tpPurchases.Size = new System.Drawing.Size(971, 659);
             this.tpPurchases.TabIndex = 1;
             this.tpPurchases.Text = "Purchases";
             this.tpPurchases.UseVisualStyleBackColor = true;
@@ -849,10 +830,9 @@ namespace SemesterProject
             // lblPurchasesSummary
             // 
             this.lblPurchasesSummary.AutoSize = true;
-            this.lblPurchasesSummary.Location = new System.Drawing.Point(331, 470);
-            this.lblPurchasesSummary.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.lblPurchasesSummary.Location = new System.Drawing.Point(441, 578);
             this.lblPurchasesSummary.Name = "lblPurchasesSummary";
-            this.lblPurchasesSummary.Size = new System.Drawing.Size(67, 39);
+            this.lblPurchasesSummary.Size = new System.Drawing.Size(88, 51);
             this.lblPurchasesSummary.TabIndex = 13;
             this.lblPurchasesSummary.Text = "0 Purchases\r\n0 Units\r\n$00.00 Total";
             // 
@@ -868,11 +848,11 @@ namespace SemesterProject
             this.gbFilters.Controls.Add(this.nudPurchasesPriceFrom);
             this.gbFilters.Controls.Add(this.label5);
             this.gbFilters.Controls.Add(this.dtpPurchasesFromDate);
-            this.gbFilters.Location = new System.Drawing.Point(100, 20);
-            this.gbFilters.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.gbFilters.Location = new System.Drawing.Point(133, 25);
+            this.gbFilters.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.gbFilters.Name = "gbFilters";
-            this.gbFilters.Padding = new System.Windows.Forms.Padding(2, 2, 2, 2);
-            this.gbFilters.Size = new System.Drawing.Size(532, 98);
+            this.gbFilters.Padding = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.gbFilters.Size = new System.Drawing.Size(709, 121);
             this.gbFilters.TabIndex = 12;
             this.gbFilters.TabStop = false;
             this.gbFilters.Text = "Filters";
@@ -880,108 +860,102 @@ namespace SemesterProject
             // label10
             // 
             this.label10.AutoSize = true;
-            this.label10.Location = new System.Drawing.Point(7, 66);
-            this.label10.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.label10.Location = new System.Drawing.Point(9, 81);
             this.label10.Name = "label10";
-            this.label10.Size = new System.Drawing.Size(23, 13);
+            this.label10.Size = new System.Drawing.Size(29, 17);
             this.label10.TabIndex = 19;
             this.label10.Text = "To:";
             // 
             // dtpPurchasesToDate
             // 
-            this.dtpPurchasesToDate.Location = new System.Drawing.Point(44, 64);
-            this.dtpPurchasesToDate.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.dtpPurchasesToDate.Location = new System.Drawing.Point(59, 79);
+            this.dtpPurchasesToDate.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.dtpPurchasesToDate.Name = "dtpPurchasesToDate";
-            this.dtpPurchasesToDate.Size = new System.Drawing.Size(199, 20);
+            this.dtpPurchasesToDate.Size = new System.Drawing.Size(264, 22);
             this.dtpPurchasesToDate.TabIndex = 2;
             this.dtpPurchasesToDate.ValueChanged += new System.EventHandler(this.PurchasesFilter_ValueChanged);
             // 
             // label9
             // 
             this.label9.AutoSize = true;
-            this.label9.Location = new System.Drawing.Point(7, 43);
-            this.label9.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.label9.Location = new System.Drawing.Point(9, 53);
             this.label9.Name = "label9";
-            this.label9.Size = new System.Drawing.Size(33, 13);
+            this.label9.Size = new System.Drawing.Size(44, 17);
             this.label9.TabIndex = 17;
             this.label9.Text = "From:";
             // 
             // label8
             // 
             this.label8.AutoSize = true;
-            this.label8.Location = new System.Drawing.Point(272, 25);
-            this.label8.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.label8.Location = new System.Drawing.Point(363, 31);
             this.label8.Name = "label8";
-            this.label8.Size = new System.Drawing.Size(66, 13);
+            this.label8.Size = new System.Drawing.Size(86, 17);
             this.label8.TabIndex = 16;
             this.label8.Text = "Price Range";
             // 
             // label7
             // 
             this.label7.AutoSize = true;
-            this.label7.Location = new System.Drawing.Point(394, 43);
-            this.label7.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.label7.Location = new System.Drawing.Point(525, 53);
             this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(40, 13);
+            this.label7.Size = new System.Drawing.Size(53, 17);
             this.label7.TabIndex = 15;
             this.label7.Text = "-        $";
             // 
             // nudPurchasesPriceTo
             // 
             this.nudPurchasesPriceTo.DecimalPlaces = 2;
-            this.nudPurchasesPriceTo.Location = new System.Drawing.Point(438, 41);
-            this.nudPurchasesPriceTo.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.nudPurchasesPriceTo.Location = new System.Drawing.Point(584, 50);
+            this.nudPurchasesPriceTo.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.nudPurchasesPriceTo.Maximum = new decimal(new int[] {
             100000,
             0,
             0,
             0});
             this.nudPurchasesPriceTo.Name = "nudPurchasesPriceTo";
-            this.nudPurchasesPriceTo.Size = new System.Drawing.Size(90, 20);
+            this.nudPurchasesPriceTo.Size = new System.Drawing.Size(120, 22);
             this.nudPurchasesPriceTo.TabIndex = 3;
             this.nudPurchasesPriceTo.ValueChanged += new System.EventHandler(this.PurchasesFilter_ValueChanged);
             // 
             // label6
             // 
             this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(272, 43);
-            this.label6.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.label6.Location = new System.Drawing.Point(363, 53);
             this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(13, 13);
+            this.label6.Size = new System.Drawing.Size(16, 17);
             this.label6.TabIndex = 13;
             this.label6.Text = "$";
             // 
             // nudPurchasesPriceFrom
             // 
             this.nudPurchasesPriceFrom.DecimalPlaces = 2;
-            this.nudPurchasesPriceFrom.Location = new System.Drawing.Point(288, 41);
-            this.nudPurchasesPriceFrom.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.nudPurchasesPriceFrom.Location = new System.Drawing.Point(384, 50);
+            this.nudPurchasesPriceFrom.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.nudPurchasesPriceFrom.Maximum = new decimal(new int[] {
             100000,
             0,
             0,
             0});
             this.nudPurchasesPriceFrom.Name = "nudPurchasesPriceFrom";
-            this.nudPurchasesPriceFrom.Size = new System.Drawing.Size(90, 20);
+            this.nudPurchasesPriceFrom.Size = new System.Drawing.Size(120, 22);
             this.nudPurchasesPriceFrom.TabIndex = 2;
             this.nudPurchasesPriceFrom.ValueChanged += new System.EventHandler(this.PurchasesFilter_ValueChanged);
             // 
             // label5
             // 
             this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(4, 25);
-            this.label5.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.label5.Location = new System.Drawing.Point(5, 31);
             this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(65, 13);
+            this.label5.Size = new System.Drawing.Size(84, 17);
             this.label5.TabIndex = 11;
             this.label5.Text = "Date Range";
             // 
             // dtpPurchasesFromDate
             // 
-            this.dtpPurchasesFromDate.Location = new System.Drawing.Point(44, 41);
-            this.dtpPurchasesFromDate.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.dtpPurchasesFromDate.Location = new System.Drawing.Point(59, 50);
+            this.dtpPurchasesFromDate.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.dtpPurchasesFromDate.Name = "dtpPurchasesFromDate";
-            this.dtpPurchasesFromDate.Size = new System.Drawing.Size(199, 20);
+            this.dtpPurchasesFromDate.Size = new System.Drawing.Size(264, 22);
             this.dtpPurchasesFromDate.TabIndex = 1;
             this.dtpPurchasesFromDate.ValueChanged += new System.EventHandler(this.PurchasesFilter_ValueChanged);
             // 
@@ -991,14 +965,14 @@ namespace SemesterProject
             this.dgvPastPurchases.AllowUserToDeleteRows = false;
             this.dgvPastPurchases.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.DisplayedCells;
             this.dgvPastPurchases.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dgvPastPurchases.Location = new System.Drawing.Point(4, 124);
-            this.dgvPastPurchases.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.dgvPastPurchases.Location = new System.Drawing.Point(5, 153);
+            this.dgvPastPurchases.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.dgvPastPurchases.Name = "dgvPastPurchases";
             this.dgvPastPurchases.ReadOnly = true;
             this.dgvPastPurchases.RowHeadersWidth = 51;
             this.dgvPastPurchases.RowTemplate.Height = 24;
             this.dgvPastPurchases.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dgvPastPurchases.Size = new System.Drawing.Size(719, 325);
+            this.dgvPastPurchases.Size = new System.Drawing.Size(959, 400);
             this.dgvPastPurchases.TabIndex = 1;
             // 
             // storeItemListingBindingSource
@@ -1007,11 +981,11 @@ namespace SemesterProject
             // 
             // Storefront
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(782, 644);
+            this.ClientSize = new System.Drawing.Size(1043, 793);
             this.Controls.Add(this.tc_Store_Account);
-            this.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.Name = "Storefront";
             this.Text = "Storefront";
             this.tc_Store_Account.ResumeLayout(false);

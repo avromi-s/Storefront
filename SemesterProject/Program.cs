@@ -16,7 +16,7 @@ namespace SemesterProject
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            using (var db = new DataClasses1DataContext()) // todo, is just one using clause here enough, or should there be multiple in more places where db is used in other classes?
+            using (var db = new DataClasses1DataContext())
             {
                 LoginForm login = new LoginForm(db);
                 Application.Run(login);

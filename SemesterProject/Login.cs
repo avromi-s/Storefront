@@ -51,7 +51,6 @@ namespace SemesterProject
 
         private bool AttemptLogin(string LoginId, string Password, Label lblResult, ref CUSTOMER customerLoggedIn)
         {
-            // todo not so good this method has kinda 3 outputs - bool, customer, and label.Text?
             // todo username not case sensitive
             bool loginExists = db.CUSTOMERs.Select(row => row.LoginId).Contains(LoginId);
             if (loginExists)
@@ -80,7 +79,6 @@ namespace SemesterProject
 
         private bool CreateLogin(string LoginId, string Password, Label lblResult, ref CUSTOMER loggedInCustomer)
         {
-            // todo not so good this method has kinda 3 outputs - bool, customer, and label.Text?
             bool loginAlreadyExists = db.CUSTOMERs.Select(row => row.LoginId).Contains(LoginId);
             if (!loginAlreadyExists)
             {
