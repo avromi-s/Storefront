@@ -124,8 +124,7 @@ namespace SemesterProject
             public void DisableListing()
             {
                 this.listingEnabled = false;
-                ItemImagePictureBox.Image = new Bitmap(Resources.ImageNotFound, ItemImagePictureBox.Size.Width,
-                    ItemImagePictureBox.Size.Height);
+                ItemImagePictureBox.Enabled = false;
                 ListingPanel.Enabled = false;
                 TitleDescriptionRichTextBox.Text = "";
                 PriceLabel.Text = "";
