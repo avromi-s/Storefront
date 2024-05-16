@@ -28,6 +28,7 @@ namespace SemesterProject
 
         private int currentPageIndex = 0; // 0-indexed for easy use with collections
         private int currentPageNumDisplay => currentPageIndex + 1; // 1-indexed for user display
+        private const decimal MIN_BALANCE_TO_ALLOW_PURCHASE = -50_000;
 
 
         public Storefront(DataClasses1DataContext db, CUSTOMER loggedInCustomer)
@@ -39,6 +40,7 @@ namespace SemesterProject
             this.NUM_LISTINGS_PER_PAGE = pnlAllListings.Controls.Count;
             this.allListingsData = new AllListingsData(db, NUM_LISTINGS_PER_PAGE);
             this.listingsGui = new ListingGui[NUM_LISTINGS_PER_PAGE];
+            this.rtbCartSummary.SelectionAlignment = HorizontalAlignment.Center;
         }
 
         #region DB
@@ -294,15 +296,27 @@ namespace SemesterProject
         {
             if (cartItems.Count == 0) // shouldn't really be possible because purchase button would be disabled
             {
-                lblCartSummary.Text = "Please add items to cart before purchasing";
+                rtbCartSummary.Text = "Please add items to cart before purchasing";
+                rtbCartSummary.ForeColor = Color.Red;
                 return;
             }
 
-            CreatePurchase(loggedInCustomer, cartItems.ToList());
+            if (!IsCustomerAllowedToPurchaseAll(cartItems))
+            {
+                rtbCartSummary.Text = $"Unable to complete purchase as your balance is below the minimum\n" +
+                                      $"Please increase your balance and try again.\n" +
+                                      $"You must increase your balance by at least" +
+                                      $"${(MIN_BALANCE_TO_ALLOW_PURCHASE - loggedInCustomer.Balance).ToString("0.00")} " +
+                                      $"to make a purchase.";
+                rtbCartSummary.ForeColor = Color.Red;
+                return;
+            }
+
+            CreatePurchase(cartItems.ToList());
             cartItems.Clear();
 
-            lblCartSummary.ForeColor = Color.Green;
-            lblCartSummary.Text = "Purchase completed";
+            rtbCartSummary.ForeColor = Color.Green;
+            rtbCartSummary.Text = "Purchase completed";
             RefreshCartItemsView();
             RefreshBtnPurchaseCartItems();
             RefreshBtnRemoveItemFromCart();
@@ -326,7 +340,14 @@ namespace SemesterProject
             }
         }
 
-        private async void CreatePurchase(CUSTOMER loggedInCustomer, List<CartItem> cartItems)
+        private bool IsCustomerAllowedToPurchaseAll(BindingList<CartItem> cartItems)
+        {
+            // A customer can make a purchase as long as their current balance is over the minimum allowed,
+            // the customer's cart total is not taken into account.
+            return loggedInCustomer.Balance >= MIN_BALANCE_TO_ALLOW_PURCHASE;
+        }
+
+        private async void CreatePurchase(List<CartItem> cartItems)
         {
             var list = new List<object>();
             cartItems.ForEach(item => list.Add(new
@@ -374,8 +395,8 @@ namespace SemesterProject
 
         private void RefreshCartSummary()
         {
-            lblCartSummary.ForeColor = Color.Black;
-            lblCartSummary.Text = $"Total Quantity: {cartItems.Sum(item => item.Quantity)}\nPurchase Total: ${cartItems.Sum(item => item.Quantity * item.GetStoreItem().Price).ToString("0.00")}";
+            rtbCartSummary.ForeColor = Color.Black;
+            rtbCartSummary.Text = $"Total Quantity: {cartItems.Sum(item => item.Quantity)}\nPurchase Total: ${cartItems.Sum(item => item.Quantity * item.GetStoreItem().Price).ToString("0.00")}";
         }
 
         #endregion

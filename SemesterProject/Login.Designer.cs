@@ -104,6 +104,7 @@ namespace SemesterProject
             // 
             this.rtbLoginStatus.BackColor = System.Drawing.SystemColors.Window;
             this.rtbLoginStatus.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.rtbLoginStatus.Cursor = System.Windows.Forms.Cursors.Arrow;
             this.rtbLoginStatus.Location = new System.Drawing.Point(12, 247);
             this.rtbLoginStatus.Name = "rtbLoginStatus";
             this.rtbLoginStatus.ReadOnly = true;

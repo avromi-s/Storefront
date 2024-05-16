@@ -75,7 +75,6 @@ namespace SemesterProject
             this.btnNextPage = new System.Windows.Forms.Button();
             this.btnPreviousPage = new System.Windows.Forms.Button();
             this.tpCart = new System.Windows.Forms.TabPage();
-            this.lblCartSummary = new System.Windows.Forms.Label();
             this.btnRemoveItemFromCart = new System.Windows.Forms.Button();
             this.btnPurchaseCartItems = new System.Windows.Forms.Button();
             this.dgvCartItems = new System.Windows.Forms.DataGridView();
@@ -103,6 +102,7 @@ namespace SemesterProject
             this.label5 = new System.Windows.Forms.Label();
             this.dtpPurchasesFromDate = new System.Windows.Forms.DateTimePicker();
             this.dgvPastPurchases = new System.Windows.Forms.DataGridView();
+            this.rtbCartSummary = new System.Windows.Forms.RichTextBox();
             this.storeItemListingBindingSource = new System.Windows.Forms.BindingSource(this.components);
             this.tc_Store_Account.SuspendLayout();
             this.tpStore.SuspendLayout();
@@ -637,7 +637,7 @@ namespace SemesterProject
             // 
             // tpCart
             // 
-            this.tpCart.Controls.Add(this.lblCartSummary);
+            this.tpCart.Controls.Add(this.rtbCartSummary);
             this.tpCart.Controls.Add(this.btnRemoveItemFromCart);
             this.tpCart.Controls.Add(this.btnPurchaseCartItems);
             this.tpCart.Controls.Add(this.dgvCartItems);
@@ -649,14 +649,6 @@ namespace SemesterProject
             this.tpCart.TabIndex = 1;
             this.tpCart.Text = "Cart";
             this.tpCart.UseVisualStyleBackColor = true;
-            // 
-            // lblCartSummary
-            // 
-            this.lblCartSummary.AutoSize = true;
-            this.lblCartSummary.Location = new System.Drawing.Point(424, 455);
-            this.lblCartSummary.Name = "lblCartSummary";
-            this.lblCartSummary.Size = new System.Drawing.Size(0, 17);
-            this.lblCartSummary.TabIndex = 3;
             // 
             // btnRemoveItemFromCart
             // 
@@ -975,6 +967,19 @@ namespace SemesterProject
             this.dgvPastPurchases.Size = new System.Drawing.Size(959, 400);
             this.dgvPastPurchases.TabIndex = 1;
             // 
+            // rtbCartSummary
+            // 
+            this.rtbCartSummary.BackColor = System.Drawing.SystemColors.Window;
+            this.rtbCartSummary.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.rtbCartSummary.Cursor = System.Windows.Forms.Cursors.Arrow;
+            this.rtbCartSummary.Location = new System.Drawing.Point(260, 570);
+            this.rtbCartSummary.Name = "rtbCartSummary";
+            this.rtbCartSummary.ReadOnly = true;
+            this.rtbCartSummary.ScrollBars = System.Windows.Forms.RichTextBoxScrollBars.None;
+            this.rtbCartSummary.Size = new System.Drawing.Size(479, 130);
+            this.rtbCartSummary.TabIndex = 4;
+            this.rtbCartSummary.Text = "";
+            // 
             // storeItemListingBindingSource
             // 
             this.storeItemListingBindingSource.DataSource = typeof(SemesterProject.ListingData);
@@ -1015,7 +1020,6 @@ namespace SemesterProject
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
             this.tpCart.ResumeLayout(false);
-            this.tpCart.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvCartItems)).EndInit();
             this.tpAccount.ResumeLayout(false);
             this.tc_Balance_Purchases.ResumeLayout(false);
@@ -1061,7 +1065,6 @@ namespace SemesterProject
         private System.Windows.Forms.BindingSource storeItemListingBindingSource;
         private System.Windows.Forms.DataGridView dgvCartItems;
         private System.Windows.Forms.Button btnPurchaseCartItems;
-        private System.Windows.Forms.Label lblCartSummary;
         private System.Windows.Forms.Button btnRemoveItemFromCart;
         private System.Windows.Forms.GroupBox gbAccountBalance;
         private System.Windows.Forms.Label label4;
@@ -1109,5 +1112,6 @@ namespace SemesterProject
         private System.Windows.Forms.Label lblStatusInfo2;
         private System.Windows.Forms.Label lblStatusInfo1;
         private System.Windows.Forms.Label lblPurchasesSummary;
+        private System.Windows.Forms.RichTextBox rtbCartSummary;
     }
 }
