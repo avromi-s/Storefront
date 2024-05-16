@@ -36,7 +36,7 @@ namespace SemesterProject
             this.lblPassword = new System.Windows.Forms.Label();
             this.btnCreateAccount = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
-            this.label2 = new System.Windows.Forms.Label();
+            this.rtbLoginStatus = new System.Windows.Forms.RichTextBox();
             this.SuspendLayout();
             // 
             // btnLogin
@@ -100,21 +100,25 @@ namespace SemesterProject
             this.label1.TabIndex = 6;
             this.label1.Text = "No Account?";
             // 
-            // label2
+            // rtbLoginStatus
             // 
-            this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(38, 260);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(0, 17);
-            this.label2.TabIndex = 7;
-            this.label2.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.rtbLoginStatus.BackColor = System.Drawing.SystemColors.Window;
+            this.rtbLoginStatus.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.rtbLoginStatus.Location = new System.Drawing.Point(12, 247);
+            this.rtbLoginStatus.Name = "rtbLoginStatus";
+            this.rtbLoginStatus.ReadOnly = true;
+            this.rtbLoginStatus.ScrollBars = System.Windows.Forms.RichTextBoxScrollBars.None;
+            this.rtbLoginStatus.Size = new System.Drawing.Size(333, 39);
+            this.rtbLoginStatus.TabIndex = 8;
+            this.rtbLoginStatus.Text = "";
             // 
             // LoginForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.BackColor = System.Drawing.SystemColors.Window;
             this.ClientSize = new System.Drawing.Size(357, 298);
-            this.Controls.Add(this.label2);
+            this.Controls.Add(this.rtbLoginStatus);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.btnCreateAccount);
             this.Controls.Add(this.lblPassword);
@@ -141,7 +145,7 @@ namespace SemesterProject
         private System.Windows.Forms.Label lblPassword;
         private System.Windows.Forms.Button btnCreateAccount;
         private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.RichTextBox rtbLoginStatus;
     }
 }
 

@@ -27,11 +27,13 @@ namespace SemesterProject
         {
             InitializeComponent();
             this.db = db;
+
+            rtbLoginStatus.SelectionAlignment = HorizontalAlignment.Center;
         }
 
         private void btnLogin_Click(object sender, EventArgs e)
         {
-            Successful = AttemptLogin(tbLoginId.Text, tbPassword.Text, label2, ref _customer);
+            Successful = AttemptLogin(tbLoginId.Text, tbPassword.Text, rtbLoginStatus, ref _customer);
             if (Successful)
             {
                 // close the login form. Program class will then see that login.successful is true and launch storefront
@@ -41,7 +43,7 @@ namespace SemesterProject
 
         private void btnCreateAccount_Click(object sender, EventArgs e)
         {
-            Successful = CreateLogin(tbLoginId.Text, tbPassword.Text, label2, ref _customer);
+            Successful = CreateLogin(tbLoginId.Text, tbPassword.Text, rtbLoginStatus, ref _customer);
             if (Successful)
             {
                 // close the login form. Program class will then see that login.successful is true and launch storefront
@@ -49,7 +51,7 @@ namespace SemesterProject
             }
         }
 
-        private bool AttemptLogin(string LoginId, string Password, Label lblResult, ref CUSTOMER customerLoggedIn)
+        private bool AttemptLogin(string LoginId, string Password, RichTextBox lblResult, ref CUSTOMER customerLoggedIn)
         {
             bool loginExists = db.CUSTOMERs.Select(row => row.LoginId).Contains(LoginId);
             if (loginExists)
@@ -79,7 +81,7 @@ namespace SemesterProject
             return false;
         }
 
-        private bool CreateLogin(string LoginId, string Password, Label lblResult, ref CUSTOMER loggedInCustomer)
+        private bool CreateLogin(string LoginId, string Password, RichTextBox lblResult, ref CUSTOMER loggedInCustomer)
         {
             bool loginAlreadyExists = db.CUSTOMERs.Select(row => row.LoginId).Contains(LoginId);
             if (!loginAlreadyExists)

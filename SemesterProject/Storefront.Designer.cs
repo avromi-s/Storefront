@@ -830,7 +830,7 @@ namespace SemesterProject
             // lblPurchasesSummary
             // 
             this.lblPurchasesSummary.AutoSize = true;
-            this.lblPurchasesSummary.Location = new System.Drawing.Point(441, 578);
+            this.lblPurchasesSummary.Location = new System.Drawing.Point(424, 577);
             this.lblPurchasesSummary.Name = "lblPurchasesSummary";
             this.lblPurchasesSummary.Size = new System.Drawing.Size(88, 51);
             this.lblPurchasesSummary.TabIndex = 13;
