@@ -305,7 +305,7 @@ namespace SemesterProject
             {
                 rtbCartSummary.Text = $"Unable to complete purchase as your balance is below the minimum.\n" +
                                       $"Please increase your balance and try again.\n" +
-                                      $"You must increase your balance by at least" +
+                                      $"You must increase your balance by at least " +
                                       $"${(MIN_BALANCE_TO_ALLOW_PURCHASE - loggedInCustomer.Balance).ToString("0.00")} " +
                                       $"to make a purchase.";
                 rtbCartSummary.ForeColor = Color.Red;
