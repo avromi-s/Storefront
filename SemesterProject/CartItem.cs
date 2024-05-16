@@ -6,8 +6,10 @@ using System.Threading.Tasks;
 
 namespace SemesterProject
 {
-    // The purpose of this class is to provide a pre-made object with the correct fields/columns for displaying the
-    // store items in the customer's cart
+    // This class is used to keep track of an item in the user's cart, keeping a reference to the STORE_ITEM and quantity
+    // selected by the user.
+    // Instantiating this class provides a pre-made object with the correct fields/columns for displaying the
+    // store items in the customer's cart.
     public class CartItem
     {
         private STORE_ITEM StoreItem { get; }

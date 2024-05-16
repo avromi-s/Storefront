@@ -11,7 +11,7 @@ using SemesterProject.Properties;
 
 namespace SemesterProject
 {
-    // This class wraps a provided db STORE_ITEM object to convert the raw db fields into what is 
+    // This class wraps a provided db STORE_ITEM object to convert/format the raw db fields into what is 
     // needed to actually place in the GUI.
     // For example, this class provides a string with the formatted price, and an Image object with the
     // actual image for a STORE_ITEM.

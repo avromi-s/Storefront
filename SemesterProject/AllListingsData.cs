@@ -9,34 +9,34 @@ using System.Threading.Tasks;
 namespace SemesterProject
 {
     // This class is used for accessing the ListingData of all listings in a given user-session
-    internal class Listings : IDisposable
+    internal class AllListingsData : IDisposable
     {
         private DataClasses1DataContext db;
-        private CUSTOMER loggedInCustomer;
         private readonly int NUM_LISTINGS_PER_PAGE;
 
-        // We iterate through the store items via the allStoreItems iterator, and cache the values
-        // (wrapped in ListingData objects) in cachedListingData as each item is retrieved.
-        // After iterating through all listings, cachedListingData will contain all listings.
+        // We iterate through the store items via the allStoreItems iterator, and save the values
+        // (wrapped in ListingData objects) in savedListingData as each item is retrieved.
+        // After iterating through all listings, savedListingData will contain all listings and can be 
+        // re-retrieved from there.
         private IEnumerator<STORE_ITEM> allStoreItems;
 
-        private List<ListingData> cachedListingData = new List<ListingData>();
+        private List<ListingData> savedListingData = new List<ListingData>();
 
         public bool AllListingsWereRetrieved { get; private set; }
         public int HighestPageIndexRetrieved { get; private set; }
 
-        public Listings(DataClasses1DataContext db, CUSTOMER loggedInCustomer, int numListingsPerPage)
+        public AllListingsData(DataClasses1DataContext db, int numListingsPerPage)
         {
             this.db = db;
-            this.loggedInCustomer = loggedInCustomer;
             NUM_LISTINGS_PER_PAGE = numListingsPerPage;
-            RefreshAllStoreItems();
+            ResetStoreItemEnumerator();
         }
 
 
         // Return the ListingData for each listing in the provided pageIndex.
-        // If the provided pageIndex is >= the last page index, this method returns ListingData only
-        // for the listings up until the last one (inclusive).
+        // If the provided pageIndex is the last page index, this method returns ListingData only
+        // for the listings up until the last listing (inclusive). If the provided pageIndex is > than
+        // the last page index, this method returns nothing.
         public IEnumerable<ListingData> GetListingDataForPage(int pageIndex)
         {
             HighestPageIndexRetrieved = pageIndex > HighestPageIndexRetrieved ? pageIndex : HighestPageIndexRetrieved;
@@ -45,7 +45,7 @@ namespace SemesterProject
             for (var i = 0; i < NUM_LISTINGS_PER_PAGE; i++)
             {
                 var listingIndex = numListingsBeforeThisPage + i;
-                if (listingIndex >= cachedListingData.Count && AllListingsWereRetrieved) yield break;
+                if (listingIndex >= savedListingData.Count && AllListingsWereRetrieved) yield break;
 
                 yield return GetListingData(listingIndex);
             }
@@ -56,25 +56,25 @@ namespace SemesterProject
         // (i.e., there are not (listingIndex + 1) listings in this user-session)
         public ListingData GetListingData(int listingIndex)
         {
-            // get item from cache before retrieving it from the db
-            // if listing isn't already cached, retrieve the listings from the db (via iteration) until 
+            // Get item from saved listings before retrieving it from the db
+            // If the listing isn't already saved, retrieve the listings from the db (via iteration) until 
             // we have retrieved the listing for the provided listingIndex or until there are no more items left
-            var desiredItemIsCached = listingIndex < cachedListingData.Count;
+            var desiredItemIsCached = listingIndex < savedListingData.Count;
             while (!desiredItemIsCached)
             {
                 if (AllListingsWereRetrieved) throw new ArgumentOutOfRangeException();
 
                 var storeItem = allStoreItems.Current;
                 var listingData = new ListingData(storeItem);
-                cachedListingData.Add(listingData);
+                savedListingData.Add(listingData);
                 AllListingsWereRetrieved = !allStoreItems.MoveNext();
-                desiredItemIsCached = listingIndex < cachedListingData.Count;
+                desiredItemIsCached = listingIndex < savedListingData.Count;
             }
 
-            return cachedListingData[listingIndex];
+            return savedListingData[listingIndex];
         }
 
-        private void RefreshAllStoreItems(bool includeOutOfStock = false)
+        private void ResetStoreItemEnumerator(bool includeOutOfStock = false)
         {
             allStoreItems?.Dispose();
             // The order of the store items retrieved here will be the order of the listings as displayed to the user
@@ -84,11 +84,12 @@ namespace SemesterProject
             AllListingsWereRetrieved = !allStoreItems.MoveNext();
         }
 
+        // Refresh/update the listings' data based on the latest db data.
         public void RefreshListingsFromDb()
         {
             db.Refresh(RefreshMode.OverwriteCurrentValues, db.STORE_ITEMs);
-            RefreshAllStoreItems();
-            cachedListingData.Clear();
+            ResetStoreItemEnumerator();
+            savedListingData.Clear();
             HighestPageIndexRetrieved = -1; // reset so that if the last page is now out of range, it isn't potentially revisited
         }
 

@@ -20,12 +20,14 @@ namespace SemesterProject
     {
         private DataClasses1DataContext db;
         private readonly CUSTOMER loggedInCustomer;
-        private BindingList<CartItem> cartItems = new BindingList<CartItem>();
         private readonly int NUM_LISTINGS_PER_PAGE;
+
+        private AllListingsData allListingsData;
+        private ListingGui[] listingsGui;
+        private BindingList<CartItem> cartItems = new BindingList<CartItem>();
+
         private int currentPageIndex = 0; // 0-indexed for easy use with collections
         private int currentPageNumDisplay => currentPageIndex + 1; // 1-indexed for user display
-        private Listings listingsData;
-        private ListingGui[] listingsGui;
 
 
         public Storefront(DataClasses1DataContext db, CUSTOMER loggedInCustomer)
@@ -35,7 +37,7 @@ namespace SemesterProject
             this.db = db;
             this.loggedInCustomer = loggedInCustomer;
             this.NUM_LISTINGS_PER_PAGE = pnlAllListings.Controls.Count;
-            this.listingsData = new Listings(db, loggedInCustomer, NUM_LISTINGS_PER_PAGE);
+            this.allListingsData = new AllListingsData(db, NUM_LISTINGS_PER_PAGE);
             this.listingsGui = new ListingGui[NUM_LISTINGS_PER_PAGE];
         }
 
@@ -80,7 +82,7 @@ namespace SemesterProject
 
         #region Classes
 
-        // This class is for providing a convenient wrapper around the listing GUI controls for easy retrieval of a listing's controls
+        // This class is a convenient wrapper around a listing's GUI controls for easy retrieval and management
         private class ListingGui
         {
             public Panel ListingPanel { get; private set; }
@@ -183,7 +185,7 @@ namespace SemesterProject
         /// </summary>
         private void RefreshCurrentPageListings()
         {
-            IEnumerator<ListingData> listingDataEnumerator = listingsData.GetListingDataForPage(currentPageIndex).GetEnumerator();
+            IEnumerator<ListingData> listingDataEnumerator = allListingsData.GetListingDataForPage(currentPageIndex).GetEnumerator();
             for (int i = 0; i < NUM_LISTINGS_PER_PAGE; i++)
             {
                 if (listingDataEnumerator.MoveNext())
@@ -225,7 +227,7 @@ namespace SemesterProject
 
         private void RefreshBtnNextPage()
         {
-            btnNextPage.Enabled = currentPageIndex < listingsData.HighestPageIndexRetrieved || !listingsData.AllListingsWereRetrieved;
+            btnNextPage.Enabled = currentPageIndex < allListingsData.HighestPageIndexRetrieved || !allListingsData.AllListingsWereRetrieved;
         }
 
         private void RefreshLblPageNum()
@@ -249,7 +251,6 @@ namespace SemesterProject
 
         private void RefreshCartItemsView()
         {
-            // this method needs to be called whenever the cart tab comes into view and whenever the cart items change while the user is on the cart page
             dgvCartItems.DataSource = cartItems.ToList();
             dgvCartItems.AutoResizeColumns();
             dgvCartItems.Update();
@@ -291,7 +292,7 @@ namespace SemesterProject
         // On purchase button click - purchase all items in cart and then empty the cart
         private void btnPurchaseCartItems_Click(object sender, EventArgs e)
         {
-            if (cartItems.Count == 0) // shouldn't be possible because purchase button should be disabled
+            if (cartItems.Count == 0) // shouldn't really be possible because purchase button would be disabled
             {
                 lblCartSummary.Text = "Please add items to cart before purchasing";
                 return;
@@ -341,8 +342,8 @@ namespace SemesterProject
                 // run asynchronously so as not to slow down GUI
             });
 
-            listingsData.RefreshListingsFromDb();
-            RefreshCustomerObject(); // so that balance is updated
+            allListingsData.RefreshListingsFromDb();
+            RefreshCustomerObject(); // the purchase updates the balance of the customer, so we need to refresh it so that balance is updated and can be paid to
             currentPageIndex = 0; // reset so that if the last page is now out of range, it isn't potentially revisited
         }
 
@@ -421,6 +422,7 @@ namespace SemesterProject
             }
 
             PayToCustomerBalance(nudPayToBalance.Value);
+
             RefreshDisplayedBalance();
             lblAccountBalanceResults.ForeColor = Color.Green;
             lblAccountBalanceResults.Text = $"${nudPayToBalance.Value} successfully paid to balance";
@@ -560,10 +562,10 @@ namespace SemesterProject
 
         #endregion
 
-        // This class implements IDisposable as the listingsData must be disposed
+        // This class implements IDisposable as allListingsData must be disposed
         public void Dispose()
         {
-            listingsData.Dispose();
+            allListingsData.Dispose();
         }
     }
 }
