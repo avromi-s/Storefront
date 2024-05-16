@@ -513,21 +513,32 @@ namespace SemesterProject
         {
             var purchases = GetPurchasesForCustomer(false).ToList();
 
-            // date filters:
-            dtpPurchasesFromDate.MinDate = purchases.Min(p => p.PurchaseDateTime);
-            dtpPurchasesFromDate.MaxDate = purchases.Max(p => p.PurchaseDateTime);
-            dtpPurchasesFromDate.Value = dtpPurchasesFromDate.MinDate;
-            dtpPurchasesToDate.MinDate = dtpPurchasesFromDate.MinDate;
-            dtpPurchasesToDate.MaxDate = dtpPurchasesFromDate.MaxDate;
-            dtpPurchasesToDate.Value = dtpPurchasesToDate.MaxDate;
+            bool isPurchases = purchases.Count > 0;
+            dtpPurchasesFromDate.Enabled = isPurchases;
+            dtpPurchasesToDate.Enabled = isPurchases;
+            nudPurchasesPriceFrom.Enabled = isPurchases;
+            nudPurchasesPriceTo.Enabled = isPurchases;
 
-            // total price filters:
-            nudPurchasesPriceFrom.Minimum = purchases.Min(p => p.TotalPrice);
-            nudPurchasesPriceFrom.Maximum = purchases.Max(p => p.TotalPrice);
-            nudPurchasesPriceFrom.Value = nudPurchasesPriceFrom.Minimum;
-            nudPurchasesPriceTo.Minimum = nudPurchasesPriceFrom.Minimum;
-            nudPurchasesPriceTo.Maximum = nudPurchasesPriceFrom.Maximum;
-            nudPurchasesPriceTo.Value = nudPurchasesPriceTo.Maximum;
+            if (isPurchases)
+            {
+                // date filters:
+                dtpPurchasesFromDate.MinDate = purchases.Min(p => p.PurchaseDateTime);
+                dtpPurchasesFromDate.MaxDate = purchases.Max(p => p.PurchaseDateTime);
+                dtpPurchasesFromDate.Value = dtpPurchasesFromDate.MinDate;
+
+                dtpPurchasesToDate.MinDate = dtpPurchasesFromDate.MinDate;
+                dtpPurchasesToDate.MaxDate = dtpPurchasesFromDate.MaxDate;
+                dtpPurchasesToDate.Value = dtpPurchasesToDate.MaxDate;
+
+                // total price filters:
+                nudPurchasesPriceFrom.Minimum = purchases.Min(p => p.TotalPrice);
+                nudPurchasesPriceFrom.Maximum = purchases.Max(p => p.TotalPrice);
+                nudPurchasesPriceFrom.Value = nudPurchasesPriceFrom.Minimum;
+
+                nudPurchasesPriceTo.Minimum = nudPurchasesPriceFrom.Minimum;
+                nudPurchasesPriceTo.Maximum = nudPurchasesPriceFrom.Maximum;
+                nudPurchasesPriceTo.Value = nudPurchasesPriceTo.Maximum;
+            }
         }
 
         private IEnumerable<PURCHASE> GetPurchasesForCustomer(bool applyUserFilters = false)
