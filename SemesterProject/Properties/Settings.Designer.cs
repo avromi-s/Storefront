@@ -26,7 +26,8 @@ namespace SemesterProject.Properties {
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.SpecialSettingAttribute(global::System.Configuration.SpecialSetting.ConnectionString)]
-        [global::System.Configuration.DefaultSettingValueAttribute("Data Source=DESKTOP-1N3NNJP;Initial Catalog=StoreDB;Integrated Security=True")]
+        [global::System.Configuration.DefaultSettingValueAttribute("Data Source=DESKTOP-1N3NNJP;Initial Catalog=StoreDB;Integrated Security=True;Mult" +
+            "ipleActiveResultSets=true")]
         public string StoreDBConnectionString {
             get {
                 return ((string)(this["StoreDBConnectionString"]));

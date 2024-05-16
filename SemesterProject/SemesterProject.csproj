@@ -80,16 +80,6 @@
   <ItemGroup>
     <Compile Include="CartItem.cs" />
     <Compile Include="AllListingsData.cs" />
-    <Compile Include="StoreDB_Purchases.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>StoreDB_Purchases.xsd</DependentUpon>
-    </Compile>
-    <Compile Include="StoreDB_Purchases2.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>StoreDB_Purchases2.xsd</DependentUpon>
-    </Compile>
     <Compile Include="ListingData.cs" />
     <Compile Include="DataClasses1.cs">
       <DependentUpon>DataClasses1.dbml</DependentUpon>
@@ -148,28 +138,6 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
-    <None Include="StoreDB_Purchases.xsc">
-      <DependentUpon>StoreDB_Purchases.xsd</DependentUpon>
-    </None>
-    <None Include="StoreDB_Purchases.xsd">
-      <Generator>MSDataSetGenerator</Generator>
-      <LastGenOutput>StoreDB_Purchases.Designer.cs</LastGenOutput>
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="StoreDB_Purchases.xss">
-      <DependentUpon>StoreDB_Purchases.xsd</DependentUpon>
-    </None>
-    <None Include="StoreDB_Purchases2.xsc">
-      <DependentUpon>StoreDB_Purchases2.xsd</DependentUpon>
-    </None>
-    <None Include="StoreDB_Purchases2.xsd">
-      <Generator>MSDataSetGenerator</Generator>
-      <LastGenOutput>StoreDB_Purchases2.Designer.cs</LastGenOutput>
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="StoreDB_Purchases2.xss">
-      <DependentUpon>StoreDB_Purchases2.xsd</DependentUpon>
-    </None>
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
