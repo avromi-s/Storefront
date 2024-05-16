@@ -301,7 +301,7 @@ namespace SemesterProject
                 return;
             }
 
-            if (!IsCustomerAllowedToPurchaseAll(cartItems))
+            if (!IsCustomerAllowedToPurchase())
             {
                 rtbCartSummary.Text = $"Unable to complete purchase as your balance is below the minimum.\n" +
                                       $"Please increase your balance and try again.\n" +
@@ -340,7 +340,7 @@ namespace SemesterProject
             }
         }
 
-        private bool IsCustomerAllowedToPurchaseAll(BindingList<CartItem> cartItems)
+        private bool IsCustomerAllowedToPurchase()
         {
             // A customer can make a purchase as long as their current balance is over the minimum allowed,
             // the customer's cart total is not taken into account.
