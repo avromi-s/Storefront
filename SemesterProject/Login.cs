@@ -51,7 +51,6 @@ namespace SemesterProject
 
         private bool AttemptLogin(string LoginId, string Password, Label lblResult, ref CUSTOMER customerLoggedIn)
         {
-            // todo username not case sensitive
             bool loginExists = db.CUSTOMERs.Select(row => row.LoginId).Contains(LoginId);
             if (loginExists)
             {
@@ -60,17 +59,20 @@ namespace SemesterProject
                 if (foundCustomer.Password == Password)
                 {
                     lblResult.Text = "Successful login";
+                    lblResult.ForeColor = Color.Green;
                     customerLoggedIn = foundCustomer;
                     return true;
                 }
                 else
                 {
                     lblResult.Text = "Invalid password";
+                    lblResult.ForeColor = Color.Red;
                 }
             }
             else
             {
                 lblResult.Text = "Login ID not found";
+                lblResult.ForeColor = Color.Red;
             }
 
             customerLoggedIn = null; // only return customer on successful login
@@ -90,12 +92,14 @@ namespace SemesterProject
                 db.CUSTOMERs.InsertOnSubmit(createdCustomer);
                 db.SubmitChanges();
                 lblResult.Text = "Account successfully created.";
+                lblResult.ForeColor = Color.Green;
                 loggedInCustomer = createdCustomer;
                 return true;
             }
             else
             {
                 lblResult.Text = "That login ID is not available. Please try again.";
+                lblResult.ForeColor = Color.Red;
                 loggedInCustomer = null; // only return customer on successful login
                 return false;
             }

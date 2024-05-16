@@ -19,8 +19,8 @@ IF (EXISTS (SELECT * FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_SCHEMA = 'dbo' A
 -- create CUSTOMER table:
 CREATE TABLE [dbo].[CUSTOMER](
 	[CustomerId] [int] IDENTITY(1,1) NOT NULL,
-	[LoginId] [nvarchar](50) NOT NULL,
-	[Password] [nvarchar](50) NOT NULL,
+	[LoginId] [nvarchar](50) COLLATE SQL_Latin1_General_CP1_CS_AS NOT NULL,
+	[Password] [nvarchar](50) COLLATE SQL_Latin1_General_CP1_CS_AS NOT NULL,
 	[Balance] [money] NOT NULL,
 	CONSTRAINT Unique_LoginId UNIQUE(LoginId),
 PRIMARY KEY CLUSTERED 

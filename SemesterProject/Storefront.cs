@@ -95,18 +95,17 @@ namespace SemesterProject
 
             private bool listingEnabled;
 
-            public ListingGui(Panel AllListingsPanel, int listingIndex, ListingData listingData)
+            public ListingGui(Panel allListingsPanel, int listingIndex, ListingData listingData)
             {
-                ListingPanel = AllListingsPanel.Controls["pnlListing" + listingIndex] as Panel;
+                this.ListingData = listingData;
+                ListingPanel = allListingsPanel.Controls["pnlListing" + listingIndex] as Panel;
                 ItemImagePictureBox = ListingPanel.Controls["pbxItemImage" + listingIndex] as PictureBox;
-                TitleDescriptionRichTextBox =
-                    ListingPanel.Controls["rtbTitleDescription" + listingIndex] as RichTextBox;
+                TitleDescriptionRichTextBox = ListingPanel.Controls["rtbTitleDescription" + listingIndex] as RichTextBox;
                 PriceLabel = ListingPanel.Controls["lblPrice" + listingIndex] as Label;
                 AddToCartButton = ListingPanel.Controls["btnAddToCart" + listingIndex] as Button;
                 QuantityNumericUpDown = ListingPanel.Controls["nudQuantity" + listingIndex] as NumericUpDown;
                 StatusInfoLabel = ListingPanel.Controls["lblStatusInfo" + listingIndex] as Label;
                 SelectQuantityLabel = ListingPanel.Controls["lblSelectQuantity" + listingIndex] as Label;
-                this.ListingData = listingData;
 
                 EnableListing(); // enable in case this listing was previously disabled on a previous page
             }
@@ -127,16 +126,6 @@ namespace SemesterProject
                 ListingPanel.Enabled = false;
                 TitleDescriptionRichTextBox.Text = "";
                 PriceLabel.Text = "";
-            }
-
-            public async void DisplayAddToCartConfirmation(int displayTimeLengthMs = 5000)
-            {
-                StatusInfoLabel.ForeColor = Color.Green;
-                StatusInfoLabel.Text = "Item added to cart";
-
-                await Task.Delay(displayTimeLengthMs); // clear text after displayTimeLengthMs
-                StatusInfoLabel.Text = "";
-                StatusInfoLabel.ForeColor = Color.Black;
             }
 
             public void RefreshStatusInfoLabel()
@@ -163,6 +152,16 @@ namespace SemesterProject
                     AddToCartButton.Enabled = remainingQty > 0;
                 }
             }
+
+            public async void DisplayAddToCartConfirmation(int displayTimeLengthMs = 5000)
+            {
+                StatusInfoLabel.ForeColor = Color.Green;
+                StatusInfoLabel.Text = "Item added to cart";
+
+                await Task.Delay(displayTimeLengthMs); // clear text after displayTimeLengthMs
+                StatusInfoLabel.Text = "";
+                StatusInfoLabel.ForeColor = Color.Black;
+            }
         }
 
         #endregion
@@ -171,27 +170,25 @@ namespace SemesterProject
 
         private void RefreshListingsTab()
         {
-            LoadStoreItemsIntoGui(listingsData.GetListingDataForPage(currentPageIndex));
+            RefreshCurrentPageListings();
             RefreshLblPageNum();
             RefreshBtnPreviousPage();
             RefreshBtnNextPage();
         }
 
         /// <summary>
-        /// Go through each of the listingData and populate each GUI listing with the item's details.
-        /// If less there are less items in listingData than NUM_LISTINGS_PER_PAGE, the remaining listings on the page
-        /// are disabled.
+        /// Load or refresh the GUI listings on the current page.
+        /// If there are fewer listings than NUM_LISTINGS_PER_PAGE left for the current page, the remaining
+        /// listings on the page are disabled.
         /// </summary>
-        /// <param name="listingData">The listingData to populate the GUI listings with</param>
-        private void LoadStoreItemsIntoGui(IEnumerable<ListingData> listingData)
+        private void RefreshCurrentPageListings()
         {
-            IEnumerator<ListingData> listingDataEnumerator = listingData.GetEnumerator();
+            IEnumerator<ListingData> listingDataEnumerator = listingsData.GetListingDataForPage(currentPageIndex).GetEnumerator();
             for (int i = 0; i < NUM_LISTINGS_PER_PAGE; i++)
             {
                 if (listingDataEnumerator.MoveNext())
                 {
                     listingsGui[i] = new ListingGui(pnlAllListings, i, listingDataEnumerator.Current);
-                    // todo move all below (or at least the method calls?) into the ListingGui constructor?
                     listingsGui[i].TitleDescriptionRichTextBox.Text = listingDataEnumerator.Current.Title;
                     listingsGui[i].PriceLabel.Text = listingDataEnumerator.Current.FormattedPrice;
                     listingsGui[i].ItemImagePictureBox.Image = new Bitmap(listingDataEnumerator.Current.ItemImage,
