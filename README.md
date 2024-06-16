@@ -1,5 +1,11 @@
 # Storefront
 
+This project demoes a storefront allowing purchasing of various store items.
+Customers create accounts and can make purchases of one or more items; purchase prices are deducted from the customer's balance. Customers can pay to their balance and view previous order history.
+
+The project consists of a Windows Forms app that displays the application and a SQL Server database that is used to store and retrieve all persistent data (customers, logins, purchases, store items). LINQ to SQL is used in the application for all queries.
+
+Created for a school project.
 
 ***
 ### To run the project:
